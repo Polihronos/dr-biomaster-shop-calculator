@@ -18,68 +18,48 @@
 	type Selection = Record<string, number>;
 	type Overrides = Record<string, number>;
 	type DiscountMap = Record<string, number>;
+	type SaleMap = Record<string, boolean>;
 	type PromoMap = Record<string, { buy: number; pay: number }>;
 	type PersistedState = {
 		selection?: Selection;
 		priceOverrides?: Overrides;
 		productDiscounts?: DiscountMap;
+		saleOverrides?: SaleMap;
 		promotions?: PromoMap;
 		globalDiscount?: number;
 	};
 
-	const STORAGE_KEY = 'dr-biomaster-shop-calculator-v1';
-	const categories = ['Всички', ...new Set(products.map((product) => product.category))];
+	const BGN_PER_EUR = 1.95583;
+	const STORAGE_KEY = 'dr-biomaster-shop-calculator-v2';
+	const ALL_CATEGORIES = 'Всички';
+	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10, 20];
 
 	let selection: Selection = $state({});
 	let priceOverrides: Overrides = $state({});
 	let productDiscounts: DiscountMap = $state({});
+	let saleOverrides: SaleMap = $state({});
 	let promotions: PromoMap = $state({});
 	let globalDiscount = $state(0);
 	let query = $state('');
-	let activeCategory = $state('Всички');
+	let activeCategory = $state(ALL_CATEGORIES);
 	let onlySale = $state(false);
 	let editMode = $state(false);
 
-	const selectedRows = $derived(
-		products
-			.filter((product) => (selection[product.id] ?? 0) > 0)
-			.map((product) => {
-				const quantity = selection[product.id] ?? 0;
-				const unitPrice = priceOverrides[product.id] ?? product.price;
-				const discount = productDiscounts[product.id] ?? 0;
-				const promo = promotions[product.id];
-				const chargedQuantity =
-					promo && promo.buy > 0 && promo.pay > 0 && promo.pay < promo.buy
-						? Math.floor(quantity / promo.buy) * promo.pay + (quantity % promo.buy)
-						: quantity;
-				const lineBase = unitPrice * chargedQuantity;
-				const lineTotal = lineBase * (1 - discount / 100);
-
-				return {
-					product,
-					quantity,
-					unitPrice,
-					discount,
-					promo,
-					chargedQuantity,
-					lineTotal
-				};
-			})
-	);
-
+	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
 	const total = $derived(subtotal * (1 - globalDiscount / 100));
 	const selectedCount = $derived(Object.values(selection).reduce((sum, quantity) => sum + quantity, 0));
 	const filteredProducts = $derived(
 		products.filter((product) => {
-			const matchesCategory = activeCategory === 'Всички' || product.category === activeCategory;
+			const row = rowForProduct(product);
+			const matchesCategory = activeCategory === ALL_CATEGORIES || product.category === activeCategory;
 			const normalizedQuery = query.trim().toLocaleLowerCase('bg');
 			const matchesQuery =
 				!normalizedQuery ||
 				product.name.toLocaleLowerCase('bg').includes(normalizedQuery) ||
 				product.category.toLocaleLowerCase('bg').includes(normalizedQuery);
-			const matchesSale = !onlySale || product.onSale;
+			const matchesSale = !onlySale || row.isOnSale;
 
 			return matchesCategory && matchesQuery && matchesSale;
 		})
@@ -94,6 +74,7 @@
 			selection = saved.selection ?? {};
 			priceOverrides = saved.priceOverrides ?? {};
 			productDiscounts = saved.productDiscounts ?? {};
+			saleOverrides = saved.saleOverrides ?? {};
 			promotions = saved.promotions ?? {};
 			globalDiscount = saved.globalDiscount ?? 0;
 		} catch {
@@ -106,14 +87,96 @@
 			selection: $state.snapshot(selection),
 			priceOverrides: $state.snapshot(priceOverrides),
 			productDiscounts: $state.snapshot(productDiscounts),
+			saleOverrides: $state.snapshot(saleOverrides),
 			promotions: $state.snapshot(promotions),
 			globalDiscount
 		};
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 	});
 
-	function money(value: number) {
-		return `${value.toFixed(2)} лв.`;
+	function bgnToEur(value: number) {
+		return Number((value / BGN_PER_EUR).toFixed(2));
+	}
+
+	function eurToBgn(value: number) {
+		return Number((value * BGN_PER_EUR).toFixed(2));
+	}
+
+	function money(valueEur: number) {
+		return `€${valueEur.toFixed(2)} / ${eurToBgn(valueEur).toFixed(2)} лв.`;
+	}
+
+	function regularPriceEur(product: Product) {
+		return bgnToEur(product.regularPrice || product.price);
+	}
+
+	function currentCatalogPriceEur(product: Product) {
+		return bgnToEur(product.price);
+	}
+
+	function isSaleEnabled(product: Product) {
+		return saleOverrides[product.id] ?? product.onSale;
+	}
+
+	function catalogSalePercent(product: Product) {
+		const regular = regularPriceEur(product);
+		const current = currentCatalogPriceEur(product);
+		if (regular <= current) return 0;
+		return Number((((regular - current) / regular) * 100).toFixed(1));
+	}
+
+	function effectiveUnitPriceEur(product: Product) {
+		const manualPrice = priceOverrides[product.id];
+		if (manualPrice !== undefined) return manualPrice;
+
+		const regular = regularPriceEur(product);
+		const saleDiscount = productDiscounts[product.id];
+		if (isSaleEnabled(product) && saleDiscount) {
+			return Number((regular * (1 - saleDiscount / 100)).toFixed(2));
+		}
+
+		if (isSaleEnabled(product) && product.onSale) {
+			return currentCatalogPriceEur(product);
+		}
+
+		return regular;
+	}
+
+	function effectiveSalePercent(product: Product) {
+		if (!isSaleEnabled(product)) return 0;
+
+		const custom = productDiscounts[product.id];
+		if (custom) return custom;
+
+		const regular = regularPriceEur(product);
+		const current = effectiveUnitPriceEur(product);
+		if (regular <= current) return 0;
+
+		return Number((((regular - current) / regular) * 100).toFixed(1));
+	}
+
+	function rowForProduct(product: Product) {
+		const quantity = selection[product.id] ?? 0;
+		const unitPrice = effectiveUnitPriceEur(product);
+		const salePercent = effectiveSalePercent(product);
+		const promo = promotions[product.id];
+		const chargedQuantity =
+			promo && promo.buy > 0 && promo.pay > 0 && promo.pay < promo.buy
+				? Math.floor(quantity / promo.buy) * promo.pay + (quantity % promo.buy)
+				: quantity;
+		const lineTotal = unitPrice * chargedQuantity;
+
+		return {
+			product,
+			quantity,
+			unitPrice,
+			regularPrice: regularPriceEur(product),
+			isOnSale: isSaleEnabled(product),
+			salePercent,
+			promo,
+			chargedQuantity,
+			lineTotal
+		};
 	}
 
 	function changeQuantity(product: Product, delta: number) {
@@ -140,8 +203,8 @@
 	}
 
 	function setPrice(product: Product, value: number | undefined) {
-		const next = Number(value ?? product.price);
-		if (!Number.isFinite(next) || next <= 0 || Math.abs(next - product.price) < 0.001) {
+		const next = Number(value ?? effectiveUnitPriceEur(product));
+		if (!Number.isFinite(next) || next <= 0 || Math.abs(next - effectiveUnitPriceEur(product)) < 0.001) {
 			delete priceOverrides[product.id];
 			return;
 		}
@@ -149,7 +212,7 @@
 		priceOverrides[product.id] = Number(next.toFixed(2));
 	}
 
-	function setDiscount(product: Product, value: number | undefined) {
+	function setSaleDiscount(product: Product, value: number | undefined) {
 		const next = Math.min(100, Math.max(0, Number(value ?? 0)));
 		if (!next) {
 			delete productDiscounts[product.id];
@@ -157,6 +220,21 @@
 		}
 
 		productDiscounts[product.id] = next;
+		saleOverrides[product.id] = true;
+		delete priceOverrides[product.id];
+	}
+
+	function setSale(product: Product, enabled: boolean) {
+		saleOverrides[product.id] = enabled;
+		delete priceOverrides[product.id];
+
+		if (enabled && !productDiscounts[product.id] && !product.onSale) {
+			productDiscounts[product.id] = 10;
+		}
+
+		if (!enabled) {
+			delete productDiscounts[product.id];
+		}
 	}
 
 	function setPromotion(product: Product, buy: number | undefined, pay: number | undefined) {
@@ -174,6 +252,7 @@
 	function resetSaleTools() {
 		globalDiscount = 0;
 		productDiscounts = {};
+		saleOverrides = {};
 		promotions = {};
 	}
 
@@ -184,6 +263,7 @@
 	function resetEdits() {
 		priceOverrides = {};
 		productDiscounts = {};
+		saleOverrides = {};
 		promotions = {};
 		globalDiscount = 0;
 	}
@@ -261,31 +341,51 @@
 	<section class="content">
 		<div class="grid" aria-label="Продукти">
 			{#each filteredProducts as product (product.id)}
-				{@const quantity = selection[product.id] ?? 0}
-				{@const effectivePrice = priceOverrides[product.id] ?? product.price}
-				<button
-					class={['product-card', quantity > 0 && 'selected']}
-					aria-pressed={quantity > 0}
-					onclick={() => changeQuantity(product, 1)}
-				>
-					<div class="image-wrap">
-						{#if product.image}
-							<img src={product.image} alt={product.name} loading="lazy" />
-						{:else}
-							<div class="placeholder">{product.name.slice(0, 2)}</div>
-						{/if}
-						{#if product.onSale}
-							<span class="sale"><BadgePercent size={14} /> SALE</span>
-						{/if}
-						{#if quantity > 0}
-							<span class="picked"><Check size={16} /> {quantity}</span>
-						{/if}
-					</div>
+				{@const row = rowForProduct(product)}
+				<article class={['product-card', row.quantity > 0 && 'selected']}>
+					<button
+						class="product-main"
+						aria-pressed={row.quantity > 0}
+						onclick={() => changeQuantity(product, 1)}
+					>
+						<div class="image-wrap">
+							{#if product.image}
+								<img src={product.image} alt={product.name} loading="lazy" />
+							{:else}
+								<div class="placeholder">{product.name.slice(0, 2)}</div>
+							{/if}
+							{#if row.isOnSale}
+								<span class="sale"><BadgePercent size={14} /> -{row.salePercent}%</span>
+							{/if}
+							{#if row.quantity > 0}
+								<span class="picked"><Check size={16} /> {row.quantity}</span>
+							{/if}
+						</div>
 
-					<span class="category">{product.category}</span>
-					<strong>{product.name}</strong>
-					<span class="price">{money(effectivePrice)}</span>
-				</button>
+						<span class="category">{product.category}</span>
+						<strong>{product.name}</strong>
+						<span class="price">
+							{money(row.unitPrice)}
+							{#if row.isOnSale && row.regularPrice > row.unitPrice}
+								<small>{money(row.regularPrice)}</small>
+							{/if}
+						</span>
+					</button>
+
+					{#if row.quantity > 0}
+						<div class="card-controls">
+							<button title="Намали" aria-label="Намали" onclick={() => changeQuantity(product, -1)}>
+								<CircleMinus size={18} />
+							</button>
+							<button title="Премахни" aria-label="Премахни" onclick={() => setQuantity(product, 0)}>
+								<X size={18} />
+							</button>
+							<button title="Увеличи" aria-label="Увеличи" onclick={() => changeQuantity(product, 1)}>
+								<CirclePlus size={18} />
+							</button>
+						</div>
+					{/if}
+				</article>
 			{/each}
 		</div>
 
@@ -307,9 +407,9 @@
 							<div>
 								<strong>{row.product.name}</strong>
 								<span>{money(row.unitPrice)} x {row.chargedQuantity}</span>
-								{#if row.discount > 0 || row.promo}
+								{#if row.isOnSale || row.promo}
 									<small>
-										{#if row.discount > 0}-{row.discount}%{/if}
+										{#if row.isOnSale}-{row.salePercent}%{/if}
 										{#if row.promo} {row.promo.buy} за {row.promo.pay}{/if}
 									</small>
 								{/if}
@@ -351,7 +451,7 @@
 			<header>
 				<div>
 					<strong>Редакция</strong>
-					<span>Цените и отстъпките се пазят в този браузър.</span>
+					<span>Цените са в евро. Еквивалентът в лева се смята по 1 EUR = 1.95583 BGN.</span>
 				</div>
 				<button class="icon-button" title="Затвори" aria-label="Затвори" onclick={() => (editMode = false)}>
 					<X size={20} />
@@ -385,7 +485,7 @@
 
 							<div class="fields">
 								<label>
-									Цена
+									Цена €
 									<input
 										type="number"
 										min="0"
@@ -396,15 +496,26 @@
 									/>
 								</label>
 								<label>
-									Отстъпка %
+									Промо
+									<select
+										value={row.isOnSale ? 'yes' : 'no'}
+										onchange={(event) =>
+											setSale(row.product, (event.currentTarget as HTMLSelectElement).value === 'yes')}
+									>
+										<option value="yes">Да</option>
+										<option value="no">Не</option>
+									</select>
+								</label>
+								<label>
+									Промо %
 									<input
 										type="number"
 										min="0"
 										max="100"
 										step="0.1"
-										value={row.discount}
+										value={row.salePercent || catalogSalePercent(row.product)}
 										oninput={(event) =>
-											setDiscount(row.product, Number((event.currentTarget as HTMLInputElement).value))}
+											setSaleDiscount(row.product, Number((event.currentTarget as HTMLInputElement).value))}
 									/>
 								</label>
 								<label>
@@ -497,6 +608,7 @@
 	.toggle,
 	.cart-head,
 	.qty,
+	.card-controls,
 	.editor-tools,
 	.editor-title {
 		display: flex;
@@ -524,7 +636,7 @@
 	.total {
 		justify-self: center;
 		flex-direction: column;
-		min-width: 220px;
+		min-width: 270px;
 		text-align: center;
 	}
 
@@ -534,7 +646,7 @@
 	}
 
 	.total strong {
-		font-size: clamp(1.7rem, 4vw, 2.6rem);
+		font-size: clamp(1.35rem, 3vw, 2.2rem);
 		line-height: 1;
 	}
 
@@ -549,7 +661,8 @@
 	}
 
 	.icon-button,
-	.qty button {
+	.qty button,
+	.card-controls button {
 		display: inline-grid;
 		width: 40px;
 		height: 40px;
@@ -629,14 +742,14 @@
 
 	.content {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+		grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
 		gap: 20px;
 		padding: 0 clamp(14px, 3vw, 32px) 18px;
 	}
 
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 		gap: 12px;
 		align-content: start;
 	}
@@ -644,18 +757,28 @@
 	.product-card {
 		display: grid;
 		gap: 8px;
-		min-height: 272px;
+		min-height: 294px;
 		padding: 10px;
 		border: 2px solid transparent;
 		border-radius: 8px;
 		background: #fffdf7;
 		box-shadow: 0 1px 2px rgb(31 28 22 / 8%);
-		text-align: left;
 	}
 
 	.product-card.selected {
 		border-color: #2f7a57;
 		box-shadow: 0 0 0 2px rgb(47 122 87 / 16%);
+	}
+
+	.product-main {
+		display: grid;
+		gap: 8px;
+		width: 100%;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		text-align: left;
 	}
 
 	.image-wrap {
@@ -722,9 +845,29 @@
 	}
 
 	.price {
+		display: grid;
+		gap: 2px;
 		align-self: end;
-		font-size: 1.06rem;
+		font-size: 1rem;
 		font-weight: 800;
+	}
+
+	.price small {
+		color: #8a877f;
+		font-size: 0.78rem;
+		font-weight: 600;
+		text-decoration: line-through;
+	}
+
+	.card-controls {
+		justify-content: space-between;
+		gap: 6px;
+	}
+
+	.card-controls button {
+		width: 34px;
+		height: 34px;
+		background: #f8f6ef;
 	}
 
 	.cart {
@@ -818,7 +961,7 @@
 	.modal {
 		display: grid;
 		grid-template-rows: auto auto minmax(0, 1fr);
-		width: min(980px, 100%);
+		width: min(1040px, 100%);
 		max-height: min(820px, calc(100vh - 32px));
 		overflow: hidden;
 		border-radius: 8px;
@@ -857,7 +1000,8 @@
 	}
 
 	.editor-tools input,
-	.fields input {
+	.fields input,
+	.fields select {
 		height: 38px;
 		padding: 0 9px;
 		border: 1px solid #d8d5ca;
@@ -910,7 +1054,7 @@
 
 	.fields {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(90px, 1fr));
+		grid-template-columns: repeat(5, minmax(88px, 1fr));
 		gap: 10px;
 	}
 
@@ -960,7 +1104,7 @@
 		}
 
 		.product-card {
-			min-height: 238px;
+			min-height: 262px;
 		}
 
 		.product-card strong {
