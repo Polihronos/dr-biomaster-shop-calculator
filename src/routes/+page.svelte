@@ -34,6 +34,16 @@
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10, 20];
+	const packageRules = [
+		{ label: 'ПАКЕТ „АНТИСТРЕС“', terms: ['антистрес'] },
+		{ label: 'ПАКЕТ „ИМУНИТЕТ“', terms: ['имюн', 'имунити'] },
+		{ label: 'ПАКЕТ „МЕТАБОЛИЗЪМ И ИР“', terms: ['ямакиро', 'майтаке'] },
+		{ label: 'ПАКЕТ „СТАВИ“', terms: ['куркумин'] },
+		{ label: 'ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“', terms: ['супер формула'] },
+		{ label: 'ПАКЕТ „ХРАНОСМИЛАТЕЛНА СИСТЕМА“', terms: ['детокс', 'алое'] },
+		{ label: 'ПАКЕТ „ЗДРАВИ КЛЕТКИ“', terms: ['амигдалин', 'есияк'] },
+		{ label: 'Комплект д-р Хулда Кларк', terms: ['хулда кларк'] }
+	];
 
 	let selection: Selection = $state({});
 	let priceOverrides: Overrides = $state({});
@@ -51,17 +61,29 @@
 	const total = $derived(subtotal * (1 - globalDiscount / 100));
 	const selectedCount = $derived(Object.values(selection).reduce((sum, quantity) => sum + quantity, 0));
 	const filteredProducts = $derived(
-		products.filter((product) => {
-			const row = rowForProduct(product);
-			const matchesCategory = activeCategory === ALL_CATEGORIES || product.category === activeCategory;
-			const normalizedQuery = query.trim().toLocaleLowerCase('bg');
-			const matchesQuery =
-				!normalizedQuery ||
-				product.name.toLocaleLowerCase('bg').includes(normalizedQuery) ||
-				product.category.toLocaleLowerCase('bg').includes(normalizedQuery);
-			const matchesSale = !onlySale || row.isOnSale;
+		products
+			.filter((product) => {
+				const row = rowForProduct(product);
+				const matchesCategory = activeCategory === ALL_CATEGORIES || product.category === activeCategory;
+				const normalizedQuery = normalizeText(query.trim());
+				const searchable = normalizeText(`${product.name} ${product.category}`);
+				const matchesQuery = !normalizedQuery || searchable.includes(normalizedQuery);
+				const matchesSale = !onlySale || row.isOnSale;
 
-			return matchesCategory && matchesQuery && matchesSale;
+				return matchesCategory && matchesQuery && matchesSale;
+			})
+			.toSorted((a, b) => productSortRank(a) - productSortRank(b) || a.name.localeCompare(b.name, 'bg'))
+	);
+	const packageMatches = $derived(
+		packageRules.filter((rule) => {
+			const packageProductSelected = selectedRows.some(
+				(row) => isPackageProduct(row.product) && normalizeText(row.product.name).includes(normalizeText(rule.label))
+			);
+			const termMatch = rule.terms.some((term) =>
+				selectedRows.some((row) => !isPackageProduct(row.product) && normalizeText(row.product.name).includes(term))
+			);
+
+			return packageProductSelected || termMatch;
 		})
 	);
 
@@ -104,6 +126,75 @@
 
 	function money(valueEur: number) {
 		return `€${valueEur.toFixed(2)} / ${eurToBgn(valueEur).toFixed(2)} лв.`;
+	}
+
+	function normalizeText(value: string) {
+		return value.toLocaleLowerCase('bg').normalize('NFKC');
+	}
+
+	function isPackageProduct(product: Product) {
+		const text = normalizeText(`${product.category} ${product.name}`);
+		return text.includes('комплект') || text.includes('пакет');
+	}
+
+	function isTicketProduct(product: Product) {
+		return normalizeText(`${product.category} ${product.name}`).includes('билет');
+	}
+
+	function isBookProduct(product: Product) {
+		return normalizeText(product.category).includes('книг');
+	}
+
+	function isHawlikProduct(product: Product) {
+		return normalizeText(product.name).includes('hawlik');
+	}
+
+	function isOtherProduct(product: Product) {
+		const text = normalizeText(`${product.category} ${product.name}`);
+		return (
+			text.includes('други продукти') ||
+			text.includes('cibdol') ||
+			text.includes('enecta') ||
+			text.includes('alchemic') ||
+			text.includes('lactoflor') ||
+			text.includes('парапротекс') ||
+			text.includes('алое вера') ||
+			text.includes('сибирска чага') ||
+			text.includes('био хуск') ||
+			text.includes('сода') ||
+			text.includes('рибено масло')
+		);
+	}
+
+	function productSortRank(product: Product) {
+		if (activeCategory !== ALL_CATEGORIES) return 0;
+		if (isTicketProduct(product)) return 5;
+		if (isPackageProduct(product)) return 4;
+		if (isBookProduct(product)) return 3;
+		if (isHawlikProduct(product)) return 1;
+		if (isOtherProduct(product)) return 2;
+		return 0;
+	}
+
+	function packagingBadges(product: Product) {
+		const text = normalizeText(product.name);
+		const badges = [];
+		const capsules = text.match(/(\d+)\s*(капс|капсули|caps)/);
+		const grams = text.match(/(\d+(?:[.,]\d+)?)\s*(g|гр|грама)/);
+		const milliliters = text.match(/(\d+(?:[.,]\d+)?)\s*(ml|мл)/);
+		const cbd = text.match(/(\d+(?:[.,]\d+)?)\s*%\s*cbd/);
+		const milligrams = text.match(/(\d+)\s*mg/);
+
+		if (text.includes('прах') || text.includes('прахо') || text.includes('чай')) {
+			badges.push(grams ? `прах ${grams[1]} g` : 'прах');
+		}
+
+		if (capsules) badges.push(`${capsules[1]} капс.`);
+		if (milliliters) badges.push(`${milliliters[1]} ml`);
+		if (cbd) badges.push(`${cbd[1]}% CBD`);
+		if (milligrams && badges.length < 2) badges.push(`${milligrams[1]} mg`);
+
+		return [...new Set(badges)].slice(0, 3);
 	}
 
 	function regularPriceEur(product: Product) {
@@ -338,10 +429,20 @@
 		</button>
 	</section>
 
+	{#if packageMatches.length > 0}
+		<section class="package-strip" aria-label="Разпознати пакети">
+			<strong>Пакет избран</strong>
+			{#each packageMatches as match (match.label)}
+				<span>{match.label}</span>
+			{/each}
+		</section>
+	{/if}
+
 	<section class="content">
 		<div class="grid" aria-label="Продукти">
 			{#each filteredProducts as product (product.id)}
 				{@const row = rowForProduct(product)}
+				{@const badges = packagingBadges(product)}
 				<article class={['product-card', row.quantity > 0 && 'selected']}>
 					<button
 						class="product-main"
@@ -360,6 +461,13 @@
 							{#if row.quantity > 0}
 								<span class="picked"><Check size={16} /> {row.quantity}</span>
 							{/if}
+							{#if badges.length > 0}
+								<div class="variant-badges">
+									{#each badges as badge (badge)}
+										<span>{badge}</span>
+									{/each}
+								</div>
+							{/if}
 						</div>
 
 						<span class="category">{product.category}</span>
@@ -374,13 +482,23 @@
 
 					{#if row.quantity > 0}
 						<div class="card-controls">
-							<button title="Намали" aria-label="Намали" onclick={() => changeQuantity(product, -1)}>
+							<button
+								class="decrease"
+								title="Намали"
+								aria-label="Намали"
+								onclick={() => changeQuantity(product, -1)}
+							>
 								<CircleMinus size={18} />
 							</button>
-							<button title="Премахни" aria-label="Премахни" onclick={() => setQuantity(product, 0)}>
+							<button class="remove" title="Премахни" aria-label="Премахни" onclick={() => setQuantity(product, 0)}>
 								<X size={18} />
 							</button>
-							<button title="Увеличи" aria-label="Увеличи" onclick={() => changeQuantity(product, 1)}>
+							<button
+								class="increase"
+								title="Увеличи"
+								aria-label="Увеличи"
+								onclick={() => changeQuantity(product, 1)}
+							>
 								<CirclePlus size={18} />
 							</button>
 						</div>
@@ -726,6 +844,31 @@
 		color: #626058;
 	}
 
+	.package-strip {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 0 clamp(14px, 3vw, 32px) 16px;
+		padding: 10px 12px;
+		border: 1px solid #b9d4c5;
+		border-radius: 8px;
+		background: #edf8f1;
+		color: #1f5d40;
+	}
+
+	.package-strip strong {
+		margin-right: 4px;
+	}
+
+	.package-strip span {
+		padding: 4px 8px;
+		border-radius: 999px;
+		background: #d8efdf;
+		font-size: 0.82rem;
+		font-weight: 800;
+	}
+
 	.quick-strip button,
 	.text-button,
 	.editor-tools button {
@@ -828,6 +971,27 @@
 		color: #fff;
 	}
 
+	.variant-badges {
+		position: absolute;
+		right: 7px;
+		bottom: 7px;
+		left: 7px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+
+	.variant-badges span {
+		padding: 4px 7px;
+		border: 1px solid rgb(255 255 255 / 62%);
+		border-radius: 999px;
+		background: rgb(32 35 31 / 78%);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 800;
+		line-height: 1;
+	}
+
 	.category {
 		color: #747168;
 		font-size: 0.76rem;
@@ -867,7 +1031,24 @@
 	.card-controls button {
 		width: 34px;
 		height: 34px;
-		background: #f8f6ef;
+	}
+
+	.card-controls .decrease {
+		border-color: #e5b756;
+		background: #fff1c7;
+		color: #7a4d00;
+	}
+
+	.card-controls .remove {
+		border-color: #f0a9a0;
+		background: #ffe4e0;
+		color: #9b2319;
+	}
+
+	.card-controls .increase {
+		border-color: #9fceb3;
+		background: #def5e6;
+		color: #1f6c45;
 	}
 
 	.cart {
