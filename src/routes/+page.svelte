@@ -4,13 +4,11 @@
 		Check,
 		CircleMinus,
 		CirclePlus,
-		Edit3,
 		ExternalLink,
 		RefreshCcw,
 		RotateCcw,
 		Search,
 		ShoppingBasket,
-		Trash2,
 		X
 	} from '@lucide/svelte';
 	import { catalogUpdatedAt, products, type Product } from '$lib/products';
@@ -21,6 +19,7 @@
 	type SaleMap = Record<string, boolean>;
 	type PromoMap = Record<string, { buy: number; pay: number }>;
 	type PackageComboRule = { packageId: string; itemIds: string[] };
+	type PendingPackageChoice = { rule: PackageComboRule; quantity: number; key: string };
 	type PersistedState = {
 		selection?: Selection;
 		priceOverrides?: Overrides;
@@ -32,6 +31,7 @@
 
 	const BGN_PER_EUR = 1.95583;
 	const STORAGE_KEY = 'dr-biomaster-shop-calculator-v2';
+	const CANNABIMAX_GOLD_ID = '8077';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10, 15, 20];
@@ -59,6 +59,8 @@
 	let activeCategory = $state(ALL_CATEGORIES);
 	let onlySale = $state(false);
 	let editMode = $state(false);
+	let pendingPackageChoice: PendingPackageChoice | null = $state(null);
+	let declinedPackageKeys: Record<string, true> = $state({});
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
@@ -245,49 +247,100 @@
 		return Number((((regular - current) / regular) * 100).toFixed(1));
 	}
 
+	function cannabimaxGoldDiscount(quantity: number) {
+		if (quantity >= 3) return 20;
+		if (quantity >= 2) return 10;
+		return 0;
+	}
+
 	function rowForProduct(product: Product) {
 		const quantity = selection[product.id] ?? 0;
 		const unitPrice = effectiveUnitPriceEur(product);
-		const salePercent = effectiveSalePercent(product);
+		const lineDiscountPercent = product.id === CANNABIMAX_GOLD_ID ? cannabimaxGoldDiscount(quantity) : 0;
+		const salePercent = lineDiscountPercent || effectiveSalePercent(product);
 		const promo = promotions[product.id];
 		const chargedQuantity =
 			promo && promo.buy > 0 && promo.pay > 0 && promo.pay < promo.buy
 				? Math.floor(quantity / promo.buy) * promo.pay + (quantity % promo.buy)
 				: quantity;
-		const lineTotal = unitPrice * chargedQuantity;
+		const lineTotal = Number((unitPrice * chargedQuantity * (1 - lineDiscountPercent / 100)).toFixed(2));
 
 		return {
 			product,
 			quantity,
 			unitPrice,
 			regularPrice: regularPriceEur(product),
-			isOnSale: isSaleEnabled(product),
+			isOnSale: isSaleEnabled(product) || lineDiscountPercent > 0,
 			salePercent,
+			lineDiscountPercent,
 			promo,
 			chargedQuantity,
 			lineTotal
 		};
 	}
 
-	function applyPackageCombos() {
+	function packageChoiceKey(rule: PackageComboRule) {
+		return `${rule.packageId}:${rule.itemIds.map((id) => selection[id] ?? 0).join(':')}`;
+	}
+
+	function findPackageComboOffer() {
 		for (const rule of packageComboRules) {
 			const packageProduct = products.find((product) => product.id === rule.packageId);
 			if (!packageProduct) continue;
 
 			const packageQuantity = Math.min(...rule.itemIds.map((id) => selection[id] ?? 0));
 			if (packageQuantity <= 0) continue;
+			const key = packageChoiceKey(rule);
+			if (declinedPackageKeys[key]) continue;
 
-			for (const itemId of rule.itemIds) {
-				const next = (selection[itemId] ?? 0) - packageQuantity;
-				if (next > 0) {
-					selection[itemId] = next;
-				} else {
-					delete selection[itemId];
-				}
-			}
-
-			selection[rule.packageId] = (selection[rule.packageId] ?? 0) + packageQuantity;
+			return { rule, quantity: packageQuantity, key };
 		}
+
+		return null;
+	}
+
+	function offerPackageCombo() {
+		if (pendingPackageChoice) return;
+		pendingPackageChoice = findPackageComboOffer();
+	}
+
+	function applyPackageRule(rule: PackageComboRule, packageQuantity: number) {
+		for (const itemId of rule.itemIds) {
+			const next = (selection[itemId] ?? 0) - packageQuantity;
+			if (next > 0) {
+				selection[itemId] = next;
+			} else {
+				delete selection[itemId];
+			}
+		}
+
+		selection[rule.packageId] = (selection[rule.packageId] ?? 0) + packageQuantity;
+	}
+
+	function choosePackageCombo(usePackage: boolean) {
+		if (!pendingPackageChoice) return;
+
+		const choice = pendingPackageChoice;
+		pendingPackageChoice = null;
+
+		if (usePackage) {
+			applyPackageRule(choice.rule, choice.quantity);
+		} else {
+			declinedPackageKeys[choice.key] = true;
+		}
+
+		offerPackageCombo();
+	}
+
+	function packageChoiceProductNames(rule: PackageComboRule) {
+		return rule.itemIds
+			.map((id) => products.find((product) => product.id === id)?.name)
+			.filter(Boolean)
+			.join(' + ');
+	}
+
+	function packageChoiceProduct(rule: PackageComboRule) {
+		return products.find((product) => product.id === rule.packageId);
 	}
 
 	function changeQuantity(product: Product, delta: number) {
@@ -300,7 +353,7 @@
 		}
 
 		selection[product.id] = next;
-		applyPackageCombos();
+		if (delta > 0) offerPackageCombo();
 	}
 
 	function setQuantity(product: Product, value: number | undefined) {
@@ -312,7 +365,7 @@
 		}
 
 		selection[product.id] = next;
-		applyPackageCombos();
+		offerPackageCombo();
 	}
 
 	function setPrice(product: Product, value: number | undefined) {
@@ -371,6 +424,8 @@
 
 	function clearCart() {
 		selection = {};
+		pendingPackageChoice = null;
+		declinedPackageKeys = {};
 	}
 
 	function resetEdits() {
@@ -395,61 +450,54 @@
 </svelte:head>
 
 <main>
-	<header class="topbar">
-		<div class="brand">
-			<ShoppingBasket size={24} />
-			<div>
-				<strong>Dr. Biomaster</strong>
-				<span>{products.length} продукта</span>
+	<div class="sticky-panel">
+		<header class="topbar">
+			<div class="brand">
+				<ShoppingBasket size={24} />
+				<div>
+					<strong>Dr. Biomaster</strong>
+					<span>{products.length} продукта</span>
+				</div>
 			</div>
-		</div>
 
-		<div class="total">
-			<span>Общо</span>
-			<strong>{money(total)}</strong>
-			{#if globalDiscount > 0}
-				<small>-{globalDiscount}% върху кошницата</small>
-			{/if}
-		</div>
+			<div class="total">
+				<span>Общо</span>
+				<strong>{money(total)}</strong>
+				{#if globalDiscount > 0}
+					<small>-{globalDiscount}% върху кошницата</small>
+				{/if}
+			</div>
+		</header>
 
-		<div class="actions">
-			<button class="icon-button" title="Редакция" aria-label="Редакция" onclick={() => (editMode = true)}>
-				<Edit3 size={20} />
-			</button>
-			<button class="icon-button" title="Изчисти кошницата" aria-label="Изчисти кошницата" onclick={clearCart}>
-				<Trash2 size={20} />
-			</button>
-		</div>
-	</header>
+		<section class="toolbar">
+			<label class="search">
+				<Search size={18} />
+				<input bind:value={query} type="search" placeholder="Търси продукт" />
+			</label>
 
-	<section class="toolbar">
-		<label class="search">
-			<Search size={18} />
-			<input bind:value={query} type="search" placeholder="Търси продукт" />
-		</label>
+			<select bind:value={activeCategory} aria-label="Категория">
+				{#each categories as category (category)}
+					<option>{category}</option>
+				{/each}
+			</select>
 
-		<select bind:value={activeCategory} aria-label="Категория">
-			{#each categories as category (category)}
-				<option>{category}</option>
+			<label class="toggle">
+				<input type="checkbox" bind:checked={onlySale} />
+				<span>Само промоции</span>
+			</label>
+		</section>
+
+		<section class="quick-strip">
+			<span>Бърза отстъпка</span>
+			{#each quickDiscounts as discount (discount)}
+				<button onclick={() => (globalDiscount = discount)}>-{discount}%</button>
 			{/each}
-		</select>
-
-		<label class="toggle">
-			<input type="checkbox" bind:checked={onlySale} />
-			<span>Само промоции</span>
-		</label>
-	</section>
-
-	<section class="quick-strip">
-		<span>Бърза отстъпка</span>
-		{#each quickDiscounts as discount (discount)}
-			<button onclick={() => (globalDiscount = discount)}>-{discount}%</button>
-		{/each}
-		<button onclick={resetSaleTools}>
-			<RotateCcw size={16} />
-			Нулирай
-		</button>
-	</section>
+			<button onclick={resetSaleTools}>
+				<RotateCcw size={16} />
+				Нулирай
+			</button>
+		</section>
+	</div>
 
 	{#if packageMatches.length > 0}
 		<section class="package-strip" aria-label="Разпознати пакети">
@@ -498,6 +546,9 @@
 							{money(row.unitPrice)}
 							{#if row.isOnSale && row.regularPrice > row.unitPrice}
 								<small>{money(row.regularPrice)}</small>
+							{/if}
+							{#if row.lineDiscountPercent > 0}
+								<em>Cannabimax {row.quantity >= 3 ? '3+' : '2'} бр. -{row.lineDiscountPercent}%</em>
 							{/if}
 						</span>
 					</button>
@@ -551,6 +602,7 @@
 									<small>
 										{#if row.isOnSale}-{row.salePercent}%{/if}
 										{#if row.promo} {row.promo.buy} за {row.promo.pay}{/if}
+										{#if row.lineDiscountPercent > 0} Cannabimax промо{/if}
 									</small>
 								{/if}
 							</div>
@@ -584,6 +636,42 @@
 		<span>Данни от drbiomaster.com, обновени {new Date(catalogUpdatedAt).toLocaleDateString('bg-BG')}</span>
 	</footer>
 </main>
+
+{#if pendingPackageChoice}
+	{@const packageProduct = packageChoiceProduct(pendingPackageChoice.rule)}
+	<div class="modal-backdrop">
+		<section class="modal package-choice" aria-label="Избор за пакет">
+			<header>
+				<div>
+					<strong>Избери дали да е пакет</strong>
+					<span>{packageChoiceProductNames(pendingPackageChoice.rule)}</span>
+				</div>
+			</header>
+
+			<div class="package-choice-body">
+				{#if packageProduct}
+					<img src={packageProduct.image} alt={packageProduct.name} loading="lazy" />
+					<div>
+						<span>Намерен пакет</span>
+						<strong>{packageProduct.name}</strong>
+						<small>{money(effectiveUnitPriceEur(packageProduct))} x {pendingPackageChoice.quantity}</small>
+					</div>
+				{/if}
+			</div>
+
+			<div class="package-choice-actions">
+				<button class="keep-separate" onclick={() => choosePackageCombo(false)}>
+					<X size={20} />
+					Отделни продукти
+				</button>
+				<button class="use-package" onclick={() => choosePackageCombo(true)}>
+					<Check size={20} />
+					Да, пакет
+				</button>
+			</div>
+		</section>
+	</div>
+{/if}
 
 {#if editMode}
 	<div class="modal-backdrop">
@@ -726,22 +814,24 @@
 		min-height: 100vh;
 	}
 
-	.topbar {
+	.sticky-panel {
 		position: sticky;
 		top: 0;
 		z-index: 10;
+		border-bottom: 1px solid #d8d5ca;
+		background: rgb(246 244 239 / 96%);
+		backdrop-filter: blur(10px);
+	}
+
+	.topbar {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 		align-items: center;
 		gap: 16px;
 		padding: 12px clamp(14px, 3vw, 32px);
-		border-bottom: 1px solid #d8d5ca;
-		background: rgb(246 244 239 / 94%);
-		backdrop-filter: blur(10px);
 	}
 
 	.brand,
-	.actions,
 	.total,
 	.quick-strip,
 	.search,
@@ -795,11 +885,6 @@
 		font-weight: 700;
 	}
 
-	.actions {
-		justify-self: end;
-		gap: 8px;
-	}
-
 	.icon-button,
 	.qty button,
 	.card-controls button {
@@ -817,7 +902,7 @@
 		display: grid;
 		grid-template-columns: minmax(220px, 1fr) minmax(180px, 260px) auto;
 		gap: 12px;
-		padding: 18px clamp(14px, 3vw, 32px) 10px;
+		padding: 0 clamp(14px, 3vw, 32px) 10px;
 	}
 
 	.search {
@@ -1045,6 +1130,13 @@
 		text-decoration: line-through;
 	}
 
+	.price em {
+		color: #8b3d0b;
+		font-size: 0.75rem;
+		font-style: normal;
+		font-weight: 800;
+	}
+
 	.card-controls {
 		justify-content: space-between;
 		gap: 6px;
@@ -1075,9 +1167,9 @@
 
 	.cart {
 		position: sticky;
-		top: 92px;
+		top: 168px;
 		align-self: start;
-		max-height: calc(100vh - 110px);
+		max-height: calc(100vh - 188px);
 		overflow: auto;
 		padding: 14px;
 		border: 1px solid #d8d5ca;
@@ -1172,6 +1264,11 @@
 		box-shadow: 0 18px 50px rgb(0 0 0 / 22%);
 	}
 
+	.package-choice {
+		grid-template-rows: auto auto auto;
+		width: min(520px, 100%);
+	}
+
 	.modal header {
 		display: flex;
 		align-items: center;
@@ -1184,6 +1281,62 @@
 	.modal header div {
 		display: grid;
 		gap: 3px;
+	}
+
+	.package-choice-body {
+		display: grid;
+		grid-template-columns: 92px minmax(0, 1fr);
+		gap: 14px;
+		padding: 16px;
+		align-items: center;
+	}
+
+	.package-choice-body img {
+		width: 92px;
+		height: 92px;
+		border-radius: 8px;
+		object-fit: cover;
+		background: #ece8dd;
+	}
+
+	.package-choice-body div {
+		display: grid;
+		gap: 4px;
+	}
+
+	.package-choice-body span,
+	.package-choice-body small {
+		color: #6b6a63;
+		font-size: 0.82rem;
+	}
+
+	.package-choice-actions {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+		padding: 0 16px 16px;
+	}
+
+	.package-choice-actions button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		min-height: 46px;
+		border-radius: 8px;
+		font-weight: 800;
+	}
+
+	.keep-separate {
+		border: 1px solid #e4aea5;
+		background: #ffe6e2;
+		color: #92251c;
+	}
+
+	.use-package {
+		border: 1px solid #90caa8;
+		background: #dff5e8;
+		color: #1f6c45;
 	}
 
 	.editor-tools {
@@ -1294,10 +1447,6 @@
 			min-width: 0;
 		}
 
-		.actions {
-			gap: 5px;
-		}
-
 		.toolbar {
 			grid-template-columns: 1fr;
 		}
@@ -1316,6 +1465,10 @@
 
 		.fields {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.package-choice-actions {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
