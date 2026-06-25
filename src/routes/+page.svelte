@@ -34,16 +34,6 @@
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10];
-	const packageRules = [
-		{ label: 'ПАКЕТ „АНТИСТРЕС“', terms: ['антистрес'] },
-		{ label: 'ПАКЕТ „ИМУНИТЕТ“', terms: ['имюн', 'имунити'] },
-		{ label: 'ПАКЕТ „МЕТАБОЛИЗЪМ И ИР“', terms: ['ямакиро', 'майтаке'] },
-		{ label: 'ПАКЕТ „СТАВИ“', terms: ['куркумин'] },
-		{ label: 'ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“', terms: ['супер формула'] },
-		{ label: 'ПАКЕТ „ХРАНОСМИЛАТЕЛНА СИСТЕМА“', terms: ['детокс', 'алое'] },
-		{ label: 'ПАКЕТ „ЗДРАВИ КЛЕТКИ“', terms: ['амигдалин', 'есияк'] },
-		{ label: 'Комплект д-р Хулда Кларк', terms: ['хулда кларк'] }
-	];
 
 	let selection: Selection = $state({});
 	let priceOverrides: Overrides = $state({});
@@ -75,16 +65,7 @@
 			.toSorted((a, b) => productSortRank(a) - productSortRank(b) || a.name.localeCompare(b.name, 'bg'))
 	);
 	const packageMatches = $derived(
-		packageRules.filter((rule) => {
-			const packageProductSelected = selectedRows.some(
-				(row) => isPackageProduct(row.product) && normalizeText(row.product.name).includes(normalizeText(rule.label))
-			);
-			const termMatch = rule.terms.some((term) =>
-				selectedRows.some((row) => !isPackageProduct(row.product) && normalizeText(row.product.name).includes(term))
-			);
-
-			return packageProductSelected || termMatch;
-		})
+		selectedRows.filter((row) => isPackageProduct(row.product)).map((row) => row.product.name)
 	);
 
 	$effect(() => {
@@ -190,7 +171,7 @@
 			badges.push(grams ? `прах ${grams[1]} g` : 'прах');
 		}
 
-		if (capsules) badges.push(`${capsules[1]} капс.`);
+		if (capsules) badges.push(isHawlikProduct(product) ? 'капсули' : `${capsules[1]} капс.`);
 		if (milliliters) badges.push(`${milliliters[1]} ml`);
 		if (cbd) badges.push(`${cbd[1]}% CBD`);
 		if (milligrams && badges.length < 2) badges.push(`${milligrams[1]} mg`);
@@ -433,8 +414,8 @@
 	{#if packageMatches.length > 0}
 		<section class="package-strip" aria-label="Разпознати пакети">
 			<strong>Пакет избран</strong>
-			{#each packageMatches as match (match.label)}
-				<span>{match.label}</span>
+			{#each packageMatches as match (match)}
+				<span>{match}</span>
 			{/each}
 		</section>
 	{/if}
