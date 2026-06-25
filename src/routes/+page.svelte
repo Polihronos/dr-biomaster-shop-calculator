@@ -33,7 +33,7 @@
 	const STORAGE_KEY = 'dr-biomaster-shop-calculator-v2';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
-	const quickDiscounts = [3, 5, 10, 20];
+	const quickDiscounts = [3, 5, 10];
 	const packageRules = [
 		{ label: 'ПАКЕТ „АНТИСТРЕС“', terms: ['антистрес'] },
 		{ label: 'ПАКЕТ „ИМУНИТЕТ“', terms: ['имюн', 'имунити'] },
@@ -146,7 +146,8 @@
 	}
 
 	function isHawlikProduct(product: Product) {
-		return normalizeText(product.name).includes('hawlik');
+		const text = normalizeText(product.name);
+		return text.includes('hawlik') || text.includes('био женска сила') || text.includes('био релакс');
 	}
 
 	function isOtherProduct(product: Product) {
