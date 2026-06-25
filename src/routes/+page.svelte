@@ -20,6 +20,7 @@
 	type DiscountMap = Record<string, number>;
 	type SaleMap = Record<string, boolean>;
 	type PromoMap = Record<string, { buy: number; pay: number }>;
+	type PackageComboRule = { packageId: string; itemIds: string[] };
 	type PersistedState = {
 		selection?: Selection;
 		priceOverrides?: Overrides;
@@ -34,7 +35,19 @@
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10];
-	const packageComboRules = [{ label: 'Пакет Детокс формула + Ямакиро+', terms: ['детокс', 'ямакиро'] }];
+	const packageComboRules: PackageComboRule[] = [
+		{ packageId: '24886', itemIds: ['259', '1847', '1849'] },
+		{ packageId: '2435', itemIds: ['1865', '1863', '1910'] },
+		{ packageId: '2439', itemIds: ['1865', '1863', '1914'] },
+		{ packageId: '24897', itemIds: ['1841', '1783'] },
+		{ packageId: '24892', itemIds: ['1857', '3053'] },
+		{ packageId: '24882', itemIds: ['2165', '2433'] },
+		{ packageId: '24747', itemIds: ['1737', '1847'] },
+		{ packageId: '24743', itemIds: ['4155', '1775'] },
+		{ packageId: '24728', itemIds: ['8077', '1851'] },
+		{ packageId: '24723', itemIds: ['1769', '1853'] },
+		{ packageId: '1916', itemIds: ['1914', '1910'] }
+	];
 
 	let selection: Selection = $state({});
 	let priceOverrides: Overrides = $state({});
@@ -119,15 +132,7 @@
 
 	function getPackageMatches() {
 		const exactPackages = selectedRows.filter((row) => isPackageProduct(row.product)).map((row) => row.product.name);
-		const comboPackages = packageComboRules
-			.filter((rule) =>
-				rule.terms.every((term) =>
-					selectedRows.some((row) => !isPackageProduct(row.product) && normalizeText(row.product.name).includes(term))
-				)
-			)
-			.map((rule) => rule.label);
-
-		return [...new Set([...exactPackages, ...comboPackages])];
+		return [...new Set(exactPackages)];
 	}
 
 	function isTicketProduct(product: Product) {
@@ -264,6 +269,27 @@
 		};
 	}
 
+	function applyPackageCombos() {
+		for (const rule of packageComboRules) {
+			const packageProduct = products.find((product) => product.id === rule.packageId);
+			if (!packageProduct) continue;
+
+			const packageQuantity = Math.min(...rule.itemIds.map((id) => selection[id] ?? 0));
+			if (packageQuantity <= 0) continue;
+
+			for (const itemId of rule.itemIds) {
+				const next = (selection[itemId] ?? 0) - packageQuantity;
+				if (next > 0) {
+					selection[itemId] = next;
+				} else {
+					delete selection[itemId];
+				}
+			}
+
+			selection[rule.packageId] = (selection[rule.packageId] ?? 0) + packageQuantity;
+		}
+	}
+
 	function changeQuantity(product: Product, delta: number) {
 		const current = selection[product.id] ?? 0;
 		const next = Math.max(0, current + delta);
@@ -274,6 +300,7 @@
 		}
 
 		selection[product.id] = next;
+		applyPackageCombos();
 	}
 
 	function setQuantity(product: Product, value: number | undefined) {
@@ -285,6 +312,7 @@
 		}
 
 		selection[product.id] = next;
+		applyPackageCombos();
 	}
 
 	function setPrice(product: Product, value: number | undefined) {
