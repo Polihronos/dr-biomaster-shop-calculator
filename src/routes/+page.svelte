@@ -34,6 +34,7 @@
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10];
+	const packageComboRules = [{ label: 'Пакет Детокс формула + Ямакиро+', terms: ['детокс', 'ямакиро'] }];
 
 	let selection: Selection = $state({});
 	let priceOverrides: Overrides = $state({});
@@ -64,9 +65,7 @@
 			})
 			.toSorted((a, b) => productSortRank(a) - productSortRank(b) || a.name.localeCompare(b.name, 'bg'))
 	);
-	const packageMatches = $derived(
-		selectedRows.filter((row) => isPackageProduct(row.product)).map((row) => row.product.name)
-	);
+	const packageMatches = $derived(getPackageMatches());
 
 	$effect(() => {
 		const raw = localStorage.getItem(STORAGE_KEY);
@@ -116,6 +115,19 @@
 	function isPackageProduct(product: Product) {
 		const text = normalizeText(`${product.category} ${product.name}`);
 		return text.includes('комплект') || text.includes('пакет');
+	}
+
+	function getPackageMatches() {
+		const exactPackages = selectedRows.filter((row) => isPackageProduct(row.product)).map((row) => row.product.name);
+		const comboPackages = packageComboRules
+			.filter((rule) =>
+				rule.terms.every((term) =>
+					selectedRows.some((row) => !isPackageProduct(row.product) && normalizeText(row.product.name).includes(term))
+				)
+			)
+			.map((rule) => rule.label);
+
+		return [...new Set([...exactPackages, ...comboPackages])];
 	}
 
 	function isTicketProduct(product: Product) {
