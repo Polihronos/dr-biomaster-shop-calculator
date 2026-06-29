@@ -1386,9 +1386,9 @@
 
 	.cart {
 		position: sticky;
-		top: 184px;
+		top: calc(184px + 1rem);
 		align-self: start;
-		max-height: calc(100vh - 204px);
+		max-height: calc(100vh - 204px - 1rem);
 		overflow: auto;
 		padding: 14px;
 		border: 1px solid #d8d5ca;
