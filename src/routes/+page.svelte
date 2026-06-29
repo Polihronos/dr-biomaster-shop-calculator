@@ -1,14 +1,22 @@
 <script lang="ts">
 	import {
 		BadgePercent,
+		BookOpen,
+		Cannabis,
 		Check,
+		ChevronDown,
 		CircleMinus,
 		CirclePlus,
 		ExternalLink,
+		Leaf,
+		Package,
+		Printer,
 		RefreshCcw,
 		RotateCcw,
 		Search,
 		ShoppingBasket,
+		Sparkles,
+		Ticket,
 		X
 	} from '@lucide/svelte';
 	import { catalogUpdatedAt, products, type Product } from '$lib/products';
@@ -34,7 +42,7 @@
 	const CANNABIMAX_GOLD_ID = '8077';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
-	const quickDiscounts = [3, 5, 10, 15, 20];
+	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 35];
 	const packageComboRules: PackageComboRule[] = [
 		{ packageId: '24886', itemIds: ['259', '1847', '1849'] },
 		{ packageId: '2435', itemIds: ['1865', '1863', '1910'] },
@@ -59,6 +67,7 @@
 	let activeCategory = $state(ALL_CATEGORIES);
 	let onlySale = $state(false);
 	let editMode = $state(false);
+	let categoryMenuOpen = $state(false);
 	let pendingPackageChoice: PendingPackageChoice | null = $state(null);
 	let declinedPackageKeys: Record<string, true> = $state({});
 
@@ -81,6 +90,7 @@
 			.toSorted((a, b) => productSortRank(a) - productSortRank(b) || a.name.localeCompare(b.name, 'bg'))
 	);
 	const packageMatches = $derived(getPackageMatches());
+	const ActiveCategoryIcon = $derived(categoryIconComponent(activeCategory));
 
 	$effect(() => {
 		const raw = localStorage.getItem(STORAGE_KEY);
@@ -125,6 +135,28 @@
 
 	function normalizeText(value: string) {
 		return value.toLocaleLowerCase('bg').normalize('NFKC');
+	}
+
+	function categoryIconComponent(category: string) {
+		const normalized = normalizeText(category);
+		if (category === ALL_CATEGORIES) return Sparkles;
+		if (normalized.includes('cbd')) return Cannabis;
+		if (normalized.includes('билкови')) return Leaf;
+		if (normalized.includes('комплекти') || normalized.includes('пакети')) return Package;
+		if (normalized.includes('книг')) return BookOpen;
+		if (normalized.includes('билет')) return Ticket;
+		return null;
+	}
+
+	function categoryFallbackIcon(category: string) {
+		const normalized = normalizeText(category);
+		if (normalized.includes('гъби')) return '🍄';
+		if (normalized.includes('други')) return '•';
+		return '•';
+	}
+
+	function categoryLabel(category: string) {
+		return category;
 	}
 
 	function isPackageProduct(product: Product) {
@@ -436,6 +468,81 @@
 		globalDiscount = 0;
 	}
 
+	function escapeHtml(value: string) {
+		return value
+			.replaceAll('&', '&amp;')
+			.replaceAll('<', '&lt;')
+			.replaceAll('>', '&gt;')
+			.replaceAll('"', '&quot;')
+			.replaceAll("'", '&#039;');
+	}
+
+	function printCart() {
+		const rows = selectedRows;
+		const discountText = globalDiscount > 0 ? `<p class="discount">Обща отстъпка: -${globalDiscount}%</p>` : '';
+		const body =
+			rows.length > 0
+				? rows
+						.map(
+							(row) => `<tr>
+								<td>${escapeHtml(row.product.name)}</td>
+								<td>${row.quantity}</td>
+								<td>${escapeHtml(money(row.unitPrice))}</td>
+								<td>${row.lineDiscountPercent > 0 ? `-${row.lineDiscountPercent}%` : row.promo ? `${row.promo.buy} за ${row.promo.pay}` : ''}</td>
+								<td>${escapeHtml(money(row.lineTotal))}</td>
+							</tr>`
+						)
+						.join('')
+				: '<tr><td colspan="5">Няма избрани продукти.</td></tr>';
+		const printWindow = window.open('', '_blank', 'width=900,height=700');
+		if (!printWindow) return;
+
+		printWindow.document.write(`<!doctype html>
+			<html lang="bg">
+				<head>
+					<meta charset="utf-8" />
+					<title>Кошница - Dr. Biomaster</title>
+					<style>
+						body { font-family: Arial, sans-serif; color: #20231f; margin: 28px; }
+						h1 { margin: 0 0 6px; font-size: 24px; }
+						.meta { color: #666; margin: 0 0 22px; }
+						table { width: 100%; border-collapse: collapse; }
+						th, td { padding: 10px 8px; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }
+						th:nth-child(2), td:nth-child(2) { text-align: center; }
+						th:last-child, td:last-child { text-align: right; font-weight: 700; }
+						.summary { margin-top: 24px; text-align: right; }
+						.summary span { display: block; color: #666; font-size: 14px; }
+						.summary strong { display: block; font-size: 24px; }
+						.discount { color: #2f7a57; font-weight: 700; }
+					</style>
+				</head>
+				<body>
+					<h1>Кошница</h1>
+					<p class="meta">${new Date().toLocaleString('bg-BG')}</p>
+					<table>
+						<thead>
+							<tr>
+								<th>Продукт</th>
+								<th>Бр.</th>
+								<th>Ед. цена</th>
+								<th>Промо</th>
+								<th>Сума</th>
+							</tr>
+						</thead>
+						<tbody>${body}</tbody>
+					</table>
+					<div class="summary">
+						${discountText}
+						<span>Общо</span>
+						<strong>${escapeHtml(money(total))}</strong>
+					</div>
+				</body>
+			</html>`);
+		printWindow.document.close();
+		printWindow.focus();
+		printWindow.print();
+	}
+
 	function openProduct(product: Product) {
 		window.open(product.sourceUrl, '_blank', 'noopener,noreferrer');
 	}
@@ -475,11 +582,48 @@
 				<input bind:value={query} type="search" placeholder="Търси продукт" />
 			</label>
 
-			<select bind:value={activeCategory} aria-label="Категория">
-				{#each categories as category (category)}
-					<option>{category}</option>
-				{/each}
-			</select>
+			<div class="category-select">
+				<button
+					type="button"
+					class="category-trigger"
+					aria-haspopup="listbox"
+					aria-expanded={categoryMenuOpen}
+					onclick={() => (categoryMenuOpen = !categoryMenuOpen)}
+				>
+					{#if ActiveCategoryIcon}
+						<ActiveCategoryIcon size={17} />
+					{:else}
+						<span class="category-symbol">{categoryFallbackIcon(activeCategory)}</span>
+					{/if}
+					<span>{categoryLabel(activeCategory)}</span>
+					<ChevronDown size={16} />
+				</button>
+
+				{#if categoryMenuOpen}
+					<div class="category-menu" role="listbox" aria-label="Категория">
+						{#each categories as category (category)}
+							{@const CategoryIcon = categoryIconComponent(category)}
+							<button
+								type="button"
+								class={activeCategory === category ? 'selected-option' : undefined}
+								role="option"
+								aria-selected={activeCategory === category}
+								onclick={() => {
+									activeCategory = category;
+									categoryMenuOpen = false;
+								}}
+							>
+								{#if CategoryIcon}
+									<CategoryIcon size={17} />
+								{:else}
+									<span class="category-symbol">{categoryFallbackIcon(category)}</span>
+								{/if}
+								<span>{categoryLabel(category)}</span>
+							</button>
+						{/each}
+					</div>
+				{/if}
+			</div>
 
 			<label class="toggle">
 				<input type="checkbox" bind:checked={onlySale} />
@@ -586,7 +730,21 @@
 					<strong>Кошница</strong>
 					<span>{selectedCount} бр.</span>
 				</div>
-				<button class="text-button" onclick={clearCart}>Изчисти</button>
+				<div class="cart-actions">
+					<button class="text-button" onclick={printCart}>
+						<Printer size={16} />
+						Принт
+					</button>
+					<button class="text-button" onclick={clearCart}>Изчисти</button>
+				</div>
+			</div>
+
+			<div class="cart-total">
+				<span>Общо</span>
+				<strong>{money(total)}</strong>
+				{#if globalDiscount > 0}
+					<small>-{globalDiscount}% върху кошницата</small>
+				{/if}
 			</div>
 
 			{#if selectedRows.length === 0}
@@ -835,8 +993,10 @@
 	.total,
 	.quick-strip,
 	.search,
+	.category-trigger,
 	.toggle,
 	.cart-head,
+	.cart-actions,
 	.qty,
 	.card-controls,
 	.editor-tools,
@@ -914,7 +1074,6 @@
 	}
 
 	.search input,
-	select,
 	.editor-tools input,
 	.fields input,
 	.qty input {
@@ -926,16 +1085,76 @@
 	}
 
 	.search input,
-	select {
+	.category-trigger {
 		width: 100%;
 		height: 44px;
 	}
 
-	select {
+	.category-select {
+		position: relative;
+		min-width: 0;
+	}
+
+	.category-trigger {
+		justify-content: space-between;
+		gap: 8px;
 		padding: 0 12px;
 		border: 1px solid #d8d5ca;
 		border-radius: 8px;
 		background: #fffdf7;
+		color: #20231f;
+		text-align: left;
+	}
+
+	.category-trigger span:not(.category-symbol) {
+		overflow: hidden;
+		flex: 1;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.category-menu {
+		position: absolute;
+		top: calc(100% + 6px);
+		right: 0;
+		left: 0;
+		z-index: 12;
+		overflow: auto;
+		display: grid;
+		max-height: min(360px, 70vh);
+		padding: 6px;
+		border: 1px solid #d8d5ca;
+		border-radius: 8px;
+		background: #fffdf7;
+		box-shadow: 0 14px 34px rgb(31 28 22 / 16%);
+	}
+
+	.category-menu button {
+		display: flex;
+		align-items: center;
+		gap: 9px;
+		min-height: 38px;
+		padding: 0 10px;
+		border: 0;
+		border-radius: 7px;
+		background: transparent;
+		color: #20231f;
+		text-align: left;
+	}
+
+	.category-menu button:hover,
+	.category-menu .selected-option {
+		background: #edf8f1;
+		color: #1f5d40;
+	}
+
+	.category-symbol {
+		display: inline-grid;
+		width: 17px;
+		min-width: 17px;
+		place-items: center;
+		font-size: 0.95rem;
+		line-height: 1;
 	}
 
 	.toggle {
@@ -956,7 +1175,7 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px;
-		margin: 0 clamp(14px, 3vw, 32px) 16px;
+		margin: 1rem clamp(14px, 3vw, 32px) 16px;
 		padding: 10px 12px;
 		border: 1px solid #b9d4c5;
 		border-radius: 8px;
@@ -994,7 +1213,7 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
 		gap: 20px;
-		padding: 0 clamp(14px, 3vw, 32px) 18px;
+		padding: 1rem clamp(14px, 3vw, 32px) 18px;
 	}
 
 	.grid {
@@ -1167,9 +1386,9 @@
 
 	.cart {
 		position: sticky;
-		top: 168px;
+		top: 184px;
 		align-self: start;
-		max-height: calc(100vh - 188px);
+		max-height: calc(100vh - 204px);
 		overflow: auto;
 		padding: 14px;
 		border: 1px solid #d8d5ca;
@@ -1180,6 +1399,36 @@
 	.cart-head {
 		justify-content: space-between;
 		margin-bottom: 12px;
+	}
+
+	.cart-actions {
+		gap: 6px;
+	}
+
+	.cart-total {
+		display: grid;
+		gap: 2px;
+		margin-bottom: 14px;
+		padding: 12px;
+		border: 1px solid #d8d5ca;
+		border-radius: 8px;
+		background: #f6f4ef;
+		text-align: center;
+	}
+
+	.cart-total span {
+		color: #67645c;
+		font-size: 0.82rem;
+	}
+
+	.cart-total strong {
+		font-size: 1.45rem;
+		line-height: 1.1;
+	}
+
+	.cart-total small {
+		color: #2f7a57;
+		font-weight: 800;
 	}
 
 	.empty {
