@@ -70,6 +70,8 @@
 	let categoryMenuOpen = $state(false);
 	let pendingPackageChoice: PendingPackageChoice | null = $state(null);
 	let declinedPackageKeys: Record<string, true> = $state({});
+	let stickyPanelElement: HTMLElement | undefined = $state();
+	let stickyPanelHeight = $state(255);
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
@@ -119,6 +121,21 @@
 			globalDiscount
 		};
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+	});
+
+	$effect(() => {
+		if (!stickyPanelElement) return;
+
+		const panel = stickyPanelElement;
+		const updateStickyPanelHeight = () => {
+			stickyPanelHeight = panel.offsetHeight;
+		};
+		const observer = new ResizeObserver(updateStickyPanelHeight);
+
+		updateStickyPanelHeight();
+		observer.observe(panel);
+
+		return () => observer.disconnect();
 	});
 
 	function bgnToEur(value: number) {
@@ -556,8 +573,8 @@
 	/>
 </svelte:head>
 
-<main>
-	<div class="sticky-panel">
+<main style:--sticky-panel-height={`${stickyPanelHeight}px`}>
+	<div class="sticky-panel" bind:this={stickyPanelElement}>
 		<header class="topbar">
 			<div class="brand">
 				<ShoppingBasket size={24} />
@@ -969,6 +986,8 @@
 	}
 
 	main {
+		--sticky-panel-height: 255px;
+		--sticky-gap: 1rem;
 		min-height: 100vh;
 	}
 
@@ -1213,7 +1232,7 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
 		gap: 20px;
-		padding: 1rem clamp(14px, 3vw, 32px) 18px;
+		padding: var(--sticky-gap) clamp(14px, 3vw, 32px) 18px;
 	}
 
 	.grid {
@@ -1386,9 +1405,9 @@
 
 	.cart {
 		position: sticky;
-		top: calc(184px + 1rem);
+		top: calc(var(--sticky-panel-height) + var(--sticky-gap));
 		align-self: start;
-		max-height: calc(100vh - 204px - 1rem);
+		max-height: calc(100vh - var(--sticky-panel-height) - (var(--sticky-gap) * 2));
 		overflow: auto;
 		padding: 14px;
 		border: 1px solid #d8d5ca;
