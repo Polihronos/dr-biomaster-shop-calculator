@@ -42,7 +42,7 @@
 	const CANNABIMAX_GOLD_ID = '8077';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
-	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 35];
+	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 33, 35];
 	const packageComboRules: PackageComboRule[] = [
 		{ packageId: '24886', itemIds: ['259', '1847', '1849'] },
 		{ packageId: '2435', itemIds: ['1865', '1863', '1910'] },
