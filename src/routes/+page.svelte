@@ -28,6 +28,8 @@
 	type PromoMap = Record<string, { buy: number; pay: number }>;
 	type PackageComboRule = { packageId: string; itemIds: string[] };
 	type PendingPackageChoice = { rule: PackageComboRule; quantity: number; key: string };
+	type PriceCheckStatus = 'idle' | 'checking' | 'ok' | 'mismatch' | 'error';
+	type PriceCheckRow = { id: string; name: string; field: string; local: string; live: string };
 	type PersistedState = {
 		selection?: Selection;
 		priceOverrides?: Overrides;
@@ -72,11 +74,15 @@
 	let declinedPackageKeys: Record<string, true> = $state({});
 	let stickyPanelElement: HTMLElement | undefined = $state();
 	let stickyPanelHeight = $state(255);
+	let priceCheckStatus: PriceCheckStatus = $state('idle');
+	let priceCheckMessage = $state('');
+	let priceCheckRows: PriceCheckRow[] = $state([]);
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
 	const total = $derived(subtotal * (1 - globalDiscount / 100));
 	const selectedCount = $derived(Object.values(selection).reduce((sum, quantity) => sum + quantity, 0));
+	const visiblePriceCheckRows = $derived(priceCheckRows.slice(0, 4));
 	const filteredProducts = $derived(
 		products
 			.filter((product) => {
@@ -148,6 +154,18 @@
 
 	function money(valueEur: number) {
 		return `€${valueEur.toFixed(2)} / ${eurToBgn(valueEur).toFixed(2)} лв.`;
+	}
+
+	function formatBgn(value: number) {
+		return `${value.toFixed(2)} лв.`;
+	}
+
+	function storeAmountToBgn(amount: string | number | undefined, prices: { currency_code?: string; currency_minor_unit?: number }) {
+		const minorUnit = Number(prices.currency_minor_unit ?? 2);
+		const value = Number(amount || 0) / 10 ** minorUnit;
+
+		if (prices.currency_code === 'EUR') return eurToBgn(value);
+		return Number(value.toFixed(2));
 	}
 
 	function normalizeText(value: string) {
@@ -560,6 +578,119 @@
 		printWindow.print();
 	}
 
+	function fetchLiveProductsPage(page: number) {
+		return new Promise<any[]>((resolve, reject) => {
+			const callbackName = `drBiomasterPriceCheck_${Date.now()}_${page}`;
+			const script = document.createElement('script');
+			const globalWindow = window as unknown as Window & Record<string, (data: unknown) => void>;
+			const timeout = window.setTimeout(() => {
+				script.remove();
+				delete globalWindow[callbackName];
+				reject(new Error('Store API timeout'));
+			}, 15000);
+
+			globalWindow[callbackName] = (data: unknown) => {
+				window.clearTimeout(timeout);
+				script.remove();
+				delete globalWindow[callbackName];
+
+				if (Array.isArray(data)) {
+					resolve(data);
+				} else {
+					reject(new Error('Unexpected Store API response'));
+				}
+			};
+
+			script.onerror = () => {
+				window.clearTimeout(timeout);
+				script.remove();
+				delete globalWindow[callbackName];
+				reject(new Error('Store API script load failed'));
+			};
+
+			script.src = `https://drbiomaster.com/wp-json/wc/store/v1/products?per_page=100&page=${page}&_jsonp=${callbackName}`;
+			document.head.append(script);
+		});
+	}
+
+	async function fetchLiveProducts() {
+		const liveProducts = [];
+
+		for (let page = 1; page <= 20; page += 1) {
+			const batch = await fetchLiveProductsPage(page);
+			liveProducts.push(...batch);
+			if (batch.length < 100) break;
+		}
+
+		return liveProducts;
+	}
+
+	async function checkLivePrices() {
+		priceCheckStatus = 'checking';
+		priceCheckMessage = 'Сверявам цените с drbiomaster.com...';
+		priceCheckRows = [];
+
+		try {
+			const liveProducts = await fetchLiveProducts();
+			const localById = new Map(products.map((product) => [product.id, product]));
+			const rows: PriceCheckRow[] = [];
+
+			for (const liveProduct of liveProducts) {
+				const localProduct = localById.get(String(liveProduct.id));
+				if (!localProduct) continue;
+
+				const livePrice = storeAmountToBgn(
+					liveProduct.prices.sale_price || liveProduct.prices.price || liveProduct.prices.regular_price,
+					liveProduct.prices
+				);
+				const liveRegularPrice = liveProduct.prices.regular_price
+					? storeAmountToBgn(liveProduct.prices.regular_price, liveProduct.prices)
+					: livePrice;
+				const liveOnSale = Boolean(liveProduct.on_sale);
+
+				if (Math.abs(localProduct.price - livePrice) > 0.01) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Цена',
+						local: formatBgn(localProduct.price),
+						live: formatBgn(livePrice)
+					});
+				}
+
+				if (Math.abs(localProduct.regularPrice - liveRegularPrice) > 0.01) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Редовна цена',
+						local: formatBgn(localProduct.regularPrice),
+						live: formatBgn(liveRegularPrice)
+					});
+				}
+
+				if (Boolean(localProduct.onSale) !== liveOnSale) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Промо',
+						local: localProduct.onSale ? 'Да' : 'Не',
+						live: liveOnSale ? 'Да' : 'Не'
+					});
+				}
+			}
+
+			priceCheckRows = rows;
+			priceCheckStatus = rows.length > 0 ? 'mismatch' : 'ok';
+			priceCheckMessage =
+				rows.length > 0
+					? `${rows.length} разлики спрямо live сайта`
+					: `${liveProducts.length} продукта съвпадат с live сайта`;
+		} catch (error) {
+			priceCheckStatus = 'error';
+			priceCheckMessage = error instanceof Error ? error.message : 'Неуспешна сверка';
+		}
+	}
+
 	function openProduct(product: Product) {
 		window.open(product.sourceUrl, '_blank', 'noopener,noreferrer');
 	}
@@ -590,6 +721,13 @@
 				{#if globalDiscount > 0}
 					<small>-{globalDiscount}% върху кошницата</small>
 				{/if}
+			</div>
+
+			<div class="header-actions">
+				<button class="text-button" onclick={checkLivePrices} disabled={priceCheckStatus === 'checking'}>
+					<RefreshCcw size={16} />
+					{priceCheckStatus === 'checking' ? 'Сверявам' : 'Свери цени'}
+				</button>
 			</div>
 		</header>
 
@@ -658,6 +796,19 @@
 				Нулирай
 			</button>
 		</section>
+
+		{#if priceCheckStatus !== 'idle'}
+			<section class={['price-check-strip', priceCheckStatus]}>
+				<strong>{priceCheckMessage}</strong>
+				{#if visiblePriceCheckRows.length > 0}
+					<div>
+						{#each visiblePriceCheckRows as row (`${row.id}-${row.field}`)}
+							<span>{row.name}: {row.field} {row.local} → {row.live}</span>
+						{/each}
+					</div>
+				{/if}
+			</section>
+		{/if}
 	</div>
 
 	{#if packageMatches.length > 0}
@@ -1009,6 +1160,7 @@
 	}
 
 	.brand,
+	.header-actions,
 	.total,
 	.quick-strip,
 	.search,
@@ -1026,6 +1178,10 @@
 
 	.brand {
 		gap: 10px;
+	}
+
+	.header-actions {
+		justify-self: end;
 	}
 
 	.brand div,
@@ -1226,6 +1382,46 @@
 		border-radius: 8px;
 		background: #fffdf7;
 		color: #20231f;
+	}
+
+	.text-button:disabled {
+		cursor: wait;
+		opacity: 0.65;
+	}
+
+	.price-check-strip {
+		display: grid;
+		gap: 6px;
+		padding: 0 clamp(14px, 3vw, 32px) 12px;
+		color: #626058;
+		font-size: 0.84rem;
+	}
+
+	.price-check-strip strong {
+		width: fit-content;
+		padding: 5px 9px;
+		border-radius: 999px;
+		background: #edf8f1;
+		color: #1f5d40;
+	}
+
+	.price-check-strip.mismatch strong,
+	.price-check-strip.error strong {
+		background: #ffe6e2;
+		color: #92251c;
+	}
+
+	.price-check-strip div {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.price-check-strip span {
+		padding: 4px 7px;
+		border: 1px solid #d8d5ca;
+		border-radius: 999px;
+		background: #fffdf7;
 	}
 
 	.content {

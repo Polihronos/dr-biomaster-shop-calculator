@@ -7,6 +7,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"fetch:products": "node scripts/fetch-products.mjs",
+		"check:prices": "node scripts/check-live-prices.mjs",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

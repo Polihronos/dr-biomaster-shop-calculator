@@ -22,10 +22,13 @@ function stripHtml(value = '') {
 }
 
 function priceToLeva(product) {
-	const prices = product.prices;
+	return amountToLeva(product.prices.sale_price || product.prices.price || product.prices.regular_price, product.prices);
+}
+
+function amountToLeva(amount, prices) {
 	const minorUnit = Number(prices.currency_minor_unit ?? 2);
 	const divisor = 10 ** minorUnit;
-	const price = Number(prices.sale_price || prices.price || prices.regular_price || 0) / divisor;
+	const price = Number(amount || 0) / divisor;
 
 	if (prices.currency_code === 'BGN') {
 		return price;
@@ -66,7 +69,7 @@ const normalized = products
 	.map((product) => {
 		const price = priceToLeva(product);
 		const regularPrice = product.prices.regular_price
-			? Number(((Number(product.prices.regular_price) / 100) * 1.95583).toFixed(2))
+			? amountToLeva(product.prices.regular_price, product.prices)
 			: price;
 
 		return {

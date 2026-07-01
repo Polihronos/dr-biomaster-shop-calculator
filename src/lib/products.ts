@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-06-25T07:34:06.420Z";
+export const catalogUpdatedAt = "2026-07-01T11:48:39.215Z";
 
 export const products: Product[] = [
 	{
@@ -34,155 +34,155 @@ export const products: Product[] = [
 		"id": "2433",
 		"name": "АЛОЕ АРБОРЕСЦЕНС подпомага стомашно-чревния баланс, 500 ml",
 		"category": "Билкови продукти",
-		"price": 55.8,
+		"price": 62,
 		"regularPrice": 62,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/aloe-arborescens-il-pucino/",
 		"shortDescription": "500 ml",
-		"priceLabel": "31.70 &euro; (62.00 лв.) Original price was: 31.70&euro; (62.00 лв.). 28.53 &euro; (55.80 лв.) Текущата цена е: 28.53&euro; (55.80 лв.)."
+		"priceLabel": "31.70 &euro; (62.00 лв.)"
 	},
 	{
 		"id": "1849",
 		"name": "АМИГДАЛИН подсилва защитата на организма, 100 капс. / 200 mg",
 		"category": "Билкови продукти",
-		"price": 55.8,
+		"price": 62,
 		"regularPrice": 62,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/amigdalin-vitamin-b17/",
 		"shortDescription": "100 капсули по 200 mg Екстракт от кайсиеви ядки",
-		"priceLabel": "31.70 &euro; (62.00 лв.) Original price was: 31.70&euro; (62.00 лв.). 28.53 &euro; (55.80 лв.) Текущата цена е: 28.53&euro; (55.80 лв.)."
+		"priceLabel": "31.70 &euro; (62.00 лв.)"
 	},
 	{
 		"id": "1857",
 		"name": "АНТИСТРЕС подходящ при стрес и безпокойство, 100 ml",
 		"category": "Билкови продукти",
-		"price": 18.83,
+		"price": 20.93,
 		"regularPrice": 20.93,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-antistress/",
 		"shortDescription": "100 ml Хранителна добавка. 35% vol.",
-		"priceLabel": "10.70 &euro; (20.93 лв.) Original price was: 10.70&euro; (20.93 лв.). 9.63 &euro; (18.83 лв.) Текущата цена е: 9.63&euro; (18.83 лв.)."
+		"priceLabel": "10.70 &euro; (20.93 лв.)"
 	},
 	{
 		"id": "1853",
 		"name": "ДЕТОКС за прочистване от вредни агенти, 135 капс. / 406 mg",
 		"category": "Билкови продукти",
-		"price": 39.43,
+		"price": 43.81,
 		"regularPrice": 43.81,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-detox-formula/",
 		"shortDescription": "135 капсули по 406 mg Смес от набор екстракти и гъби на прах",
-		"priceLabel": "22.40 &euro; (43.81 лв.) Original price was: 22.40&euro; (43.81 лв.). 20.16 &euro; (39.43 лв.) Текущата цена е: 20.16&euro; (39.43 лв.)."
+		"priceLabel": "22.40 &euro; (43.81 лв.)"
 	},
 	{
 		"id": "1845",
 		"name": "ЕСИАК при онкологични заболявания, 60 капс. / 500 mg",
 		"category": "Билкови продукти",
-		"price": 67.42,
+		"price": 74.91,
 		"regularPrice": 74.91,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-kapsuli/",
 		"shortDescription": "60 капсули по 500 mg",
-		"priceLabel": "38.30 &euro; (74.91 лв.) Original price was: 38.30&euro; (74.91 лв.). 34.47 &euro; (67.42 лв.) Текущата цена е: 34.47&euro; (67.42 лв.)."
+		"priceLabel": "38.30 &euro; (74.91 лв.)"
 	},
 	{
 		"id": "1843",
 		"name": "ЕСИАК ЧАЙ за подкрепа на имунната система, 42.5 g",
 		"category": "Билкови продукти",
-		"price": 58.44,
+		"price": 64.93,
 		"regularPrice": 64.93,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-prah/",
 		"shortDescription": "42.5 g",
-		"priceLabel": "33.20 &euro; (64.93 лв.) Original price was: 33.20&euro; (64.93 лв.). 29.88 &euro; (58.44 лв.) Текущата цена е: 29.88&euro; (58.44 лв.)."
+		"priceLabel": "33.20 &euro; (64.93 лв.)"
 	},
 	{
 		"id": "1865",
 		"name": "КАРАМФИЛ за пречистване на организма, 100 капс. / 400 mg",
 		"category": "Билкови продукти",
-		"price": 22.53,
+		"price": 25.03,
 		"regularPrice": 25.03,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/karamfil-kapsuli/",
 		"shortDescription": "100 капсули по 400 mg 100% Карамфил ( Caryophyllus aromaticus ) на прах с желатинови капсули",
-		"priceLabel": "12.80 &euro; (25.03 лв.) Original price was: 12.80&euro; (25.03 лв.). 11.52 &euro; (22.53 лв.) Текущата цена е: 11.52&euro; (22.53 лв.)."
+		"priceLabel": "12.80 &euro; (25.03 лв.)"
 	},
 	{
 		"id": "1847",
 		"name": "КУРКУМИН при възпалителни процеси, 60 капс. / 500 mg",
 		"category": "Билкови продукти",
-		"price": 49.64,
+		"price": 55.15,
 		"regularPrice": 55.15,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/kurkumin/",
 		"shortDescription": "60 капсули пo 500 mg",
-		"priceLabel": "28.20 &euro; (55.15 лв.) Original price was: 28.20&euro; (55.15 лв.). 25.38 &euro; (49.64 лв.) Текущата цена е: 25.38&euro; (49.64 лв.)."
+		"priceLabel": "28.20 &euro; (55.15 лв.)"
 	},
 	{
 		"id": "1851",
 		"name": "ПАУ Д`АРКО при бактериални и вирусни инфекции, 230 капс. / 370 mg",
 		"category": "Билкови продукти",
-		"price": 37.85,
+		"price": 42.05,
 		"regularPrice": 42.05,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/pau-darko/",
 		"shortDescription": "230 капсули по 370 mg Екстракт от кора от Мравчено дърво 8:1 Подпомага имунната система и защитата на организма срещу вредни агенти",
-		"priceLabel": "21.50 &euro; (42.05 лв.) Original price was: 21.50&euro; (42.05 лв.). 19.35 &euro; (37.85 лв.) Текущата цена е: 19.35&euro; (37.85 лв.)."
+		"priceLabel": "21.50 &euro; (42.05 лв.)"
 	},
 	{
 		"id": "1841",
 		"name": "СУПЕР ФОРМУЛА за сърце и кръвоносни съдове, 500 ml",
 		"category": "Билкови продукти",
-		"price": 34.15,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/super-formula-za-surce-kruvonosni-sudove/",
 		"shortDescription": "Превъзходен натурален продукт, подпомагащ сърцето и кръвоносните съдове! Съдържа 22 билки в отлична комбинация!",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 17.46 &euro; (34.15 лв.) Текущата цена е: 17.46&euro; (34.15 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "1863",
 		"name": "ТИНКТУРА ОТ ОРЕХ срещу патогенни агенти, 100 ml",
 		"category": "Билкови продукти",
-		"price": 25.17,
+		"price": 27.97,
 		"regularPrice": 27.97,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/tinktura-oreh/",
 		"shortDescription": "100 ml 100% тинктура от обвивките (мезокарп) на орех ( Juglans regia ), супер силна",
-		"priceLabel": "14.30 &euro; (27.97 лв.) Original price was: 14.30&euro; (27.97 лв.). 12.87 &euro; (25.17 лв.) Текущата цена е: 12.87&euro; (25.17 лв.)."
+		"priceLabel": "14.30 &euro; (27.97 лв.)"
 	},
 	{
 		"id": "6756",
