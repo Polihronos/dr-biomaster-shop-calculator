@@ -77,6 +77,7 @@
 	let priceCheckStatus: PriceCheckStatus = $state('idle');
 	let priceCheckMessage = $state('');
 	let priceCheckRows: PriceCheckRow[] = $state([]);
+	let priceCheckHideTimer: number | undefined;
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
@@ -626,6 +627,7 @@
 	}
 
 	async function checkLivePrices() {
+		if (priceCheckHideTimer) window.clearTimeout(priceCheckHideTimer);
 		priceCheckStatus = 'checking';
 		priceCheckMessage = 'Сверявам цените с drbiomaster.com...';
 		priceCheckRows = [];
@@ -689,6 +691,12 @@
 			priceCheckStatus = 'error';
 			priceCheckMessage = error instanceof Error ? error.message : 'Неуспешна сверка';
 		}
+
+		priceCheckHideTimer = window.setTimeout(() => {
+			priceCheckStatus = 'idle';
+			priceCheckMessage = '';
+			priceCheckRows = [];
+		}, 5000);
 	}
 
 	function openProduct(product: Product) {
@@ -724,7 +732,11 @@
 			</div>
 
 			<div class="header-actions">
-				<button class="text-button" onclick={checkLivePrices} disabled={priceCheckStatus === 'checking'}>
+				<button
+					class="text-button price-check-button"
+					onclick={checkLivePrices}
+					disabled={priceCheckStatus === 'checking'}
+				>
 					<RefreshCcw size={16} />
 					{priceCheckStatus === 'checking' ? 'Сверявам' : 'Свери цени'}
 				</button>
@@ -825,7 +837,7 @@
 			{#each filteredProducts as product (product.id)}
 				{@const row = rowForProduct(product)}
 				{@const badges = packagingBadges(product)}
-				<article class={['product-card', row.quantity > 0 && 'selected']}>
+				<article class={['product-card', row.quantity > 0 && 'selected']} data-product-id={product.id}>
 					<button
 						class="product-main"
 						aria-pressed={row.quantity > 0}
