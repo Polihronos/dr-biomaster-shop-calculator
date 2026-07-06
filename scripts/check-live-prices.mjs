@@ -42,8 +42,15 @@ async function fetchLiveProducts() {
 	const products = [];
 
 	for (let page = 1; page <= 20; page += 1) {
-		const response = await fetch(`${API}?per_page=100&page=${page}`, { headers: REQUEST_HEADERS });
+		const url = `${API}?per_page=100&page=${page}`;
+		const response = await fetch(url, { headers: REQUEST_HEADERS });
 		if (!response.ok) {
+			if (response.status === 403) {
+				const batch = await fetchJsonpPage(url, page);
+				products.push(...batch);
+				if (batch.length < 100) break;
+				continue;
+			}
 			if (response.status === 400 || response.status === 404) break;
 			throw new Error(`Failed to fetch products page ${page}: ${response.status}`);
 		}
@@ -54,6 +61,23 @@ async function fetchLiveProducts() {
 	}
 
 	return products;
+}
+
+async function fetchJsonpPage(url, page) {
+	const callbackName = `drBiomasterPriceCheck_${page}`;
+	const response = await fetch(`${url}&_jsonp=${callbackName}`, { headers: REQUEST_HEADERS });
+	if (!response.ok) {
+		if (response.status === 400 || response.status === 404) return [];
+		throw new Error(`Failed to fetch products page ${page} via JSONP: ${response.status}`);
+	}
+
+	const text = await response.text();
+	const prefix = `${callbackName}(`;
+	if (!text.startsWith(prefix) || !text.trimEnd().endsWith(');')) {
+		throw new Error(`Unexpected JSONP response for products page ${page}`);
+	}
+
+	return JSON.parse(text.slice(prefix.length, text.lastIndexOf(');')));
 }
 
 async function readLocalProducts() {

@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-06T09:59:54.948Z";
+export const catalogUpdatedAt = "2026-07-06T10:01:50.167Z";
 
 export const products: Product[] = [
 	{
