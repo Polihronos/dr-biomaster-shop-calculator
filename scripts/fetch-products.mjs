@@ -1,4 +1,4 @@
-import { writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
 const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
@@ -65,6 +65,25 @@ async function fetchPage(page) {
 	return response.json();
 }
 
+async function readExistingCatalog() {
+	try {
+		const source = await readFile(TARGET, 'utf8');
+		const updatedAt = source.match(/export const catalogUpdatedAt = (.+);/)?.[1];
+		const products = source.match(/export const products: Product\[\] = ([\s\S]*);\s*$/)?.[1];
+
+		return {
+			updatedAt: updatedAt ? JSON.parse(updatedAt) : null,
+			products: products ? JSON.parse(products) : null
+		};
+	} catch (error) {
+		if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+			return { updatedAt: null, products: null };
+		}
+
+		throw error;
+	}
+}
+
 async function fetchJsonpPage(url, page) {
 	const callbackName = `drBiomasterSync_${page}`;
 	const response = await fetch(`${url}&_jsonp=${callbackName}`, { headers: REQUEST_HEADERS });
@@ -115,6 +134,10 @@ const normalized = products
 	})
 	.sort((a, b) => a.category.localeCompare(b.category, 'bg') || a.name.localeCompare(b.name, 'bg'));
 
+const existingCatalog = await readExistingCatalog();
+const catalogChanged = JSON.stringify(existingCatalog.products) !== JSON.stringify(normalized);
+const catalogUpdatedAt = catalogChanged || !existingCatalog.updatedAt ? new Date().toISOString() : existingCatalog.updatedAt;
+
 const output = `export type Product = {
 	id: string;
 	name: string;
@@ -130,7 +153,7 @@ const output = `export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = ${JSON.stringify(new Date().toISOString())};
+export const catalogUpdatedAt = ${JSON.stringify(catalogUpdatedAt)};
 
 export const products: Product[] = ${JSON.stringify(normalized, null, '\t')};
 `;
@@ -138,4 +161,4 @@ export const products: Product[] = ${JSON.stringify(normalized, null, '\t')};
 await mkdir(dirname(TARGET), { recursive: true });
 await writeFile(TARGET, output, 'utf8');
 
-console.log(`Wrote ${normalized.length} products to ${TARGET}`);
+console.log(`${catalogChanged ? 'Updated' : 'Checked'} ${normalized.length} products in ${TARGET}`);

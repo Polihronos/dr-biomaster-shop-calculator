@@ -9,6 +9,8 @@
 		"fetch:products": "node scripts/fetch-products.mjs",
 		"check:prices": "node scripts/check-live-prices.mjs",
 		"sync:products": "powershell -ExecutionPolicy Bypass -File scripts/sync-products-and-push.ps1",
+		"sync:products:scheduled": "powershell -ExecutionPolicy Bypass -File scripts/run-scheduled-product-sync.ps1",
+		"install:sync-task": "powershell -ExecutionPolicy Bypass -File scripts/install-product-sync-task.ps1",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
