@@ -26,6 +26,20 @@
 	type DiscountMap = Record<string, number>;
 	type SaleMap = Record<string, boolean>;
 	type PromoMap = Record<string, { buy: number; pay: number }>;
+	type LiveProductPrices = {
+		currency_code?: string;
+		currency_minor_unit?: number;
+		price?: string | number;
+		regular_price?: string | number;
+		sale_price?: string | number;
+	};
+	type LiveStoreProduct = {
+		id: string | number;
+		on_sale?: boolean;
+		prices?: LiveProductPrices;
+	};
+	type LivePriceOverride = { price: number; regularPrice: number; onSale: boolean };
+	type LivePriceOverrideMap = Record<string, LivePriceOverride>;
 	type PackageComboRule = { packageId: string; itemIds: string[] };
 	type PendingPackageChoice = { rule: PackageComboRule; quantity: number; key: string };
 	type PriceCheckStatus = 'idle' | 'checking' | 'ok' | 'mismatch' | 'error';
@@ -64,6 +78,8 @@
 	let productDiscounts: DiscountMap = $state({});
 	let saleOverrides: SaleMap = $state({});
 	let promotions: PromoMap = $state({});
+	let livePriceOverrides: LivePriceOverrideMap = $state({});
+	let pendingLivePriceOverrides: LivePriceOverrideMap = $state({});
 	let globalDiscount = $state(0);
 	let query = $state('');
 	let activeCategory = $state(ALL_CATEGORIES);
@@ -84,6 +100,9 @@
 	const total = $derived(subtotal * (1 - globalDiscount / 100));
 	const selectedCount = $derived(Object.values(selection).reduce((sum, quantity) => sum + quantity, 0));
 	const visiblePriceCheckRows = $derived(priceCheckRows.slice(0, 4));
+	const liveOverrideCount = $derived(Object.keys(livePriceOverrides).length);
+	const pendingLiveOverrideCount = $derived(Object.keys(pendingLivePriceOverrides).length);
+	const hasLivePriceOverrides = $derived(liveOverrideCount > 0);
 	const filteredProducts = $derived(
 		products
 			.filter((product) => {
@@ -161,7 +180,7 @@
 		return `${value.toFixed(2)} лв.`;
 	}
 
-	function storeAmountToBgn(amount: string | number | undefined, prices: { currency_code?: string; currency_minor_unit?: number }) {
+	function storeAmountToBgn(amount: string | number | undefined, prices: LiveProductPrices) {
 		const minorUnit = Number(prices.currency_minor_unit ?? 2);
 		const value = Number(amount || 0) / 10 ** minorUnit;
 
@@ -266,16 +285,31 @@
 		return [...new Set(badges)].slice(0, 3);
 	}
 
+	function catalogSnapshot(product: Product) {
+		const live = livePriceOverrides[product.id];
+
+		return {
+			price: live?.price ?? product.price,
+			regularPrice: live?.regularPrice ?? product.regularPrice,
+			onSale: live?.onSale ?? product.onSale
+		};
+	}
+
 	function regularPriceEur(product: Product) {
-		return bgnToEur(product.regularPrice || product.price);
+		const catalog = catalogSnapshot(product);
+		return bgnToEur(catalog.regularPrice || catalog.price);
 	}
 
 	function currentCatalogPriceEur(product: Product) {
-		return bgnToEur(product.price);
+		return bgnToEur(catalogSnapshot(product).price);
+	}
+
+	function catalogOnSale(product: Product) {
+		return catalogSnapshot(product).onSale;
 	}
 
 	function isSaleEnabled(product: Product) {
-		return saleOverrides[product.id] ?? product.onSale;
+		return saleOverrides[product.id] ?? catalogOnSale(product);
 	}
 
 	function catalogSalePercent(product: Product) {
@@ -295,7 +329,7 @@
 			return Number((regular * (1 - saleDiscount / 100)).toFixed(2));
 		}
 
-		if (isSaleEnabled(product) && product.onSale) {
+		if (isSaleEnabled(product) && catalogOnSale(product)) {
 			return currentCatalogPriceEur(product);
 		}
 
@@ -462,7 +496,7 @@
 		saleOverrides[product.id] = enabled;
 		delete priceOverrides[product.id];
 
-		if (enabled && !productDiscounts[product.id] && !product.onSale) {
+		if (enabled && !productDiscounts[product.id] && !catalogOnSale(product)) {
 			productDiscounts[product.id] = 10;
 		}
 
@@ -580,7 +614,7 @@
 	}
 
 	function fetchLiveProductsPage(page: number) {
-		return new Promise<any[]>((resolve, reject) => {
+		return new Promise<LiveStoreProduct[]>((resolve, reject) => {
 			const callbackName = `drBiomasterPriceCheck_${Date.now()}_${page}`;
 			const script = document.createElement('script');
 			const globalWindow = window as unknown as Window & Record<string, (data: unknown) => void>;
@@ -615,7 +649,7 @@
 	}
 
 	async function fetchLiveProducts() {
-		const liveProducts = [];
+		const liveProducts: LiveStoreProduct[] = [];
 
 		for (let page = 1; page <= 20; page += 1) {
 			const batch = await fetchLiveProductsPage(page);
@@ -626,77 +660,137 @@
 		return liveProducts;
 	}
 
-	async function checkLivePrices() {
-		if (priceCheckHideTimer) window.clearTimeout(priceCheckHideTimer);
-		priceCheckStatus = 'checking';
-		priceCheckMessage = 'Сверявам цените с drbiomaster.com...';
-		priceCheckRows = [];
+	function liveOverrideFromStoreProduct(liveProduct: LiveStoreProduct) {
+		if (!liveProduct.prices) return null;
 
-		try {
-			const liveProducts = await fetchLiveProducts();
-			const localById = new Map(products.map((product) => [product.id, product]));
-			const rows: PriceCheckRow[] = [];
+		const livePrice = storeAmountToBgn(
+			liveProduct.prices.sale_price || liveProduct.prices.price || liveProduct.prices.regular_price,
+			liveProduct.prices
+		);
+		const liveRegularPrice = liveProduct.prices.regular_price
+			? storeAmountToBgn(liveProduct.prices.regular_price, liveProduct.prices)
+			: livePrice;
 
-			for (const liveProduct of liveProducts) {
-				const localProduct = localById.get(String(liveProduct.id));
-				if (!localProduct) continue;
+		return {
+			price: livePrice,
+			regularPrice: liveRegularPrice,
+			onSale: Boolean(liveProduct.on_sale)
+		};
+	}
 
-				const livePrice = storeAmountToBgn(
-					liveProduct.prices.sale_price || liveProduct.prices.price || liveProduct.prices.regular_price,
-					liveProduct.prices
-				);
-				const liveRegularPrice = liveProduct.prices.regular_price
-					? storeAmountToBgn(liveProduct.prices.regular_price, liveProduct.prices)
-					: livePrice;
-				const liveOnSale = Boolean(liveProduct.on_sale);
+	function clearPriceCheckHideTimer() {
+		if (!priceCheckHideTimer) return;
 
-				if (Math.abs(localProduct.price - livePrice) > 0.01) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Цена',
-						local: formatBgn(localProduct.price),
-						live: formatBgn(livePrice)
-					});
-				}
+		window.clearTimeout(priceCheckHideTimer);
+		priceCheckHideTimer = undefined;
+	}
 
-				if (Math.abs(localProduct.regularPrice - liveRegularPrice) > 0.01) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Редовна цена',
-						local: formatBgn(localProduct.regularPrice),
-						live: formatBgn(liveRegularPrice)
-					});
-				}
-
-				if (Boolean(localProduct.onSale) !== liveOnSale) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Промо',
-						local: localProduct.onSale ? 'Да' : 'Не',
-						live: liveOnSale ? 'Да' : 'Не'
-					});
-				}
-			}
-
-			priceCheckRows = rows;
-			priceCheckStatus = rows.length > 0 ? 'mismatch' : 'ok';
-			priceCheckMessage =
-				rows.length > 0
-					? `${rows.length} разлики спрямо live сайта`
-					: `${liveProducts.length} продукта съвпадат с live сайта`;
-		} catch (error) {
-			priceCheckStatus = 'error';
-			priceCheckMessage = error instanceof Error ? error.message : 'Неуспешна сверка';
-		}
-
+	function hidePriceCheckSoon() {
+		clearPriceCheckHideTimer();
 		priceCheckHideTimer = window.setTimeout(() => {
 			priceCheckStatus = 'idle';
 			priceCheckMessage = '';
 			priceCheckRows = [];
 		}, 5000);
+	}
+
+	function applyLivePriceOverrides() {
+		const nextOverrides = $state.snapshot(pendingLivePriceOverrides);
+		const productIds = Object.keys(nextOverrides);
+		if (productIds.length === 0) return;
+
+		livePriceOverrides = nextOverrides;
+		pendingLivePriceOverrides = {};
+
+		for (const productId of productIds) {
+			delete priceOverrides[productId];
+			delete productDiscounts[productId];
+			delete saleOverrides[productId];
+		}
+
+		priceCheckRows = [];
+		priceCheckStatus = 'ok';
+		priceCheckMessage = `Live цените са приложени за ${productIds.length} продукта`;
+		hidePriceCheckSoon();
+	}
+
+	function clearLivePriceOverrides() {
+		livePriceOverrides = {};
+		pendingLivePriceOverrides = {};
+		priceCheckRows = [];
+		priceCheckStatus = 'ok';
+		priceCheckMessage = 'Върнат е локалният каталог';
+		hidePriceCheckSoon();
+	}
+
+	async function checkLivePrices() {
+		clearPriceCheckHideTimer();
+		priceCheckStatus = 'checking';
+		priceCheckMessage = 'Сверявам цените с drbiomaster.com...';
+		priceCheckRows = [];
+		pendingLivePriceOverrides = {};
+
+		try {
+			const liveProducts = await fetchLiveProducts();
+			const localById = new Map(products.map((product) => [product.id, product]));
+			const rows: PriceCheckRow[] = [];
+			const nextLiveOverrides: LivePriceOverrideMap = {};
+			let checkedProductCount = 0;
+
+			for (const liveProduct of liveProducts) {
+				const localProduct = localById.get(String(liveProduct.id));
+				if (!localProduct) continue;
+				const liveOverride = liveOverrideFromStoreProduct(liveProduct);
+				if (!liveOverride) continue;
+
+				const currentCatalog = catalogSnapshot(localProduct);
+				nextLiveOverrides[localProduct.id] = liveOverride;
+				checkedProductCount += 1;
+
+				if (Math.abs(currentCatalog.price - liveOverride.price) > 0.01) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Цена',
+						local: formatBgn(currentCatalog.price),
+						live: formatBgn(liveOverride.price)
+					});
+				}
+
+				if (Math.abs(currentCatalog.regularPrice - liveOverride.regularPrice) > 0.01) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Редовна цена',
+						local: formatBgn(currentCatalog.regularPrice),
+						live: formatBgn(liveOverride.regularPrice)
+					});
+				}
+
+				if (Boolean(currentCatalog.onSale) !== liveOverride.onSale) {
+					rows.push({
+						id: localProduct.id,
+						name: localProduct.name,
+						field: 'Промо',
+						local: currentCatalog.onSale ? 'Да' : 'Не',
+						live: liveOverride.onSale ? 'Да' : 'Не'
+					});
+				}
+			}
+
+			priceCheckRows = rows;
+			pendingLivePriceOverrides = rows.length > 0 ? nextLiveOverrides : {};
+			priceCheckStatus = rows.length > 0 ? 'mismatch' : 'ok';
+			priceCheckMessage =
+				rows.length > 0
+					? `${rows.length} разлики спрямо live сайта`
+					: `${checkedProductCount}/${products.length} продукта съвпадат с live сайта`;
+			if (rows.length === 0) hidePriceCheckSoon();
+		} catch (error) {
+			priceCheckStatus = 'error';
+			priceCheckMessage = error instanceof Error ? error.message : 'Неуспешна сверка';
+			hidePriceCheckSoon();
+		}
 	}
 
 	function openProduct(product: Product) {
@@ -732,6 +826,12 @@
 			</div>
 
 			<div class="header-actions">
+				{#if hasLivePriceOverrides}
+					<button class="text-button" onclick={clearLivePriceOverrides} title="Върни към локалния каталог">
+						<RotateCcw size={16} />
+						Локален каталог
+					</button>
+				{/if}
 				<button
 					class="text-button price-check-button"
 					onclick={checkLivePrices}
@@ -811,9 +911,23 @@
 
 		{#if priceCheckStatus !== 'idle'}
 			<section class={['price-check-strip', priceCheckStatus]}>
-				<strong>{priceCheckMessage}</strong>
+				<div class="price-check-summary">
+					<strong>{priceCheckMessage}</strong>
+					{#if priceCheckStatus === 'mismatch' && pendingLiveOverrideCount > 0}
+						<button class="text-button" onclick={applyLivePriceOverrides}>
+							<Check size={16} />
+							Използвай live цените
+						</button>
+					{/if}
+					{#if hasLivePriceOverrides}
+						<button class="text-button" onclick={clearLivePriceOverrides}>
+							<RotateCcw size={16} />
+							Върни локалния каталог
+						</button>
+					{/if}
+				</div>
 				{#if visiblePriceCheckRows.length > 0}
-					<div>
+					<div class="price-check-diff-list">
 						{#each visiblePriceCheckRows as row (`${row.id}-${row.field}`)}
 							<span>{row.name}: {row.field} {row.local} → {row.live}</span>
 						{/each}
@@ -1193,6 +1307,7 @@
 	}
 
 	.header-actions {
+		gap: 8px;
 		justify-self: end;
 	}
 
@@ -1423,13 +1538,22 @@
 		color: #92251c;
 	}
 
-	.price-check-strip div {
+	.price-check-summary,
+	.price-check-diff-list {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
 	}
 
-	.price-check-strip span {
+	.price-check-summary {
+		align-items: center;
+	}
+
+	.price-check-strip .text-button {
+		min-height: 32px;
+	}
+
+	.price-check-diff-list span {
 		padding: 4px 7px;
 		border: 1px solid #d8d5ca;
 		border-radius: 999px;

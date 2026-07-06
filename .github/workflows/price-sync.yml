@@ -1,0 +1,64 @@
+name: Price Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: price-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch products
+        run: npm run fetch:products
+
+      - name: Check for product changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- src/lib/products.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No product changes detected."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Product changes detected."
+          fi
+
+      - name: Check
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run check
+
+      - name: Smoke test
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run test:smoke
+
+      - name: Commit and push product updates
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/lib/products.ts
+          git commit -m "chore: sync product prices"
+          git push origin HEAD:main
