@@ -3,6 +3,13 @@ import { dirname, resolve } from 'node:path';
 
 const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
 const TARGET = resolve('src/lib/products.ts');
+const REQUEST_HEADERS = {
+	accept: 'application/json, text/plain, */*',
+	'accept-language': 'bg-BG,bg;q=0.9,en-US;q=0.8,en;q=0.7',
+	referer: 'https://drbiomaster.com/',
+	'user-agent':
+		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
+};
 
 function decodeEntities(value = '') {
 	return value
@@ -47,7 +54,7 @@ function formatCategory(categories = []) {
 }
 
 async function fetchPage(page) {
-	const response = await fetch(`${API}?per_page=100&page=${page}`);
+	const response = await fetch(`${API}?per_page=100&page=${page}`, { headers: REQUEST_HEADERS });
 	if (!response.ok) {
 		if (response.status === 400 || response.status === 404) return [];
 		throw new Error(`Failed to fetch products page ${page}: ${response.status}`);
