@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-06T10:01:50.167Z";
+export const catalogUpdatedAt = "2026-07-08T05:00:09.963Z";
 
 export const products: Product[] = [
 	{
@@ -886,7 +886,7 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1787",
-		"name": "Кордицепс екстракт 60 капсули по 300 mg — Dr. Biomaster",
+		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
 		"category": "Лекарствени гъби",
 		"price": 57.56,
 		"regularPrice": 63.96,
