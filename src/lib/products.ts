@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-08T05:00:09.963Z";
+export const catalogUpdatedAt = "2026-07-10T08:08:17.718Z";
 
 export const products: Product[] = [
 	{
@@ -200,14 +200,14 @@ export const products: Product[] = [
 	},
 	{
 		"id": "6615",
-		"name": "Бета глюкан – 1,3 D GLUCAN",
+		"name": "Бета глюкан (Beta Glucan) на Transfer Point – ОРИГИНАЛ от САЩ, 60 капс. 500 mg",
 		"category": "Други продукти",
 		"price": 150.01,
 		"regularPrice": 150.01,
 		"onSale": false,
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan-300x300.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan-transfer-point-1-300x300.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan-transfer-point-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/beta-glucan/",
 		"shortDescription": "60 капсули по 500 mg. Хранителна добавка.",
 		"priceLabel": "76.70 &euro; (150.01 лв.)"
@@ -1096,7 +1096,7 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1769",
-		"name": "ЯМАКИРО+ за по-добър метаболизъм 180 капс. / 300 mg",
+		"name": "ЯМАКИРО+ за отслабване и по-добър метаболизъм 180 капс. / 300 mg",
 		"category": "Лекарствени гъби",
 		"price": 62,
 		"regularPrice": 62,
