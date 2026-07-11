@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-10T08:08:17.718Z";
+export const catalogUpdatedAt = "2026-07-11T11:33:02.301Z";
 
 export const products: Product[] = [
 	{
@@ -580,15 +580,15 @@ export const products: Product[] = [
 		"id": "1779",
 		"name": "АГАРИКУС лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agarikus-blazei-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1781",
@@ -818,15 +818,15 @@ export const products: Product[] = [
 		"id": "1783",
 		"name": "ГЪБА РЕЙШИ, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Рейши (Ganoderma lucidum)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1739",
@@ -888,15 +888,15 @@ export const products: Product[] = [
 		"id": "1787",
 		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster/",
 		"shortDescription": "Екстракт от Cordyceps sinensis | 30% Полизахариди | Анализен сертификат от AGROLAB – Германия | Опаковка: 60 капсули по 300 мг | Оценка: ⭐⭐⭐⭐⭐ 4.97 / 5",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "2156",
@@ -944,15 +944,15 @@ export const products: Product[] = [
 		"id": "1775",
 		"name": "МАЙТАКЕ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1777",
@@ -972,15 +972,15 @@ export const products: Product[] = [
 		"id": "4155",
 		"name": "МЕШИМА лекарствена гъба, Dr. Biomaster, 60 капс. / 270 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": true,
 		"image": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meshima-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 270 mg Екстракт от плодното тяло на гъба Мешима (Phellinus linteus)",
-		"priceLabel": "29.43 &euro; &ndash; 98.20 &euro; Price range: 29.43&euro; through 98.20&euro; (57.56 – 192.06 лв.)"
+		"priceLabel": "32.70 &euro; &ndash; 98.20 &euro; Price range: 32.70&euro; through 98.20&euro; (63.96 – 192.06 лв.)"
 	},
 	{
 		"id": "1735",
@@ -1042,15 +1042,15 @@ export const products: Product[] = [
 		"id": "2165",
 		"name": "ХЕРИЦИУМ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "2442",
@@ -1070,15 +1070,15 @@ export const products: Product[] = [
 		"id": "1771",
 		"name": "ШИЙТАКЕ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Шиитаке (Lentinula edodes)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 29.43 &euro; (57.56 лв.) Текущата цена е: 29.43&euro; (57.56 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1773",
