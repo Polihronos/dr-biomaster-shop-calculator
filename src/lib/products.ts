@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-14T11:50:58.737Z";
+export const catalogUpdatedAt = "2026-07-16T06:35:16.551Z";
 
 export const products: Product[] = [
 	{
@@ -144,17 +144,17 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1851",
-		"name": "ПАУ Д`АРКО при бактериални и вирусни инфекции, 230 капс. / 370 mg",
+		"name": "ПАУ ДАРКО при бактериални и вирусни инфекции, 230 капс. / 370 mg",
 		"category": "Билкови продукти",
-		"price": 42.05,
-		"regularPrice": 42.05,
+		"price": 49.87,
+		"regularPrice": 49.87,
 		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/pau-darko/",
 		"shortDescription": "230 капсули по 370 mg Екстракт от кора от Мравчено дърво 8:1 Подпомага имунната система и защитата на организма срещу вредни агенти",
-		"priceLabel": "21.50 &euro; (42.05 лв.)"
+		"priceLabel": "25.50 &euro; (49.87 лв.)"
 	},
 	{
 		"id": "1841",
