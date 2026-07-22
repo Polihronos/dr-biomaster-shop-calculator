@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-16T06:35:16.551Z";
+export const catalogUpdatedAt = "2026-07-22T05:01:17.361Z";
 
 export const products: Product[] = [
 	{
@@ -848,13 +848,13 @@ export const products: Product[] = [
 		"category": "Лекарствени гъби",
 		"price": 98.93,
 		"regularPrice": 109.92,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imun-modulator-90-caps/",
 		"shortDescription": "ИМЮН МОДУЛАТОР представлява смес от 6 лекарствени гъби и е отлично средство за подобряване функциите на имунната система.",
-		"priceLabel": "56.20 &euro; (109.92 лв.) Original price was: 56.20&euro; (109.92 лв.). 50.58 &euro; (98.93 лв.) Текущата цена е: 50.58&euro; (98.93 лв.)."
+		"priceLabel": "56.20 &euro; (109.92 лв.)"
 	},
 	{
 		"id": "1732",
