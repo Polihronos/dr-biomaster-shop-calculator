@@ -180,6 +180,7 @@ try {
 		localStorage.clear();
 		const files = new Map();
 		window.__dailySalesTestFiles = files;
+		window.__dailySalesFolderCreated = false;
 
 		class TestFileHandle {
 			constructor(name) {
@@ -213,8 +214,16 @@ try {
 				for (const name of files.keys()) yield new TestFileHandle(name);
 			}
 		};
+		const documents = {
+			name: 'Documents',
+			getDirectoryHandle: async (name, options = {}) => {
+				if (name !== 'daily sales' || !options.create) throw new DOMException('Missing', 'NotFoundError');
+				window.__dailySalesFolderCreated = true;
+				return directory;
+			}
+		};
 
-		window.showDirectoryPicker = async () => directory;
+		window.showDirectoryPicker = async () => documents;
 	});
 	await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
@@ -249,20 +258,22 @@ try {
 	await expect(page.locator('.cart-total')).toContainText('19.02 / 37.20');
 	await page.getByLabel('Отстъпка по избор в проценти').fill('12.5');
 	await expect(page.locator('.cart-total')).toContainText('27.74 / 54.25');
-	await page.getByLabel('Отстъпка по избор в проценти').fill('0');
 
 	await expect(page.getByRole('button', { name: 'Принтирай кошницата' })).toBeVisible();
 	await page.getByRole('button', { name: 'Добави продажба в брой' }).click();
 	await expect(page.locator('.sales-message')).toContainText('в брой');
 	await expectCartEmpty(page);
 	const writtenSalesFile = await page.evaluate(() => [...window.__dailySalesTestFiles.values()][0]);
+	expect(await page.evaluate(() => window.__dailySalesFolderCreated)).toBe(true);
 	expect(writtenSalesFile).toContain('АЛОЕ АРБОРЕСЦЕНС');
 	expect(writtenSalesFile).toContain('💵 CASH');
+	expect(writtenSalesFile).toContain('обща отстъпка -12.5%');
 
 	await page.locator('.daily-sales-button').click();
 	await expect(page.locator('.sales-modal')).toBeVisible();
 	await expect(page.locator('.sale-row')).toHaveCount(1);
-	await expect(page.locator('.sales-header')).toContainText('31.70 EUR');
+	await expect(page.locator('.sales-header')).toContainText('27.74 EUR');
+	await expect(page.locator('.sale-row')).toContainText('Обща отстъпка −12.5%');
 	await page.locator('.sales-header').getByRole('button', { name: 'Добави продажба ръчно' }).click();
 	const suggestedProduct = PRODUCTS.find((product) => product.id === '2433');
 	await page.locator('.sale-editor .product-field input').fill(suggestedProduct.name);
@@ -278,13 +289,13 @@ try {
 	await page.locator('.filters button').filter({ hasText: 'В брой' }).click();
 	await expect(page.locator('.sale-row')).toHaveCount(1);
 	await page.locator('.filters button').filter({ hasText: 'Всички' }).click();
-	await expect(page.locator('.sales-header')).toContainText('63.40 EUR');
+	await expect(page.locator('.sales-header')).toContainText('59.44 EUR');
 
 	await page.locator('.sale-row').first().getByRole('button', { name: 'Редактирай' }).click();
 	await expect(page.locator('.sale-editor')).toBeVisible();
 	await page.locator('.sale-editor input[type="number"]').last().fill('50');
 	await page.getByRole('button', { name: /Запиши във файла/ }).click();
-	await expect(page.locator('.sales-header')).toContainText('47.55 EUR');
+	await expect(page.locator('.sales-header')).toContainText('45.57 EUR');
 	page.once('dialog', (dialog) => dialog.accept());
 	await page.locator('.sale-row').first().getByRole('button', { name: 'Изтрий' }).click();
 	await expect(page.locator('.sale-row')).toHaveCount(1);
@@ -309,6 +320,7 @@ try {
 	await expect(page.locator('.sales-header')).toContainText('25.00 EUR');
 	await expect(page.locator('.sale-row')).toContainText('Архивен продукт');
 	await page.getByRole('button', { name: 'Затвори', exact: true }).click();
+	await page.getByLabel('Отстъпка по избор в проценти').fill('0');
 
 	await clearCart(page);
 	await page.locator('input[type="search"]').fill('');

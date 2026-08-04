@@ -4,6 +4,7 @@ import {
 	calculateSaleTotal,
 	dateKeyFromFileName,
 	displayDate,
+	ensureSalesDayFile,
 	fileNameForDate,
 	listSalesDays,
 	parseSalesFile,
@@ -81,7 +82,8 @@ describe('daily sales format', () => {
 
 	it('round-trips losslessly while keeping each row human-readable', () => {
 		const contents = serializeSalesFile('2026-08-04', [CASH_SALE]);
-		expect(contents).toContain('1: Продукт A x2 , Продукт C x1 - 63.00 EUR - 💵 CASH');
+		expect(contents).toContain('Продукт A x2 (-25%)');
+		expect(contents).toContain('63.00 EUR - 💵 CASH - обща отстъпка -10%');
 		expect(parseSalesFile(contents)).toEqual([CASH_SALE]);
 	});
 
@@ -91,6 +93,12 @@ describe('daily sales format', () => {
 });
 
 describe('daily sales file operations', () => {
+	it('creates today’s empty text file when the directory is selected', async () => {
+		const directory = new MemoryDirectory();
+		await ensureSalesDayFile(directory, '2026-08-04');
+		expect(directory.files.get('04-08-2026.txt')).toContain('# Date: 04/08/2026');
+	});
+
 	it('creates, reads, overwrites, appends, and lists dated text files', async () => {
 		const directory = new MemoryDirectory();
 		await writeSalesDay(directory, '2026-08-03', []);

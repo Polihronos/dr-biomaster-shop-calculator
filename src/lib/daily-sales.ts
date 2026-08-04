@@ -121,9 +121,19 @@ export function normalizeSale(sale: DailySale): DailySale {
 }
 
 function readableSaleLine(sale: DailySale, index: number) {
-	const products = sale.items.map((item) => `${item.name} x${item.quantity}`).join(' , ');
+	const products = sale.items
+		.map((item) => {
+			const discount = item.discountPercent > 0 ? ` (-${formatPercent(item.discountPercent)}%)` : '';
+			return `${item.name} x${item.quantity}${discount}`;
+		})
+		.join(' , ');
 	const payment = sale.payment === 'card' ? '💳 CARD' : '💵 CASH';
-	return `${index + 1}: ${products} - ${sale.total.toFixed(2)} EUR - ${payment}`;
+	const globalDiscount = sale.globalDiscount > 0 ? ` - обща отстъпка -${formatPercent(sale.globalDiscount)}%` : '';
+	return `${index + 1}: ${products} - ${sale.total.toFixed(2)} EUR - ${payment}${globalDiscount}`;
+}
+
+function formatPercent(value: number) {
+	return Number(value.toFixed(2)).toString();
 }
 
 export function serializeSalesFile(key: string, sales: DailySale[]) {
@@ -163,8 +173,23 @@ export async function chooseDailySalesDirectory() {
 		startIn: 'documents'
 	});
 
-	if (chosen.name.toLocaleLowerCase('bg-BG') === 'daily sales') return chosen;
-	return chosen.getDirectoryHandle('daily sales', { create: true });
+	const directory =
+		chosen.name.toLocaleLowerCase('bg-BG') === 'daily sales'
+			? chosen
+			: await chosen.getDirectoryHandle('daily sales', { create: true });
+
+	await ensureSalesDayFile(directory, dateKey());
+	return directory;
+}
+
+export async function ensureSalesDayFile(directory: DirectoryHandleLike, key: string) {
+	const handle = await directory.getFileHandle(fileNameForDate(key), { create: true });
+	const file = await handle.getFile();
+	if ((await file.text()).trim()) return;
+
+	const writable = await handle.createWritable();
+	await writable.write(serializeSalesFile(key, []));
+	await writable.close();
 }
 
 export async function readSalesDay(directory: DirectoryHandleLike, key: string): Promise<SalesDay> {
@@ -192,9 +217,14 @@ export async function writeSalesDay(directory: DirectoryHandleLike, key: string,
 
 export async function appendSale(directory: DirectoryHandleLike, sale: DailySale) {
 	const key = dateKey(new Date(sale.createdAt));
+	await ensureSalesDayFile(directory, key);
 	const day = await readSalesDay(directory, key);
 	const normalized = normalizeSale(sale);
 	await writeSalesDay(directory, key, [...day.sales, normalized]);
+	const verifiedDay = await readSalesDay(directory, key);
+	if (!verifiedDay.sales.some((savedSale) => savedSale.id === normalized.id)) {
+		throw new Error('Файлът беше създаден, но продажбата не можа да бъде потвърдена.');
+	}
 	return normalized;
 }
 

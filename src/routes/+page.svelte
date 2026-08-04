@@ -22,6 +22,7 @@
 		Ticket,
 		X
 	} from '@lucide/svelte';
+	import { tick } from 'svelte';
 	import DailySalesModal from '$lib/DailySalesModal.svelte';
 	import {
 		appendSale,
@@ -631,10 +632,16 @@
 		if (salesDirectory) return salesDirectory;
 
 		try {
+			salesMessage = 'Избери папка Documents. Папката daily sales и днешният файл ще се създадат автоматично.';
+			await tick();
 			salesDirectory = await chooseDailySalesDirectory();
+			salesMessage = 'Папката daily sales и днешният файл са готови.';
 			return salesDirectory;
 		} catch (error) {
-			if (error instanceof DOMException && error.name === 'AbortError') return null;
+			if (error instanceof DOMException && error.name === 'AbortError') {
+				salesMessage = 'Не е избрана папка. Натисни отново и избери Documents.';
+				return null;
+			}
 			salesMessage = error instanceof Error ? error.message : 'Неуспешен достъп до папката за продажби.';
 			return null;
 		}
@@ -1104,11 +1111,11 @@
 					<span>{selectedCount} бр.</span>
 				</div>
 				<div class="cart-actions">
-					<button class="icon-button" title="Принтирай кошницата" aria-label="Принтирай кошницата" onclick={printCart}>
+					<button class="text-button cart-icon-button" title="Принтирай кошницата" aria-label="Принтирай кошницата" onclick={printCart}>
 						<Printer size={18} />
 					</button>
 					<button
-						class="icon-button sale-cash"
+						class="text-button cart-icon-button sale-cash"
 						title="Добави продажба в брой"
 						aria-label="Добави продажба в брой"
 						disabled={selectedRows.length === 0 || recordingSale}
@@ -1117,7 +1124,7 @@
 						<Banknote size={19} />
 					</button>
 					<button
-						class="icon-button sale-card"
+						class="text-button cart-icon-button sale-card"
 						title="Добави продажба с карта"
 						aria-label="Добави продажба с карта"
 						disabled={selectedRows.length === 0 || recordingSale}
@@ -1881,21 +1888,20 @@
 		gap: 6px;
 	}
 
-	.cart-actions .icon-button:disabled {
+	.cart-actions .cart-icon-button {
+		width: 38px;
+		min-height: 36px;
+		padding: 0;
+	}
+
+	.cart-actions .cart-icon-button:disabled {
 		cursor: not-allowed;
 		opacity: 0.42;
 	}
 
-	.cart-actions .sale-cash:not(:disabled) {
-		border-color: #9fceb3;
-		background: #def5e6;
-		color: #1f6c45;
-	}
-
-	.cart-actions .sale-card:not(:disabled) {
-		border-color: #aebee4;
-		background: #e7edff;
-		color: #294f9b;
+	.cart-actions .text-button:hover:not(:disabled) {
+		border-color: #aaa69a;
+		background: #f6f4ef;
 	}
 
 	.sales-message {
