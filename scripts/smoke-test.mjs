@@ -176,7 +176,46 @@ try {
 	const browser = await chromium.launch({ headless: true });
 	const page = await browser.newPage({ viewport: { width: 1600, height: 900 } });
 	await mockLiveProductApi(page);
-	await page.addInitScript(() => localStorage.clear());
+	await page.addInitScript(() => {
+		localStorage.clear();
+		const files = new Map();
+		window.__dailySalesTestFiles = files;
+
+		class TestFileHandle {
+			constructor(name) {
+				this.name = name;
+			}
+
+			async getFile() {
+				return { text: async () => files.get(this.name) ?? '' };
+			}
+
+			async createWritable() {
+				let contents = '';
+				return {
+					write: async (data) => {
+						contents = data;
+					},
+					close: async () => files.set(this.name, contents)
+				};
+			}
+		}
+
+		const directory = {
+			name: 'daily sales',
+			getDirectoryHandle: async () => directory,
+			getFileHandle: async (name, options = {}) => {
+				if (!files.has(name) && !options.create) throw new DOMException('Missing', 'NotFoundError');
+				if (!files.has(name)) files.set(name, '');
+				return new TestFileHandle(name);
+			},
+			async *values() {
+				for (const name of files.keys()) yield new TestFileHandle(name);
+			}
+		};
+
+		window.showDirectoryPicker = async () => directory;
+	});
 	await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
 	await expect(page.locator('.brand strong')).toHaveText('Dr. Biomaster');
@@ -184,6 +223,9 @@ try {
 	await expect(page.locator('.total')).toContainText('0.00 / 0.00');
 	await expect(page.locator('.price-check-button')).toBeVisible();
 	await expect(page.locator('.price-check-button')).toBeEnabled();
+	await expect(page.locator('.daily-sales-button')).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Добави продажба в брой' })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'Добави продажба с карта' })).toBeDisabled();
 
 	await expect(productCard(page, '24892').locator('.sale')).toContainText('-10%');
 
@@ -203,6 +245,70 @@ try {
 	await clickProduct(page, '2433');
 	await expect(productCard(page, '2433')).toHaveClass(/selected/);
 	await expect(page.locator('.cart-total')).toContainText('31.70 / 62.00');
+	await page.getByRole('button', { name: '40%' }).click();
+	await expect(page.locator('.cart-total')).toContainText('19.02 / 37.20');
+	await page.getByLabel('Отстъпка по избор в проценти').fill('12.5');
+	await expect(page.locator('.cart-total')).toContainText('27.74 / 54.25');
+	await page.getByLabel('Отстъпка по избор в проценти').fill('0');
+
+	await expect(page.getByRole('button', { name: 'Принтирай кошницата' })).toBeVisible();
+	await page.getByRole('button', { name: 'Добави продажба в брой' }).click();
+	await expect(page.locator('.sales-message')).toContainText('в брой');
+	await expectCartEmpty(page);
+	const writtenSalesFile = await page.evaluate(() => [...window.__dailySalesTestFiles.values()][0]);
+	expect(writtenSalesFile).toContain('АЛОЕ АРБОРЕСЦЕНС');
+	expect(writtenSalesFile).toContain('💵 CASH');
+
+	await page.locator('.daily-sales-button').click();
+	await expect(page.locator('.sales-modal')).toBeVisible();
+	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await expect(page.locator('.sales-header')).toContainText('31.70 EUR');
+	await page.locator('.sales-header').getByRole('button', { name: 'Добави продажба ръчно' }).click();
+	const suggestedProduct = PRODUCTS.find((product) => product.id === '2433');
+	await page.locator('.sale-editor .product-field input').fill(suggestedProduct.name);
+	await expect(page.locator('.sale-editor input[type="number"]').nth(2)).toHaveValue(
+		String(Number((suggestedProduct.price / 1.95583).toFixed(2)))
+	);
+	await page.locator('.sale-editor select').selectOption('card');
+	await page.getByRole('button', { name: /Запиши във файла/ }).click();
+	await expect(page.locator('.sale-row')).toHaveCount(2);
+	await page.locator('.filters button').filter({ hasText: 'Карта' }).click();
+	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await expect(page.locator('.sales-header')).toContainText('31.70 EUR');
+	await page.locator('.filters button').filter({ hasText: 'В брой' }).click();
+	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await page.locator('.filters button').filter({ hasText: 'Всички' }).click();
+	await expect(page.locator('.sales-header')).toContainText('63.40 EUR');
+
+	await page.locator('.sale-row').first().getByRole('button', { name: 'Редактирай' }).click();
+	await expect(page.locator('.sale-editor')).toBeVisible();
+	await page.locator('.sale-editor input[type="number"]').last().fill('50');
+	await page.getByRole('button', { name: /Запиши във файла/ }).click();
+	await expect(page.locator('.sales-header')).toContainText('47.55 EUR');
+	page.once('dialog', (dialog) => dialog.accept());
+	await page.locator('.sale-row').first().getByRole('button', { name: 'Изтрий' }).click();
+	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await page.getByRole('button', { name: 'Затвори', exact: true }).click();
+	await page.evaluate(() => {
+		const oldSale = {
+			id: 'older-sale',
+			createdAt: '2026-08-03T10:00:00.000Z',
+			payment: 'card',
+			globalDiscount: 0,
+			items: [{ productId: 'old', name: 'Архивен продукт', quantity: 1, unitPrice: 25, discountPercent: 0 }],
+			total: 25
+		};
+		window.__dailySalesTestFiles.set(
+			'03-08-2026.txt',
+			`# Dr. Biomaster Daily Sales v1\n# Date: 03/08/2026\n1: Архивен продукт x1 - 25.00 EUR - 💳 CARD\t${JSON.stringify(oldSale)}\n`
+		);
+	});
+	await page.locator('.daily-sales-button').click();
+	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await page.locator('.sales-toolbar select').selectOption('2026-08-03');
+	await expect(page.locator('.sales-header')).toContainText('25.00 EUR');
+	await expect(page.locator('.sale-row')).toContainText('Архивен продукт');
+	await page.getByRole('button', { name: 'Затвори', exact: true }).click();
 
 	await clearCart(page);
 	await page.locator('input[type="search"]').fill('');

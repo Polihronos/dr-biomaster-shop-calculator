@@ -1,12 +1,15 @@
 <script lang="ts">
 	import {
 		BadgePercent,
+		Banknote,
 		BookOpen,
+		CalendarDays,
 		Cannabis,
 		Check,
 		ChevronDown,
 		CircleMinus,
 		CirclePlus,
+		CreditCard,
 		ExternalLink,
 		Leaf,
 		Package,
@@ -19,6 +22,13 @@
 		Ticket,
 		X
 	} from '@lucide/svelte';
+	import DailySalesModal from '$lib/DailySalesModal.svelte';
+	import {
+		appendSale,
+		chooseDailySalesDirectory,
+		type DirectoryHandleLike,
+		type PaymentMethod
+	} from '$lib/daily-sales';
 	import { catalogUpdatedAt, products, type Product } from '$lib/products';
 
 	type Selection = Record<string, number>;
@@ -58,7 +68,7 @@
 	const CANNABIMAX_GOLD_ID = '8077';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
-	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 33, 35];
+	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 33, 35, 40];
 	const packageComboRules: PackageComboRule[] = [
 		{ packageId: '24886', itemIds: ['259', '1847', '1849'] },
 		{ packageId: '2435', itemIds: ['1865', '1863', '1910'] },
@@ -93,6 +103,10 @@
 	let priceCheckStatus: PriceCheckStatus = $state('idle');
 	let priceCheckMessage = $state('');
 	let priceCheckRows: PriceCheckRow[] = $state([]);
+	let salesDirectory: DirectoryHandleLike | null = $state(null);
+	let dailySalesOpen = $state(false);
+	let salesMessage = $state('');
+	let recordingSale = $state(false);
 	let priceCheckHideTimer: number | undefined;
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
@@ -613,6 +627,63 @@
 		printWindow.print();
 	}
 
+	async function ensureSalesDirectory() {
+		if (salesDirectory) return salesDirectory;
+
+		try {
+			salesDirectory = await chooseDailySalesDirectory();
+			return salesDirectory;
+		} catch (error) {
+			if (error instanceof DOMException && error.name === 'AbortError') return null;
+			salesMessage = error instanceof Error ? error.message : 'Неуспешен достъп до папката за продажби.';
+			return null;
+		}
+	}
+
+	async function openDailySales() {
+		const directory = await ensureSalesDirectory();
+		if (directory) dailySalesOpen = true;
+	}
+
+	async function recordSale(payment: PaymentMethod) {
+		if (selectedRows.length === 0 || recordingSale) return;
+		recordingSale = true;
+		salesMessage = '';
+
+		try {
+			const directory = await ensureSalesDirectory();
+			if (!directory) return;
+			const now = new Date();
+			const items = selectedRows.map((row) => {
+				const fullPrice = row.unitPrice * row.quantity;
+				const effectiveDiscount = fullPrice > 0 ? 100 * (1 - row.lineTotal / fullPrice) : 0;
+				return {
+					productId: row.product.id,
+					name: row.product.name,
+					quantity: row.quantity,
+					unitPrice: row.unitPrice,
+					discountPercent: Number(Math.max(0, effectiveDiscount).toFixed(4))
+				};
+			});
+
+			await appendSale(directory, {
+				id: crypto.randomUUID(),
+				createdAt: now.toISOString(),
+				payment,
+				globalDiscount,
+				items,
+				total
+			});
+
+			clearCart();
+			salesMessage = `Продажбата е записана (${payment === 'card' ? 'карта' : 'в брой'}).`;
+		} catch (error) {
+			salesMessage = error instanceof Error ? error.message : 'Продажбата не беше записана.';
+		} finally {
+			recordingSale = false;
+		}
+	}
+
 	function fetchLiveProductsPage(page: number) {
 		return new Promise<LiveStoreProduct[]>((resolve, reject) => {
 			const callbackName = `drBiomasterPriceCheck_${Date.now()}_${page}`;
@@ -840,6 +911,10 @@
 					<RefreshCcw size={16} />
 					{priceCheckStatus === 'checking' ? 'Сверявам' : 'Свери цени'}
 				</button>
+				<button class="text-button daily-sales-button" onclick={openDailySales}>
+					<CalendarDays size={16} />
+					Дневни продажби
+				</button>
 			</div>
 		</header>
 
@@ -903,6 +978,10 @@
 			{#each quickDiscounts as discount (discount)}
 				<button onclick={() => (globalDiscount = discount)}>-{discount}%</button>
 			{/each}
+			<label class="custom-discount">
+				<span>По избор %</span>
+				<input type="number" min="0" max="100" step="0.1" bind:value={globalDiscount} aria-label="Отстъпка по избор в проценти" />
+			</label>
 			<button onclick={resetSaleTools}>
 				<RotateCcw size={16} />
 				Нулирай
@@ -1025,13 +1104,31 @@
 					<span>{selectedCount} бр.</span>
 				</div>
 				<div class="cart-actions">
-					<button class="text-button" onclick={printCart}>
-						<Printer size={16} />
-						Принт
+					<button class="icon-button" title="Принтирай кошницата" aria-label="Принтирай кошницата" onclick={printCart}>
+						<Printer size={18} />
+					</button>
+					<button
+						class="icon-button sale-cash"
+						title="Добави продажба в брой"
+						aria-label="Добави продажба в брой"
+						disabled={selectedRows.length === 0 || recordingSale}
+						onclick={() => recordSale('cash')}
+					>
+						<Banknote size={19} />
+					</button>
+					<button
+						class="icon-button sale-card"
+						title="Добави продажба с карта"
+						aria-label="Добави продажба с карта"
+						disabled={selectedRows.length === 0 || recordingSale}
+						onclick={() => recordSale('card')}
+					>
+						<CreditCard size={19} />
 					</button>
 					<button class="text-button" onclick={clearCart}>Изчисти</button>
 				</div>
 			</div>
+			{#if salesMessage}<p class="sales-message">{salesMessage}</p>{/if}
 
 			<div class="cart-total">
 				<span>Общо</span>
@@ -1237,6 +1334,10 @@
 			</div>
 		</section>
 	</div>
+{/if}
+
+{#if dailySalesOpen && salesDirectory}
+	<DailySalesModal directory={salesDirectory} {products} onclose={() => (dailySalesOpen = false)} />
 {/if}
 
 <style>
@@ -1511,6 +1612,30 @@
 		color: #20231f;
 	}
 
+	.custom-discount {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 36px;
+		padding: 0 8px 0 10px;
+		border: 1px solid #cfcbbf;
+		border-radius: 8px;
+		background: #fffdf7;
+		color: #626058;
+		font-size: 0.82rem;
+		font-weight: 700;
+	}
+
+	.custom-discount input {
+		width: 58px;
+		height: 28px;
+		padding: 0 5px;
+		border: 1px solid #d8d5ca;
+		border-radius: 6px;
+		background: #fff;
+		text-align: center;
+	}
+
 	.text-button:disabled {
 		cursor: wait;
 		opacity: 0.65;
@@ -1754,6 +1879,33 @@
 
 	.cart-actions {
 		gap: 6px;
+	}
+
+	.cart-actions .icon-button:disabled {
+		cursor: not-allowed;
+		opacity: 0.42;
+	}
+
+	.cart-actions .sale-cash:not(:disabled) {
+		border-color: #9fceb3;
+		background: #def5e6;
+		color: #1f6c45;
+	}
+
+	.cart-actions .sale-card:not(:disabled) {
+		border-color: #aebee4;
+		background: #e7edff;
+		color: #294f9b;
+	}
+
+	.sales-message {
+		margin: -2px 0 12px;
+		padding: 8px 10px;
+		border-radius: 7px;
+		background: #edf8f1;
+		color: #1f5d40;
+		font-size: 0.8rem;
+		font-weight: 700;
 	}
 
 	.cart-total {
@@ -2021,6 +2173,11 @@
 
 		.brand span {
 			display: none;
+		}
+
+		.header-actions .text-button {
+			padding: 0 9px;
+			font-size: 0.82rem;
 		}
 
 		.content {
