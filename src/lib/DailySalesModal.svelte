@@ -34,6 +34,7 @@
 	let status = $state('');
 	let loading = $state(true);
 	let loadSequence = 0;
+	let statusHideTimer: number | undefined;
 
 	const filteredSales = $derived(filter === 'all' ? sales : sales.filter((sale) => sale.payment === filter));
 	const filteredTotal = $derived(filteredSales.reduce((sum, sale) => sum + sale.total, 0));
@@ -50,20 +51,20 @@
 			const today = dateKey();
 			availableDates = [...new Set([today, ...dates])].sort((a, b) => b.localeCompare(a));
 		} catch (error) {
-			status = messageFor(error);
+			showStatus(messageFor(error));
 		}
 	}
 
 	async function loadDay(key: string) {
 		const sequence = ++loadSequence;
 		loading = true;
-		status = '';
+		showStatus('');
 
 		try {
 			const day = await readSalesDay(directory, key);
 			if (sequence === loadSequence) sales = day.sales;
 		} catch (error) {
-			if (sequence === loadSequence) status = messageFor(error);
+			if (sequence === loadSequence) showStatus(messageFor(error));
 		} finally {
 			if (sequence === loadSequence) loading = false;
 		}
@@ -117,7 +118,7 @@
 		if (!editorSale) return;
 		const normalized = normalizeSale(editorSale);
 		if (normalized.items.length === 0) {
-			status = 'Добави поне един продукт с количество.';
+			showStatus('Добави поне един продукт с количество.');
 			return;
 		}
 
@@ -129,10 +130,10 @@
 			await writeSalesDay(directory, selectedDate, nextSales);
 			sales = nextSales;
 			editorSale = null;
-			status = 'Продажбата е записана във файла.';
+			showStatus('Продажбата е записана във файла.');
 			await refreshDates();
 		} catch (error) {
-			status = messageFor(error);
+			showStatus(messageFor(error));
 		}
 	}
 
@@ -143,10 +144,21 @@
 		try {
 			await writeSalesDay(directory, selectedDate, nextSales);
 			sales = nextSales;
-			status = 'Продажбата е изтрита от файла.';
+			showStatus('Продажбата е изтрита от файла.');
 		} catch (error) {
-			status = messageFor(error);
+			showStatus(messageFor(error));
 		}
+	}
+
+	function showStatus(message: string) {
+		if (statusHideTimer) window.clearTimeout(statusHideTimer);
+		status = message;
+		if (!message) return;
+
+		statusHideTimer = window.setTimeout(() => {
+			status = '';
+			statusHideTimer = undefined;
+		}, 3000);
 	}
 
 	function printSales() {

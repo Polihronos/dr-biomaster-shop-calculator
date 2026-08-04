@@ -109,6 +109,7 @@
 	let salesMessage = $state('');
 	let recordingSale = $state(false);
 	let priceCheckHideTimer: number | undefined;
+	let salesMessageHideTimer: number | undefined;
 
 	const selectedRows = $derived(products.filter((product) => (selection[product.id] ?? 0) > 0).map(rowForProduct));
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
@@ -632,17 +633,17 @@
 		if (salesDirectory) return salesDirectory;
 
 		try {
-			salesMessage = 'Избери папка Documents. Папката daily sales и днешният файл ще се създадат автоматично.';
+			showSalesMessage('Избери папка Documents. Папката daily sales и днешният файл ще се създадат автоматично.');
 			await tick();
 			salesDirectory = await chooseDailySalesDirectory();
-			salesMessage = 'Папката daily sales и днешният файл са готови.';
+			showSalesMessage('Папката daily sales и днешният файл са готови.');
 			return salesDirectory;
 		} catch (error) {
 			if (error instanceof DOMException && error.name === 'AbortError') {
-				salesMessage = 'Не е избрана папка. Натисни отново и избери Documents.';
+				showSalesMessage('Не е избрана папка. Натисни отново и избери Documents.');
 				return null;
 			}
-			salesMessage = error instanceof Error ? error.message : 'Неуспешен достъп до папката за продажби.';
+			showSalesMessage(error instanceof Error ? error.message : 'Неуспешен достъп до папката за продажби.');
 			return null;
 		}
 	}
@@ -655,7 +656,7 @@
 	async function recordSale(payment: PaymentMethod) {
 		if (selectedRows.length === 0 || recordingSale) return;
 		recordingSale = true;
-		salesMessage = '';
+		showSalesMessage('');
 
 		try {
 			const directory = await ensureSalesDirectory();
@@ -683,12 +684,23 @@
 			});
 
 			clearCart();
-			salesMessage = `Продажбата е записана (${payment === 'card' ? 'карта' : 'в брой'}).`;
+			showSalesMessage(`Продажбата е записана (${payment === 'card' ? 'карта' : 'в брой'}).`);
 		} catch (error) {
-			salesMessage = error instanceof Error ? error.message : 'Продажбата не беше записана.';
+			showSalesMessage(error instanceof Error ? error.message : 'Продажбата не беше записана.');
 		} finally {
 			recordingSale = false;
 		}
+	}
+
+	function showSalesMessage(message: string) {
+		if (salesMessageHideTimer) window.clearTimeout(salesMessageHideTimer);
+		salesMessage = message;
+		if (!message) return;
+
+		salesMessageHideTimer = window.setTimeout(() => {
+			salesMessage = '';
+			salesMessageHideTimer = undefined;
+		}, 3000);
 	}
 
 	function fetchLiveProductsPage(page: number) {
@@ -1880,18 +1892,26 @@
 	}
 
 	.cart-head {
-		justify-content: space-between;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: start;
+		gap: 8px;
 		margin-bottom: 12px;
 	}
 
 	.cart-actions {
+		display: grid;
+		grid-template-columns: repeat(4, 64px);
 		gap: 6px;
 	}
 
-	.cart-actions .cart-icon-button {
-		width: 38px;
+	.cart-actions .text-button {
+		justify-content: center;
+		width: 64px;
+		height: 36px;
 		min-height: 36px;
 		padding: 0;
+		white-space: nowrap;
 	}
 
 	.cart-actions .cart-icon-button:disabled {
