@@ -240,7 +240,11 @@ try {
 			queryPermission: async () => 'granted'
 		};
 
-		window.showDirectoryPicker = async () => documents;
+		window.showDirectoryPicker = async (options = {}) => {
+			if (options.id === 'dr-biomaster-analytics-orders') return ordersDirectory;
+			if (options.id === 'dr-biomaster-analytics-sales') return salesDirectory;
+			return documents;
+		};
 	});
 	await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
@@ -373,7 +377,8 @@ try {
 	});
 	await page.locator('.analytics-button').click();
 	await expect(page.locator('.analytics-modal')).toBeVisible();
-	await page.getByRole('button', { name: 'Избери Documents' }).click();
+	await page.getByRole('button', { name: 'Свържи daily orders' }).click();
+	await page.getByRole('button', { name: 'Свържи daily sales' }).click();
 	await expect(page.locator('.metric-strip')).toContainText('96,70 EUR');
 	await expect(page.locator('.map-wrap path')).toHaveCount(28);
 	await expect(page.locator('.wide-table').first()).toContainText('София');

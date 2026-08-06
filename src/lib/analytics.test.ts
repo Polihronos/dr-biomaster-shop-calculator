@@ -104,10 +104,8 @@ describe('file-backed analytics', () => {
 			products: 'Кориолус MRL 90 капс x2',
 			sum: '50.00 EUR'
 		};
-		const root = new MemoryDirectory('Documents')
-			.addDirectory(new MemoryDirectory('daily orders').addFile('01-08-2026.txt', `# Dr. Biomaster Daily Orders v1\n#30001 | Бургас | Иван | Кориолус x2 | 50 EUR\t${JSON.stringify(order)}\n`))
-			.addDirectory(
-				new MemoryDirectory('daily sales').addFile(
+		const orders = new MemoryDirectory('daily orders').addFile('01-08-2026.txt', `# Dr. Biomaster Daily Orders v1\n#30001 | Бургас | Иван | Кориолус x2 | 50 EUR\t${JSON.stringify(order)}\n`);
+		const sales = new MemoryDirectory('daily sales').addFile(
 					'02-08-2026.txt',
 					serializeSalesFile('2026-08-02', [
 						{
@@ -119,10 +117,9 @@ describe('file-backed analytics', () => {
 							total: 30
 						}
 					])
-				)
-			);
+				);
 
-		const loaded = await loadAnalytics(root, PRODUCTS, GEOGRAPHY);
+		const loaded = await loadAnalytics({ orders, sales }, PRODUCTS, GEOGRAPHY);
 		expect(loaded.transactions).toHaveLength(2);
 		expect(loaded.transactions[0]).toMatchObject({ city: 'Бургас', regionId: 'BG341', revenueEur: 50 });
 		expect(loaded.transactions[1]).toMatchObject({ city: 'София', regionId: 'BG411', revenueEur: 30 });

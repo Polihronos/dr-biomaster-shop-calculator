@@ -6,10 +6,14 @@ const BGN_PER_EUR = 1.95583;
 const ANALYTICS_DB = 'dr-biomaster-calculator-analytics';
 const ANALYTICS_STORE = 'settings';
 const ROOT_DIRECTORY_KEY = 'documents-directory';
+const ORDERS_DIRECTORY_KEY = 'daily-orders-directory';
+const SALES_DIRECTORY_KEY = 'daily-sales-directory';
 
 export type AnalyticsSource = 'order' | 'sale';
 export type AnalyticsSourceFilter = 'all' | 'orders' | 'sales';
 export type MapMetric = 'transactions' | 'units' | 'revenue';
+export type AnalyticsDirectoryKind = 'orders' | 'sales';
+export type AnalyticsDirectories = Record<AnalyticsDirectoryKind, DirectoryHandleLike | null>;
 
 export type AnalyticsRegion = { id: string; name: string; path: string; centroid: [number, number] };
 type Settlement = { n: string; e: string; r: string; t: number };
@@ -120,22 +124,48 @@ async function dbPut(key: string, value: unknown) {
 	});
 }
 
-export async function restoreAnalyticsRoot() {
+export async function restoreAnalyticsDirectories(): Promise<AnalyticsDirectories> {
 	try {
-		return (await dbGet<DirectoryHandleLike>(ROOT_DIRECTORY_KEY)) ?? null;
+		let orders = (await dbGet<DirectoryHandleLike>(ORDERS_DIRECTORY_KEY)) ?? null;
+		let sales = (await dbGet<DirectoryHandleLike>(SALES_DIRECTORY_KEY)) ?? null;
+
+		// Migrate access saved by the earlier version, which selected the Documents root.
+		if (!orders || !sales) {
+			const root = await dbGet<DirectoryHandleLike>(ROOT_DIRECTORY_KEY);
+			if (root) {
+				orders ??= await optionalSubdirectory(root, 'daily orders');
+				sales ??= await optionalSubdirectory(root, 'daily sales');
+				if (orders) await rememberDirectory('orders', orders);
+				if (sales) await rememberDirectory('sales', sales);
+			}
+		}
+
+		return { orders, sales };
 	} catch {
-		return null;
+		return { orders: null, sales: null };
 	}
 }
 
-export async function chooseAnalyticsRoot() {
-	if (!window.showDirectoryPicker) throw new Error('Използвай Chrome или Edge, за да прочетеш TXT файловете.');
-	const directory = await window.showDirectoryPicker({ id: 'dr-biomaster-analytics', mode: 'read', startIn: 'documents' });
+async function rememberDirectory(kind: AnalyticsDirectoryKind, directory: DirectoryHandleLike) {
 	try {
-		await dbPut(ROOT_DIRECTORY_KEY, directory);
+		await dbPut(kind === 'orders' ? ORDERS_DIRECTORY_KEY : SALES_DIRECTORY_KEY, directory);
 	} catch {
 		// File-system handles can be used for this session even if the browser refuses persistence.
 	}
+}
+
+export async function chooseAnalyticsDirectory(kind: AnalyticsDirectoryKind) {
+	if (!window.showDirectoryPicker) throw new Error('Използвай Chrome или Edge, за да прочетеш TXT файловете.');
+	const expectedName = kind === 'orders' ? 'daily orders' : 'daily sales';
+	const directory = await window.showDirectoryPicker({
+		id: `dr-biomaster-analytics-${kind}`,
+		mode: 'read',
+		startIn: 'documents'
+	});
+	if (normalizeLookup(directory.name) !== normalizeLookup(expectedName)) {
+		throw new Error(`Избери директно папката „${expectedName}“, а не Documents.`);
+	}
+	await rememberDirectory(kind, directory);
 	return directory;
 }
 
@@ -341,14 +371,14 @@ async function datedFiles(directory: DirectoryHandleLike | null) {
 	return files.toSorted((a, b) => a.key.localeCompare(b.key));
 }
 
-export async function loadAnalytics(root: DirectoryHandleLike, products: Product[], geography = analyticsGeography): Promise<AnalyticsLoadResult> {
-	const permission = await analyticsPermission(root, false);
-	if (permission !== 'granted') throw new Error('Нужно е разрешение за четене на папка Documents.');
-	const [ordersDirectory, salesDirectory] = await Promise.all([
-		optionalSubdirectory(root, 'daily orders'),
-		optionalSubdirectory(root, 'daily sales')
-	]);
-	const [orderFiles, salesFiles] = await Promise.all([datedFiles(ordersDirectory), datedFiles(salesDirectory)]);
+export async function loadAnalytics(directories: AnalyticsDirectories, products: Product[], geography = analyticsGeography): Promise<AnalyticsLoadResult> {
+	if (!directories.orders && !directories.sales) throw new Error('Свържи поне една папка с данни.');
+	for (const directory of [directories.orders, directories.sales]) {
+		if (directory && (await analyticsPermission(directory, false)) !== 'granted') {
+			throw new Error(`Нужно е разрешение за четене на папка „${directory.name}“.`);
+		}
+	}
+	const [orderFiles, salesFiles] = await Promise.all([datedFiles(directories.orders), datedFiles(directories.sales)]);
 	const resolveSettlement = settlementResolver(geography);
 	const matchProduct = productMatcher(products);
 	const transactions: AnalyticsTransaction[] = [];
