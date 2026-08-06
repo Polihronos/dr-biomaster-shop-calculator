@@ -39,6 +39,8 @@ export type DirectoryHandleLike = {
 	getDirectoryHandle(name: string, options?: { create?: boolean }): Promise<DirectoryHandleLike>;
 	getFileHandle(name: string, options?: { create?: boolean }): Promise<FileHandleLike>;
 	values(): AsyncIterable<FileHandleLike | DirectoryHandleLike>;
+	queryPermission?(options?: { mode?: 'read' | 'readwrite' }): Promise<PermissionState>;
+	requestPermission?(options?: { mode?: 'read' | 'readwrite' }): Promise<PermissionState>;
 };
 
 declare global {

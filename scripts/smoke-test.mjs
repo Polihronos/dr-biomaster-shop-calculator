@@ -178,17 +178,20 @@ try {
 	await mockLiveProductApi(page);
 	await page.addInitScript(() => {
 		localStorage.clear();
-		const files = new Map();
-		window.__dailySalesTestFiles = files;
+		const salesFiles = new Map();
+		const orderFiles = new Map();
+		window.__dailySalesTestFiles = salesFiles;
+		window.__dailyOrdersTestFiles = orderFiles;
 		window.__dailySalesFolderCreated = false;
 
 		class TestFileHandle {
-			constructor(name) {
+			constructor(name, files) {
 				this.name = name;
+				this.files = files;
 			}
 
 			async getFile() {
-				return { text: async () => files.get(this.name) ?? '' };
+				return { text: async () => this.files.get(this.name) ?? '' };
 			}
 
 			async createWritable() {
@@ -197,30 +200,44 @@ try {
 					write: async (data) => {
 						contents = data;
 					},
-					close: async () => files.set(this.name, contents)
+					close: async () => this.files.set(this.name, contents)
 				};
 			}
 		}
 
-		const directory = {
+		const salesDirectory = {
 			name: 'daily sales',
-			getDirectoryHandle: async () => directory,
+			getDirectoryHandle: async () => salesDirectory,
 			getFileHandle: async (name, options = {}) => {
-				if (!files.has(name) && !options.create) throw new DOMException('Missing', 'NotFoundError');
-				if (!files.has(name)) files.set(name, '');
-				return new TestFileHandle(name);
+				if (!salesFiles.has(name) && !options.create) throw new DOMException('Missing', 'NotFoundError');
+				if (!salesFiles.has(name)) salesFiles.set(name, '');
+				return new TestFileHandle(name, salesFiles);
 			},
 			async *values() {
-				for (const name of files.keys()) yield new TestFileHandle(name);
+				for (const name of salesFiles.keys()) yield new TestFileHandle(name, salesFiles);
+			}
+		};
+		const ordersDirectory = {
+			name: 'daily orders',
+			getFileHandle: async (name) => {
+				if (!orderFiles.has(name)) throw new DOMException('Missing', 'NotFoundError');
+				return new TestFileHandle(name, orderFiles);
+			},
+			async *values() {
+				for (const name of orderFiles.keys()) yield new TestFileHandle(name, orderFiles);
 			}
 		};
 		const documents = {
 			name: 'Documents',
 			getDirectoryHandle: async (name, options = {}) => {
-				if (name !== 'daily sales' || !options.create) throw new DOMException('Missing', 'NotFoundError');
-				window.__dailySalesFolderCreated = true;
-				return directory;
-			}
+				if (name === 'daily sales') {
+					if (options.create) window.__dailySalesFolderCreated = true;
+					return salesDirectory;
+				}
+				if (name === 'daily orders') return ordersDirectory;
+				throw new DOMException('Missing', 'NotFoundError');
+			},
+			queryPermission: async () => 'granted'
 		};
 
 		window.showDirectoryPicker = async () => documents;
@@ -233,6 +250,12 @@ try {
 	await expect(page.locator('.price-check-button')).toBeVisible();
 	await expect(page.locator('.price-check-button')).toBeEnabled();
 	await expect(page.locator('.daily-sales-button')).toBeVisible();
+	await expect(page.locator('.analytics-button')).toBeVisible();
+	const quickStripPositions = await page.locator('.quick-strip').evaluate((strip) => ({
+		analyticsLeft: strip.querySelector('.analytics-button').getBoundingClientRect().left,
+		resetRight: [...strip.querySelectorAll('button')].find((button) => button.textContent.includes('Нулирай')).getBoundingClientRect().right
+	}));
+	expect(quickStripPositions.analyticsLeft).toBeGreaterThan(quickStripPositions.resetRight);
 	await expect(page.locator('.daily-orders-button')).toHaveCount(0);
 	await page.evaluate(() => {
 		window.__dailyOrdersOpenRequests = 0;
@@ -333,6 +356,33 @@ try {
 	await expect(page.locator('.sales-header')).toContainText('25.00 EUR');
 	await expect(page.locator('.sale-row')).toContainText('Архивен продукт');
 	await page.getByRole('button', { name: 'Затвори', exact: true }).click();
+	await page.evaluate(() => {
+		const order = {
+			orderNumber: '30001',
+			date: '2026-08-03',
+			createdAt: '2026-08-03T11:00:00.000Z',
+			city: 'ГР. БУРГАС',
+			name: 'ИВАН ИВАНОВ',
+			products: 'Архивен продукт x2',
+			sum: '40.00 EUR'
+		};
+		window.__dailyOrdersTestFiles.set(
+			'03-08-2026.txt',
+			`# Dr. Biomaster Daily Orders v1\n# Date: 03.08.2026\n#30001 | Бургас | Иван Иванов | Архивен продукт x2 | 40.00 EUR\t${JSON.stringify(order)}\n`
+		);
+	});
+	await page.locator('.analytics-button').click();
+	await expect(page.locator('.analytics-modal')).toBeVisible();
+	await page.getByRole('button', { name: 'Избери Documents' }).click();
+	await expect(page.locator('.metric-strip')).toContainText('96,70 EUR');
+	await expect(page.locator('.map-wrap path')).toHaveCount(28);
+	await expect(page.locator('.wide-table').first()).toContainText('София');
+	await expect(page.locator('.wide-table').first()).toContainText('Бургас');
+	await expect(page.locator('.wide-table').nth(1)).toContainText('Иван Иванов');
+	await page.locator('.source-filter button').filter({ hasText: 'Поръчки' }).click();
+	await expect(page.locator('.metric-strip')).toContainText('40,00 EUR');
+	if (process.env.ANALYTICS_SCREENSHOT) await page.screenshot({ path: process.env.ANALYTICS_SCREENSHOT, fullPage: true });
+	await page.locator('.analytics-header').getByRole('button', { name: 'Затвори' }).click();
 	await page.getByLabel('Отстъпка по избор в проценти').fill('0');
 
 	await clearCart(page);

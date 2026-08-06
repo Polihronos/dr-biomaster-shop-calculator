@@ -6,6 +6,7 @@
 		CalendarDays,
 		Cannabis,
 		Check,
+		ChartNoAxesCombined,
 		ChevronDown,
 		CircleMinus,
 		CirclePlus,
@@ -25,6 +26,7 @@
 	} from '@lucide/svelte';
 	import { onMount, tick } from 'svelte';
 	import { on } from 'svelte/events';
+	import AnalyticsDashboard from '$lib/AnalyticsDashboard.svelte';
 	import DailySalesModal from '$lib/DailySalesModal.svelte';
 	import {
 		appendSale,
@@ -111,6 +113,7 @@
 	let salesMessage = $state('');
 	let recordingSale = $state(false);
 	let ordersExtensionActive = $state(false);
+	let analyticsOpen = $state(false);
 	let priceCheckHideTimer: number | undefined;
 	let salesMessageHideTimer: number | undefined;
 
@@ -1032,6 +1035,10 @@
 				<RotateCcw size={16} />
 				Нулирай
 			</button>
+			<button class="analytics-button" onclick={() => (analyticsOpen = true)}>
+				<ChartNoAxesCombined size={17} />
+				Анализи
+			</button>
 		</section>
 
 		{#if priceCheckStatus !== 'idle'}
@@ -1386,6 +1393,10 @@
 	<DailySalesModal directory={salesDirectory} {products} onclose={() => (dailySalesOpen = false)} />
 {/if}
 
+{#if analyticsOpen}
+	<AnalyticsDashboard {products} onclose={() => (analyticsOpen = false)} />
+{/if}
+
 <style>
 	:global(*) {
 		box-sizing: border-box;
@@ -1617,6 +1628,14 @@
 		gap: 8px;
 		padding: 0 clamp(14px, 3vw, 32px) 16px;
 		color: #626058;
+	}
+
+	.quick-strip .analytics-button {
+		margin-left: auto;
+		border-color: #82bb9a;
+		background: #dff5e8;
+		color: #1f6c45;
+		font-weight: 800;
 	}
 
 	.package-strip {
@@ -2279,6 +2298,10 @@
 
 		.package-choice-actions {
 			grid-template-columns: 1fr;
+		}
+
+		.quick-strip .analytics-button {
+			margin-left: 0;
 		}
 	}
 </style>
