@@ -233,6 +233,18 @@ try {
 	await expect(page.locator('.price-check-button')).toBeVisible();
 	await expect(page.locator('.price-check-button')).toBeEnabled();
 	await expect(page.locator('.daily-sales-button')).toBeVisible();
+	await expect(page.locator('.daily-orders-button')).toHaveCount(0);
+	await page.evaluate(() => {
+		window.__dailyOrdersOpenRequests = 0;
+		document.addEventListener('dr-biomaster-open-daily-orders', () => {
+			window.__dailyOrdersOpenRequests += 1;
+		});
+		document.documentElement.dataset.drBiomasterOrdersExtension = 'active';
+		document.dispatchEvent(new CustomEvent('dr-biomaster-orders-extension-ready'));
+	});
+	await expect(page.locator('.daily-orders-button')).toBeVisible();
+	await page.locator('.daily-orders-button').click();
+	expect(await page.evaluate(() => window.__dailyOrdersOpenRequests)).toBe(1);
 	await expect(page.getByRole('button', { name: 'Добави продажба в брой' })).toBeDisabled();
 	await expect(page.getByRole('button', { name: 'Добави продажба с карта' })).toBeDisabled();
 
@@ -272,6 +284,7 @@ try {
 	await page.locator('.daily-sales-button').click();
 	await expect(page.locator('.sales-modal')).toBeVisible();
 	await expect(page.locator('.sale-row')).toHaveCount(1);
+	await expect(page.locator('.sale-row').first().locator('.row-actions button')).toHaveCount(2);
 	await expect(page.locator('.sales-header')).toContainText('27.74 EUR');
 	await expect(page.locator('.sale-row')).toContainText('Обща отстъпка −12.5%');
 	await page.locator('.sales-header').getByRole('button', { name: 'Добави продажба ръчно' }).click();

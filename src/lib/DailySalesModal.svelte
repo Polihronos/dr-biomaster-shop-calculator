@@ -175,8 +175,8 @@
 
 		printWindow.document.write(`<!doctype html><html lang="bg"><head><meta charset="utf-8">
 			<title>Дневни продажби ${displayDate(selectedDate)}</title><style>
-			body{font-family:Arial,sans-serif;color:#20231f;margin:32px} header{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid #20231f;padding-bottom:14px;margin-bottom:18px}
-			h1{margin:0;font-size:25px} p{margin:4px 0 0;color:#666} .total{text-align:right}.total strong{display:block;font-size:25px}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}th:last-child,td:last-child{text-align:right;font-weight:700}
+			body{font-family:Arial,sans-serif;color:#20231f;margin:32px}header{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid #20231f;padding-bottom:14px;margin-bottom:18px}
+			h1{margin:0;font-size:25px}p{margin:4px 0 0;color:#666;font-size:13px}.total{text-align:right;font-size:13px}.total strong{display:block;font-size:25px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:6px;border:1px solid #aaa;text-align:left;vertical-align:top}th{background:#f1f3f6}th:last-child,td:last-child{text-align:right;font-weight:700}
 			</style></head><body><header><div><h1>${displayDate(selectedDate)} | ${escapeHtml(dayOfWeek(selectedDate))}</h1><p>${filterLabel(filter)}</p></div><div class="total">Общо<strong>${filteredTotal.toFixed(2)} EUR</strong></div></header>
 			<table><thead><tr><th>№</th><th>Продукти</th><th>Плащане</th><th>Сума</th></tr></thead><tbody>${rows || '<tr><td colspan="4">Няма продажби.</td></tr>'}</tbody></table></body></html>`);
 		printWindow.document.close();
@@ -257,7 +257,6 @@
 						</span>
 						<strong>{sale.total.toFixed(2)} EUR</strong>
 						<div class="row-actions">
-							<button title="Добави продажба ръчно" aria-label="Добави продажба ръчно" onclick={openManualSale}><Plus size={17} /></button>
 							<button title="Редактирай" aria-label="Редактирай" onclick={() => editSale(sale)}><Pencil size={17} /></button>
 							<button class="danger" title="Изтрий" aria-label="Изтрий" onclick={() => deleteSale(sale)}><Trash2 size={17} /></button>
 						</div>

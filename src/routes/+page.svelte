@@ -9,6 +9,7 @@
 		ChevronDown,
 		CircleMinus,
 		CirclePlus,
+		ClipboardList,
 		CreditCard,
 		ExternalLink,
 		Leaf,
@@ -22,7 +23,8 @@
 		Ticket,
 		X
 	} from '@lucide/svelte';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import { on } from 'svelte/events';
 	import DailySalesModal from '$lib/DailySalesModal.svelte';
 	import {
 		appendSale,
@@ -108,6 +110,7 @@
 	let dailySalesOpen = $state(false);
 	let salesMessage = $state('');
 	let recordingSale = $state(false);
+	let ordersExtensionActive = $state(false);
 	let priceCheckHideTimer: number | undefined;
 	let salesMessageHideTimer: number | undefined;
 
@@ -135,6 +138,20 @@
 	);
 	const packageMatches = $derived(getPackageMatches());
 	const ActiveCategoryIcon = $derived(categoryIconComponent(activeCategory));
+
+	onMount(() => {
+		const markOrdersExtensionActive = () => {
+			ordersExtensionActive = true;
+		};
+		const removeReadyListener = on(document, 'dr-biomaster-orders-extension-ready', markOrdersExtensionActive);
+
+		if (document.documentElement.dataset.drBiomasterOrdersExtension === 'active') {
+			markOrdersExtensionActive();
+		}
+		document.dispatchEvent(new CustomEvent('dr-biomaster-orders-calculator-ready'));
+
+		return removeReadyListener;
+	});
 
 	$effect(() => {
 		const raw = localStorage.getItem(STORAGE_KEY);
@@ -653,6 +670,10 @@
 		if (directory) dailySalesOpen = true;
 	}
 
+	function openDailyOrders() {
+		document.dispatchEvent(new CustomEvent('dr-biomaster-open-daily-orders'));
+	}
+
 	async function recordSale(payment: PaymentMethod) {
 		if (selectedRows.length === 0 || recordingSale) return;
 		recordingSale = true;
@@ -934,6 +955,12 @@
 					<CalendarDays size={16} />
 					Дневни продажби
 				</button>
+				{#if ordersExtensionActive}
+					<button class="text-button daily-orders-button" onclick={openDailyOrders}>
+						<ClipboardList size={16} />
+						Дневни поръчки
+					</button>
+				{/if}
 			</div>
 		</header>
 
