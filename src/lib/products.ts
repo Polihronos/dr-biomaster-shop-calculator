@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-07-22T05:01:17.361Z";
+export const catalogUpdatedAt = "2026-08-12T06:40:04.944Z";
 
 export const products: Product[] = [
 	{
@@ -816,7 +816,7 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1783",
-		"name": "ГЪБА РЕЙШИ, Dr. Biomaster, 60 капс. / 300 mg",
+		"name": "ГЪБА РЕЙШИ екстракт 30% полизахариди, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
 		"price": 63.96,
 		"regularPrice": 63.96,
@@ -825,8 +825,22 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster/",
-		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Рейши (Ganoderma lucidum)",
+		"shortDescription": "ГЪБА РЕЙШИ екстракт 30% е хранителна добавка от сух екстракт на плодното тяло на гъбата Рейши ( Ganoderma lucidum ), стандартизиран на 30% гъбени полизахариди — приблизително 88 mg полизахариди във всяка капсула . Пазарният стандарт при повечето рейши екстракти е 10% и обикновено те не са произведени от плодно тяло, какъвто е този продукт, а от гъбен мицел – значително по-евтина суровина за производство. Всяка партида суровина за този продукт се анализира от германската лаборатория AGROLAB . 60 капсули по 300 mg • за 10–30 дни прием Екстракт от плодно тяло , не от мицел и не гъбен прах Съотношение на екстракция ≈ 30:1 Без глутен, без ГМО, веган капсула от растителна целулоза Регистриран в Националния регистър на храните: № Т221115906",
 		"priceLabel": "32.70 &euro; (63.96 лв.)"
+	},
+	{
+		"id": "2362",
+		"name": "ГЪБА РЕЙШИ екстракт 30%, голяма опаковка 240 капс. / 300 mg",
+		"category": "Лекарствени гъби",
+		"price": 192.06,
+		"regularPrice": 192.06,
+		"onSale": false,
+		"hasOptions": false,
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1-300x300.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1.jpg",
+		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster-big/",
+		"shortDescription": "Голямата опаковка ГЪБА РЕЙШИ капсули съдържа 240 капсули по 300 mg — същият стандартизиран екстракт от плодно тяло с 30% полизахариди, в четворно количество. Предназначена е за продължителен прием и при по-високи дневни дози. Голямата опаковка спестява пари 240 капсули стигат за 27 до 80 дни прием – в зависимост от дозата Контрол от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № Т221115906",
+		"priceLabel": "98.20 &euro; (192.06 лв.)"
 	},
 	{
 		"id": "1739",
@@ -997,22 +1011,8 @@ export const products: Product[] = [
 		"priceLabel": "21.00 &euro; (41.07 лв.)"
 	},
 	{
-		"id": "2362",
-		"name": "РЕЙШИ лекарствена гъба, Dr. Biomaster, 240 капс. / 300 mg",
-		"category": "Лекарствени гъби",
-		"price": 192.06,
-		"regularPrice": 192.06,
-		"onSale": false,
-		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1-300x300.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1.jpg",
-		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster-big/",
-		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Рейши (Ganoderma lucidum)",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
-	},
-	{
 		"id": "1785",
-		"name": "РЕЙШИ прахообразна формула от плодно тяло – 100 g",
+		"name": "РЕЙШИ прах от плодно тяло (ганодерма прах), 100 g",
 		"category": "Лекарствени гъби",
 		"price": 37.94,
 		"regularPrice": 37.94,
@@ -1021,7 +1021,7 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-prah-dr-biomaster/",
-		"shortDescription": "100 g Прах от плодно тяло на гъба Рейши (Ganoderma lucidum)",
+		"shortDescription": "РЕЙШИ прах е смляно изсушено плодно тяло на гъбата Рейши ( Ganoderma lucidum ), позната още като ганодерма . Това е гъбата в целия ѝ вид – изсушена и смляна на прах. Прахът е шел-броукън : твърдата хитинова обвивка на гъбните клетки е механично разчупена, за да бъде съдържанието им усвоимо. Шел-броукън — разбита клетъчна стена за по-добра усвояемост 100% прах от плодно тяло, без пълнители и без добавки Без глутен, без ГМО, подходящ за вегани Контрол на всяка партида от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № T221100497 / 09.02.2012 г.",
 		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
@@ -1168,15 +1168,15 @@ export const products: Product[] = [
 		"id": "24728",
 		"name": "ПАКЕТ „СТАВИ“",
 		"category": "Специални пакети",
-		"price": 96.29,
-		"regularPrice": 106.98,
+		"price": 103.33,
+		"regularPrice": 114.81,
 		"onSale": true,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-stavi-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-stavi.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-stavi/",
-		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.47€ (10.69 лв.)",
-		"priceLabel": "54.70 &euro; (106.98 лв.) Original price was: 54.70&euro; (106.98 лв.). 49.23 &euro; (96.29 лв.) Текущата цена е: 49.23&euro; (96.29 лв.)."
+		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.87€ (11.48 лв.)",
+		"priceLabel": "58.70 &euro; (114.81 лв.) Original price was: 58.70&euro; (114.81 лв.). 52.83 &euro; (103.33 лв.) Текущата цена е: 52.83&euro; (103.33 лв.)."
 	},
 	{
 		"id": "24897",
