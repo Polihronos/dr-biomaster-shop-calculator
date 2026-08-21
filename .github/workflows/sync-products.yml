@@ -17,7 +17,8 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    # Use GitHub's hosted macOS network because the shop rejects Linux runners.
+    runs-on: macos-latest
     timeout-minutes: 15
     outputs:
       changed: ${{ steps.changes.outputs.changed }}
