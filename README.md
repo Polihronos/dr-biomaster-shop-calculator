@@ -40,3 +40,9 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+## Automatic product sync
+
+GitHub Actions checks the complete Dr Biomaster catalogue once per day, independently of any local computer. If products, prices, sale status, descriptions, links, or images changed, it validates the generated catalogue, commits only `src/lib/products.ts`, and deploys the validated site to GitHub Pages.
+
+The workflow can also be run manually from the repository's **Actions** tab. Failed runs do not publish partial catalogue data and can be retried without changing the website.
