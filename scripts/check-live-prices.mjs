@@ -1,8 +1,15 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { fetchStoreProducts } from './lib/fetch-store-products.mjs';
 
+const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
 const PRODUCTS_FILE = resolve('src/lib/products.ts');
+const REQUEST_HEADERS = {
+	accept: 'application/json, text/plain, */*',
+	'accept-language': 'bg-BG,bg;q=0.9,en-US;q=0.8,en;q=0.7',
+	referer: 'https://drbiomaster.com/',
+	'user-agent':
+		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
+};
 
 function decodeEntities(value = '') {
 	return value
@@ -31,6 +38,48 @@ function amountToLeva(amount, prices) {
 	return Number(price.toFixed(2));
 }
 
+async function fetchLiveProducts() {
+	const products = [];
+
+	for (let page = 1; page <= 20; page += 1) {
+		const url = `${API}?per_page=100&page=${page}`;
+		const response = await fetch(url, { headers: REQUEST_HEADERS });
+		if (!response.ok) {
+			if (response.status === 403) {
+				const batch = await fetchJsonpPage(url, page);
+				products.push(...batch);
+				if (batch.length < 100) break;
+				continue;
+			}
+			if (response.status === 400 || response.status === 404) break;
+			throw new Error(`Failed to fetch products page ${page}: ${response.status}`);
+		}
+
+		const batch = await response.json();
+		products.push(...batch);
+		if (batch.length < 100) break;
+	}
+
+	return products;
+}
+
+async function fetchJsonpPage(url, page) {
+	const callbackName = `drBiomasterPriceCheck_${page}`;
+	const response = await fetch(`${url}&_jsonp=${callbackName}`, { headers: REQUEST_HEADERS });
+	if (!response.ok) {
+		if (response.status === 400 || response.status === 404) return [];
+		throw new Error(`Failed to fetch products page ${page} via JSONP: ${response.status}`);
+	}
+
+	const text = await response.text();
+	const prefix = `${callbackName}(`;
+	if (!text.startsWith(prefix) || !text.trimEnd().endsWith(');')) {
+		throw new Error(`Unexpected JSONP response for products page ${page}`);
+	}
+
+	return JSON.parse(text.slice(prefix.length, text.lastIndexOf(');')));
+}
+
 async function readLocalProducts() {
 	const source = await readFile(PRODUCTS_FILE, 'utf8');
 	const match = source.match(/export const products: Product\[\] = ([\s\S]*);\s*$/);
@@ -52,7 +101,7 @@ function normalizeLiveProduct(product) {
 }
 
 const localProducts = await readLocalProducts();
-const liveProducts = (await fetchStoreProducts()).map(normalizeLiveProduct);
+const liveProducts = (await fetchLiveProducts()).map(normalizeLiveProduct);
 const localById = new Map(localProducts.map((product) => [product.id, product]));
 const mismatches = [];
 

@@ -41,8 +41,22 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-## Automatic product sync
+## Automatic product sync on macOS
 
-GitHub Actions checks the complete Dr Biomaster catalogue once per day, independently of any local computer. If products, prices, sale status, descriptions, links, or images changed, it validates the generated catalogue, commits only `src/lib/products.ts`, and deploys the validated site to GitHub Pages.
+The macOS task performs one successful catalogue check per calendar day. It normally starts at 08:00. If the Mac is asleep or powered off then, it catches up after wake or the next login. Failed checks retry quietly once per hour; after a successful check, later triggers exit immediately without network access or a new log.
 
-The workflow can also be run manually from the repository's **Actions** tab. Failed runs do not publish partial catalogue data and can be retried without changing the website.
+The maintained scripts stay in this repository. Because macOS blocks background jobs from reading the Documents folder, the installer places a private runtime copy and managed Git checkout in `~/Library/Application Support/DrBiomasterProductSync` and logs in `~/Library/Logs/DrBiomasterProductSync`. This avoids granting broad Full Disk Access and keeps unfinished project files isolated. The job has no UI or notifications and runs with low CPU and I/O priority.
+
+Install or refresh the task:
+
+```sh
+bash scripts/macos/install-product-sync-task.sh
+```
+
+Remove the scheduled task without deleting its recovery checkout or logs:
+
+```sh
+bash scripts/macos/uninstall-product-sync-task.sh
+```
+
+When catalogue data changes, the task verifies types, builds the site, rechecks live prices, commits only `src/lib/products.ts`, and pushes it to `main`. The normal GitHub Pages workflow then deploys the update.
