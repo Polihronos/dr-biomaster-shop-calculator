@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-08-28T05:04:17.320Z";
+export const catalogUpdatedAt = "2026-08-28T21:09:22.163Z";
 
 export const products: Product[] = [
 	{
@@ -34,155 +34,155 @@ export const products: Product[] = [
 		"id": "2433",
 		"name": "АЛОЕ АРБОРЕСЦЕНС подпомага стомашно-чревния баланс, 500 ml",
 		"category": "Билкови продукти",
-		"price": 49.6,
+		"price": 62,
 		"regularPrice": 62,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/aloe-arborescens-il-pucino/",
 		"shortDescription": "500 ml",
-		"priceLabel": "31.70 &euro; (62.00 лв.) Original price was: 31.70&euro; (62.00 лв.). 25.36 &euro; (49.60 лв.) Текущата цена е: 25.36&euro; (49.60 лв.)."
+		"priceLabel": "31.70 &euro; (62.00 лв.)"
 	},
 	{
 		"id": "1849",
 		"name": "АМИГДАЛИН подсилва защитата на организма, 100 капс. / 200 mg",
 		"category": "Билкови продукти",
-		"price": 49.6,
+		"price": 62,
 		"regularPrice": 62,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/amigdalin-vitamin-b17/",
 		"shortDescription": "100 капсули по 200 mg Екстракт от кайсиеви ядки",
-		"priceLabel": "31.70 &euro; (62.00 лв.) Original price was: 31.70&euro; (62.00 лв.). 25.36 &euro; (49.60 лв.) Текущата цена е: 25.36&euro; (49.60 лв.)."
+		"priceLabel": "31.70 &euro; (62.00 лв.)"
 	},
 	{
 		"id": "1857",
 		"name": "АНТИСТРЕС подходящ при стрес и безпокойство, 100 ml",
 		"category": "Билкови продукти",
-		"price": 16.74,
+		"price": 20.93,
 		"regularPrice": 20.93,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-antistress/",
 		"shortDescription": "100 ml Хранителна добавка. 35% vol.",
-		"priceLabel": "10.70 &euro; (20.93 лв.) Original price was: 10.70&euro; (20.93 лв.). 8.56 &euro; (16.74 лв.) Текущата цена е: 8.56&euro; (16.74 лв.)."
+		"priceLabel": "10.70 &euro; (20.93 лв.)"
 	},
 	{
 		"id": "1853",
 		"name": "ДЕТОКС за прочистване от вредни агенти, 135 капс. / 406 mg",
 		"category": "Билкови продукти",
-		"price": 35.05,
+		"price": 43.81,
 		"regularPrice": 43.81,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-detox-formula/",
 		"shortDescription": "135 капсули по 406 mg Смес от набор екстракти и гъби на прах",
-		"priceLabel": "22.40 &euro; (43.81 лв.) Original price was: 22.40&euro; (43.81 лв.). 17.92 &euro; (35.05 лв.) Текущата цена е: 17.92&euro; (35.05 лв.)."
+		"priceLabel": "22.40 &euro; (43.81 лв.)"
 	},
 	{
 		"id": "1845",
 		"name": "ЕСИАК при онкологични заболявания, 60 капс. / 500 mg",
 		"category": "Билкови продукти",
-		"price": 59.93,
+		"price": 74.91,
 		"regularPrice": 74.91,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-kapsuli/",
 		"shortDescription": "60 капсули по 500 mg",
-		"priceLabel": "38.30 &euro; (74.91 лв.) Original price was: 38.30&euro; (74.91 лв.). 30.64 &euro; (59.93 лв.) Текущата цена е: 30.64&euro; (59.93 лв.)."
+		"priceLabel": "38.30 &euro; (74.91 лв.)"
 	},
 	{
 		"id": "1843",
 		"name": "ЕСИАК ЧАЙ за подкрепа на имунната система, 42.5 g",
 		"category": "Билкови продукти",
-		"price": 51.95,
+		"price": 64.93,
 		"regularPrice": 64.93,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-prah/",
 		"shortDescription": "42.5 g",
-		"priceLabel": "33.20 &euro; (64.93 лв.) Original price was: 33.20&euro; (64.93 лв.). 26.56 &euro; (51.95 лв.) Текущата цена е: 26.56&euro; (51.95 лв.)."
+		"priceLabel": "33.20 &euro; (64.93 лв.)"
 	},
 	{
 		"id": "1865",
 		"name": "КАРАМФИЛ за пречистване на организма, 100 капс. / 400 mg",
 		"category": "Билкови продукти",
-		"price": 20.03,
+		"price": 25.03,
 		"regularPrice": 25.03,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/karamfil-kapsuli/",
 		"shortDescription": "100 капсули по 400 mg 100% Карамфил ( Caryophyllus aromaticus ) на прах с желатинови капсули",
-		"priceLabel": "12.80 &euro; (25.03 лв.) Original price was: 12.80&euro; (25.03 лв.). 10.24 &euro; (20.03 лв.) Текущата цена е: 10.24&euro; (20.03 лв.)."
+		"priceLabel": "12.80 &euro; (25.03 лв.)"
 	},
 	{
 		"id": "1847",
 		"name": "КУРКУМИН при възпалителни процеси, 60 капс. / 500 mg",
 		"category": "Билкови продукти",
-		"price": 44.12,
+		"price": 55.15,
 		"regularPrice": 55.15,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/kurkumin/",
 		"shortDescription": "60 капсули пo 500 mg",
-		"priceLabel": "28.20 &euro; (55.15 лв.) Original price was: 28.20&euro; (55.15 лв.). 22.56 &euro; (44.12 лв.) Текущата цена е: 22.56&euro; (44.12 лв.)."
+		"priceLabel": "28.20 &euro; (55.15 лв.)"
 	},
 	{
 		"id": "1851",
 		"name": "ПАУ ДАРКО при бактериални и вирусни инфекции, 230 капс. / 370 mg",
 		"category": "Билкови продукти",
-		"price": 39.9,
+		"price": 49.87,
 		"regularPrice": 49.87,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/pau-darko/",
 		"shortDescription": "230 капсули по 370 mg Екстракт от кора от Мравчено дърво 8:1 Подпомага имунната система и защитата на организма срещу вредни агенти",
-		"priceLabel": "25.50 &euro; (49.87 лв.) Original price was: 25.50&euro; (49.87 лв.). 20.40 &euro; (39.90 лв.) Текущата цена е: 20.40&euro; (39.90 лв.)."
+		"priceLabel": "25.50 &euro; (49.87 лв.)"
 	},
 	{
 		"id": "1841",
 		"name": "СУПЕР ФОРМУЛА за сърце и кръвоносни съдове, 500 ml",
 		"category": "Билкови продукти",
-		"price": 30.35,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/super-formula-za-surce-kruvonosni-sudove/",
 		"shortDescription": "Превъзходен натурален продукт, подпомагащ сърцето и кръвоносните съдове! Съдържа 22 билки в отлична комбинация!",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 15.52 &euro; (30.35 лв.) Текущата цена е: 15.52&euro; (30.35 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "1863",
 		"name": "ТИНКТУРА ОТ ОРЕХ срещу патогенни агенти, 100 ml",
 		"category": "Билкови продукти",
-		"price": 22.37,
+		"price": 27.97,
 		"regularPrice": 27.97,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/tinktura-oreh/",
 		"shortDescription": "100 ml 100% тинктура от обвивките (мезокарп) на орех ( Juglans regia ), супер силна",
-		"priceLabel": "14.30 &euro; (27.97 лв.) Original price was: 14.30&euro; (27.97 лв.). 11.44 &euro; (22.37 лв.) Текущата цена е: 11.44&euro; (22.37 лв.)."
+		"priceLabel": "14.30 &euro; (27.97 лв.)"
 	},
 	{
 		"id": "6756",
@@ -398,15 +398,15 @@ export const products: Product[] = [
 		"id": "30359",
 		"name": "ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан Wellmune® и постбиотик, 150 ml",
 		"category": "За деца",
-		"price": 0,
-		"regularPrice": 0,
+		"price": 31.16,
+		"regularPrice": 31.16,
 		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
-		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. Попълнете Вашите данни и изпратете заявка за предварителна поръчка. Ще се свържем с Вас веднага щом продуктът е наличен. Име (задължително) Фамилия (задължително) Вашият имейл (задължително) Вашият телефон (задължително) Вашият адрес за доставка (задължително) Попълнете верния отговор: 6 + 4 = Съгласен съм с обработването на предоставените данни във връзка със заявката. (window.cfturnstileQueue=window.cfturnstileQueue||[]).push(\"-cf7-1511942024\");if(window.cfturnstileRender)window.cfturnstileRender(); #cf-turnstile-cf7-1511942024 { margin-left: -15px; } document.addEventListener(\"DOMContentLoaded\",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-1511942024')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-1511942024');},1000)}})})});",
-		"priceLabel": "0.00 лв."
+		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. Попълнете Вашите данни и изпратете заявка за предварителна поръчка. Ще се свържем с Вас веднага щом продуктът е наличен. Име (задължително) Фамилия (задължително) Вашият имейл (задължително) Вашият телефон (задължително) Вашият адрес за доставка (задължително) Попълнете верния отговор: 5 + 2 = Съгласен съм с обработването на предоставените данни във връзка със заявката. (window.cfturnstileQueue=window.cfturnstileQueue||[]).push(\"-cf7-3502808435\");if(window.cfturnstileRender)window.cfturnstileRender(); #cf-turnstile-cf7-3502808435 { margin-left: -15px; } document.addEventListener(\"DOMContentLoaded\",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-3502808435')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-3502808435');},1000)}})})});",
+		"priceLabel": "15.93 &euro; (31.16 лв.)"
 	},
 	{
 		"id": "27337",
@@ -678,29 +678,29 @@ export const products: Product[] = [
 		"id": "1779",
 		"name": "АГАРИКУС лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agarikus-blazei-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1781",
 		"name": "АГАРИКУС прахообразна формула от плодно тяло – 100 g",
 		"category": "Лекарствени гъби",
-		"price": 30.35,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-prah-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agaricus-blazei-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 15.52 &euro; (30.35 лв.) Текущата цена е: 15.52&euro; (30.35 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "1817",
@@ -916,15 +916,15 @@ export const products: Product[] = [
 		"id": "1783",
 		"name": "ГЪБА РЕЙШИ екстракт 30% полизахариди, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster/",
 		"shortDescription": "ГЪБА РЕЙШИ екстракт 30% е хранителна добавка от сух екстракт на плодното тяло на гъбата Рейши ( Ganoderma lucidum ), стандартизиран на 30% гъбени полизахариди — приблизително 88 mg полизахариди във всяка капсула . Пазарният стандарт при повечето рейши екстракти е 10% и обикновено те не са произведени от плодно тяло, какъвто е този продукт, а от гъбен мицел – значително по-евтина суровина за производство. Всяка партида суровина за този продукт се анализира от германската лаборатория AGROLAB . 60 капсули по 300 mg • за 10–30 дни прием Екстракт от плодно тяло , не от мицел и не гъбен прах Съотношение на екстракция ≈ 30:1 Без глутен, без ГМО, веган капсула от растителна целулоза Регистриран в Националния регистър на храните: № Т221115906",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "2362",
@@ -944,29 +944,29 @@ export const products: Product[] = [
 		"id": "1739",
 		"name": "ДИАФУНГИ при висока кръвна захар и диабет, 90 капс. / 330 mg",
 		"category": "Лекарствени гъби",
-		"price": 22.37,
+		"price": 27.97,
 		"regularPrice": 27.97,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/diafungi/",
 		"shortDescription": "90 капсули по 330 mg Смес от прахове от плодно тяло на 3 лекарствени гъби: Майтаке ( Grifola frondosa ), Шийтаке ( Lentinula edodes ) и Копринус ( Coprinus comatus ).",
-		"priceLabel": "14.30 &euro; (27.97 лв.) Original price was: 14.30&euro; (27.97 лв.). 11.44 &euro; (22.37 лв.) Текущата цена е: 11.44&euro; (22.37 лв.)."
+		"priceLabel": "14.30 &euro; (27.97 лв.)"
 	},
 	{
 		"id": "259",
 		"name": "ИМЮН МОДУЛАТОР за модулиране на имунната система, 90 капс. / 510 mg",
 		"category": "Лекарствени гъби",
-		"price": 87.93,
+		"price": 109.92,
 		"regularPrice": 109.92,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imun-modulator-90-caps/",
 		"shortDescription": "ИМЮН МОДУЛАТОР представлява смес от 6 лекарствени гъби и е отлично средство за подобряване функциите на имунната система.",
-		"priceLabel": "56.20 &euro; (109.92 лв.) Original price was: 56.20&euro; (109.92 лв.). 44.96 &euro; (87.93 лв.) Текущата цена е: 44.96&euro; (87.93 лв.)."
+		"priceLabel": "56.20 &euro; (109.92 лв.)"
 	},
 	{
 		"id": "1732",
@@ -986,29 +986,29 @@ export const products: Product[] = [
 		"id": "1737",
 		"name": "ИМЮНИТИ 365 за силен имунитет, 120 капс. / 520 mg",
 		"category": "Лекарствени гъби",
-		"price": 32.86,
+		"price": 41.07,
 		"regularPrice": 41.07,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/imunitet-365-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/imunitet-365.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunitet-365/",
 		"shortDescription": "120 капсули по 520 mg Смес от 5 лекарствени гъби: Агарикус прах, Рейши прах, Майтаке прах, Шийтаке прах и Кордицепс екстракт.",
-		"priceLabel": "21.00 &euro; (41.07 лв.) Original price was: 21.00&euro; (41.07 лв.). 16.80 &euro; (32.86 лв.) Текущата цена е: 16.80&euro; (32.86 лв.)."
+		"priceLabel": "21.00 &euro; (41.07 лв.)"
 	},
 	{
 		"id": "1787",
 		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster/",
 		"shortDescription": "Екстракт от Cordyceps sinensis | 30% Полизахариди | Анализен сертификат от AGROLAB – Германия | Опаковка: 60 капсули по 300 мг | Оценка: ⭐⭐⭐⭐⭐ 4.97 / 5",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "2156",
@@ -1056,71 +1056,71 @@ export const products: Product[] = [
 		"id": "1775",
 		"name": "МАЙТАКЕ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1777",
 		"name": "МАЙТАКЕ прахообразна формула от плодно тяло – 100 g",
 		"category": "Лекарствени гъби",
-		"price": 30.35,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/meitake-prah-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/meitake-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/maitake-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 15.52 &euro; (30.35 лв.) Текущата цена е: 15.52&euro; (30.35 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "4155",
 		"name": "МЕШИМА лекарствена гъба, Dr. Biomaster, 60 капс. / 270 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": true,
 		"image": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meshima-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 270 mg Екстракт от плодното тяло на гъба Мешима (Phellinus linteus)",
-		"priceLabel": "26.16 &euro; &ndash; 98.20 &euro; Price range: 26.16&euro; through 98.20&euro; (51.16 – 192.06 лв.)"
+		"priceLabel": "32.70 &euro; &ndash; 98.20 &euro; Price range: 32.70&euro; through 98.20&euro; (63.96 – 192.06 лв.)"
 	},
 	{
 		"id": "1735",
 		"name": "НАЙ-ДОБРАТА СМЕС ОТ ГЪБЕНИ ПРАХОВЕ с 9 витални гъби, 100 g",
 		"category": "Лекарствени гъби",
-		"price": 32.86,
+		"price": 41.07,
 		"regularPrice": 41.07,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/nai-dobrata-smes-gubeni-prahove-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/nai-dobrata-smes-gubeni-prahove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/nai-dobrata-smes-gubeni-prahove/",
 		"shortDescription": "100 g Смес от гъбените прахове от плодното тяло на 9 лекарствени гъби",
-		"priceLabel": "21.00 &euro; (41.07 лв.) Original price was: 21.00&euro; (41.07 лв.). 16.80 &euro; (32.86 лв.) Текущата цена е: 16.80&euro; (32.86 лв.)."
+		"priceLabel": "21.00 &euro; (41.07 лв.)"
 	},
 	{
 		"id": "1785",
 		"name": "РЕЙШИ прах от плодно тяло (ганодерма прах), 100 g",
 		"category": "Лекарствени гъби",
-		"price": 30.35,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-prah-dr-biomaster/",
 		"shortDescription": "РЕЙШИ прах е смляно изсушено плодно тяло на гъбата Рейши ( Ganoderma lucidum ), позната още като ганодерма . Това е гъбата в целия ѝ вид – изсушена и смляна на прах. Прахът е шел-броукън : твърдата хитинова обвивка на гъбните клетки е механично разчупена, за да бъде съдържанието им усвоимо. Шел-броукън — разбита клетъчна стена за по-добра усвояемост 100% прах от плодно тяло, без пълнители и без добавки Без глутен, без ГМО, подходящ за вегани Контрол на всяка партида от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № T221100497 / 09.02.2012 г.",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 15.52 &euro; (30.35 лв.) Текущата цена е: 15.52&euro; (30.35 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "2167",
@@ -1140,15 +1140,15 @@ export const products: Product[] = [
 		"id": "2165",
 		"name": "ХЕРИЦИУМ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "2442",
@@ -1168,43 +1168,43 @@ export const products: Product[] = [
 		"id": "1771",
 		"name": "ШИЙТАКЕ лекарствена гъба, Dr. Biomaster, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Шиитаке (Lentinula edodes)",
-		"priceLabel": "32.70 &euro; (63.96 лв.) Original price was: 32.70&euro; (63.96 лв.). 26.16 &euro; (51.16 лв.) Текущата цена е: 26.16&euro; (51.16 лв.)."
+		"priceLabel": "32.70 &euro; (63.96 лв.)"
 	},
 	{
 		"id": "1773",
 		"name": "ШИЙТАКЕ прахообразна формула от плодно тяло – 100 g",
 		"category": "Лекарствени гъби",
-		"price": 30.35,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-prah-drbiomaster-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-prah-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Шийтаке (Lentinula edodes)",
-		"priceLabel": "19.40 &euro; (37.94 лв.) Original price was: 19.40&euro; (37.94 лв.). 15.52 &euro; (30.35 лв.) Текущата цена е: 15.52&euro; (30.35 лв.)."
+		"priceLabel": "19.40 &euro; (37.94 лв.)"
 	},
 	{
 		"id": "1769",
 		"name": "ЯМАКИРО+ за отслабване и по-добър метаболизъм 180 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 49.6,
+		"price": 62,
 		"regularPrice": 62,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/jamakiro-plus-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/jamakiro-plus.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/jamakiro/",
 		"shortDescription": "180 капсули по 300 mg Смес от прахове от плодно тяло на 4 лекарствени гъби",
-		"priceLabel": "31.70 &euro; (62.00 лв.) Original price was: 31.70&euro; (62.00 лв.). 25.36 &euro; (49.60 лв.) Текущата цена е: 25.36&euro; (49.60 лв.)."
+		"priceLabel": "31.70 &euro; (62.00 лв.)"
 	},
 	{
 		"id": "24892",
@@ -1322,15 +1322,15 @@ export const products: Product[] = [
 		"id": "8077",
 		"name": "Куркумин и Конопено масло на капсули CANNABIMAX GOLD, 30 капсули",
 		"category": "CBD масла",
-		"price": 51.95,
+		"price": 64.93,
 		"regularPrice": 64.93,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/08/cannabimax-gold-drbiomaster-product-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/08/cannabimax-gold-drbiomaster-product.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-gold/",
 		"shortDescription": "Куркумин и конопено масло в двойна капсула",
-		"priceLabel": "33.20 &euro; (64.93 лв.) Original price was: 33.20&euro; (64.93 лв.). 26.56 &euro; (51.95 лв.) Текущата цена е: 26.56&euro; (51.95 лв.)."
+		"priceLabel": "33.20 &euro; (64.93 лв.)"
 	},
 	{
 		"id": "3252",
@@ -1364,43 +1364,43 @@ export const products: Product[] = [
 		"id": "3058",
 		"name": "CBD Масло CANNABIMAX EXTRA STRONG – 30% CBD, 10 ml",
 		"category": "CBD масла",
-		"price": 212.01,
+		"price": 265.01,
 		"regularPrice": 265.01,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Strong1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Strong1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-extra-strong-30-cbd/",
 		"shortDescription": "",
-		"priceLabel": "135.50 &euro; (265.01 лв.) Original price was: 135.50&euro; (265.01 лв.). 108.40 &euro; (212.01 лв.) Текущата цена е: 108.40&euro; (212.01 лв.)."
+		"priceLabel": "135.50 &euro; (265.01 лв.)"
 	},
 	{
 		"id": "3055",
 		"name": "CBD Масло CANNABIMAX MEDIUM – 10% CBD, 10 ml",
 		"category": "CBD масла",
-		"price": 76.04,
+		"price": 95.05,
 		"regularPrice": 95.05,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Medium1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Medium1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-medium-10-cbd/",
 		"shortDescription": "",
-		"priceLabel": "48.60 &euro; (95.05 лв.) Original price was: 48.60&euro; (95.05 лв.). 38.88 &euro; (76.04 лв.) Текущата цена е: 38.88&euro; (76.04 лв.)."
+		"priceLabel": "48.60 &euro; (95.05 лв.)"
 	},
 	{
 		"id": "3053",
 		"name": "CBD Масло CANNABIMAX SOFT – 5% CBD, 10 ml",
 		"category": "CBD масла",
-		"price": 44.12,
+		"price": 55.15,
 		"regularPrice": 55.15,
-		"onSale": true,
+		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Soft-1-300x300.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Soft-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-soft-5-cbd/",
 		"shortDescription": "",
-		"priceLabel": "28.20 &euro; (55.15 лв.) Original price was: 28.20&euro; (55.15 лв.). 22.56 &euro; (44.12 лв.) Текущата цена е: 22.56&euro; (44.12 лв.)."
+		"priceLabel": "28.20 &euro; (55.15 лв.)"
 	},
 	{
 		"id": "3174",
