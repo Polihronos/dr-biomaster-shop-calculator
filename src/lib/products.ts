@@ -13,23 +13,9 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-08-31T21:03:40.211Z";
+export const catalogUpdatedAt = "2026-09-01T21:09:22.966Z";
 
 export const products: Product[] = [
-	{
-		"id": "26096",
-		"name": "Билет за семинар – „Медицинските гъби в подкрепа на женското здраве“",
-		"category": "Билети",
-		"price": 39.12,
-		"regularPrice": 39.12,
-		"onSale": false,
-		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2026/01/bilet-seminar-medicinski-gubi-zhensko-zdrave-1.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/01/bilet-seminar-medicinski-gubi-zhensko-zdrave-1.jpg",
-		"sourceUrl": "https://drbiomaster.com/produkti/bilet-seminar-medicinski-gubi-za-zhensko-zdrave/",
-		"shortDescription": "Очаквайте скоро семинар „Медицинските гъби в подкрепа на женското здраве“. Моля, заплатете своя билет с банкова карта или по банков път, ако искате да го получите по електронен път. Ако желаете да получите билета си под формата на хартиено копие, може да го поръчате от сайта и с Наложен платеж (НП), но тогава се начислява такса доставка (до Ваш адрес или офис на СПИДИ).",
-		"priceLabel": "20.00 &euro; (39.12 лв.)"
-	},
 	{
 		"id": "2433",
 		"name": "АЛОЕ АРБОРЕСЦЕНС подпомага стомашно-чревния баланс, 500 ml",
@@ -405,7 +391,7 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
-		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. Попълнете Вашите данни и изпратете заявка за предварителна поръчка. Ще се свържем с Вас веднага щом продуктът е наличен. Име (задължително) Фамилия (задължително) Вашият имейл (задължително) Вашият телефон (задължително) Вашият адрес за доставка (задължително) Попълнете верния отговор: 5 + 2 = Съгласен съм с обработването на предоставените данни във връзка със заявката. (window.cfturnstileQueue=window.cfturnstileQueue||[]).push(\"-cf7-3596224534\");if(window.cfturnstileRender)window.cfturnstileRender(); #cf-turnstile-cf7-3596224534 { margin-left: -15px; } document.addEventListener(\"DOMContentLoaded\",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-3596224534')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-3596224534');},1000)}})})});",
+		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. Попълнете Вашите данни и изпратете заявка за предварителна поръчка. Ще се свържем с Вас веднага щом продуктът е наличен. Име (задължително) Фамилия (задължително) Вашият имейл (задължително) Вашият телефон (задължително) Вашият адрес за доставка (задължително) Попълнете верния отговор: 6 + 4 = Съгласен съм с обработването на предоставените данни във връзка със заявката. (window.cfturnstileQueue=window.cfturnstileQueue||[]).push(\"-cf7-3281925704\");if(window.cfturnstileRender)window.cfturnstileRender(); #cf-turnstile-cf7-3281925704 { margin-left: -15px; } document.addEventListener(\"DOMContentLoaded\",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-3281925704')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-3281925704');},1000)}})})});",
 		"priceLabel": "15.93 &euro; (31.16 лв.)"
 	},
 	{
