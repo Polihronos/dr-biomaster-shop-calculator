@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-01T21:09:22.966Z";
+export const catalogUpdatedAt = "2026-09-03T05:20:03.122Z";
 
 export const products: Product[] = [
 	{
@@ -391,7 +391,7 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
-		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. Попълнете Вашите данни и изпратете заявка за предварителна поръчка. Ще се свържем с Вас веднага щом продуктът е наличен. Име (задължително) Фамилия (задължително) Вашият имейл (задължително) Вашият телефон (задължително) Вашият адрес за доставка (задължително) Попълнете верния отговор: 6 + 4 = Съгласен съм с обработването на предоставените данни във връзка със заявката. (window.cfturnstileQueue=window.cfturnstileQueue||[]).push(\"-cf7-3281925704\");if(window.cfturnstileRender)window.cfturnstileRender(); #cf-turnstile-cf7-3281925704 { margin-left: -15px; } document.addEventListener(\"DOMContentLoaded\",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-3281925704')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-3281925704');},1000)}})})});",
+		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни.",
 		"priceLabel": "15.93 &euro; (31.16 лв.)"
 	},
 	{
