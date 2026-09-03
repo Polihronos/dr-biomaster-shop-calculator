@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-03T05:20:03.122Z";
+export const catalogUpdatedAt = "2026-09-03T21:45:05.017Z";
 
 export const products: Product[] = [
 	{
@@ -391,7 +391,7 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
-		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни.",
+		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. НАПРАВИ ЗАЯВКА ЗА ПОРЪЧКА НА ПРОДУКТА",
 		"priceLabel": "15.93 &euro; (31.16 лв.)"
 	},
 	{
