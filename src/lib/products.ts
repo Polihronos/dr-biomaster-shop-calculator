@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-03T21:45:05.017Z";
+export const catalogUpdatedAt = "2026-09-10T16:10:13.132Z";
 
 export const products: Product[] = [
 	{
@@ -300,15 +300,15 @@ export const products: Product[] = [
 		"id": "6648",
 		"name": "Масло от черен кимион, 100 ml",
 		"category": "Други продукти",
-		"price": 22.1,
-		"regularPrice": 22.1,
+		"price": 25.23,
+		"regularPrice": 25.23,
 		"onSale": false,
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/maslo-cheren-kimion.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/maslo-cheren-kimion.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/maslo-cheren-kimion/",
 		"shortDescription": "100 ml",
-		"priceLabel": "11.30 &euro; (22.10 лв.)"
+		"priceLabel": "12.90 &euro; (25.23 лв.)"
 	},
 	{
 		"id": "6606",
