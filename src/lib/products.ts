@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-10T16:10:13.132Z";
+export const catalogUpdatedAt = "2026-09-11T21:44:03.631Z";
 
 export const products: Product[] = [
 	{
@@ -349,7 +349,7 @@ export const products: Product[] = [
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/ribeno-maslo-1000-mg-abo-pharma.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/ribeno-maslo-1000-mg-abo-pharma.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/ribeno-maslo-1000-mg-abo-pharma/",
-		"shortDescription": "60 капсули по 1000 mg[:en]60 capsules of 1000 mg",
+		"shortDescription": "60 капсули по 1000 mg",
 		"priceLabel": "9.50 &euro; (18.58 лв.)"
 	},
 	{
