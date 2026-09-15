@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-11T21:44:03.631Z";
+export const catalogUpdatedAt = "2026-09-15T07:31:41.730Z";
 
 export const products: Product[] = [
 	{
@@ -384,15 +384,15 @@ export const products: Product[] = [
 		"id": "30359",
 		"name": "ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан Wellmune® и постбиотик, 150 ml",
 		"category": "За деца",
-		"price": 31.16,
+		"price": 28.05,
 		"regularPrice": 31.16,
-		"onSale": false,
+		"onSale": true,
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-drbiomaster.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
-		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни. НАПРАВИ ЗАЯВКА ЗА ПОРЪЧКА НА ПРОДУКТА",
-		"priceLabel": "15.93 &euro; (31.16 лв.)"
+		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни.",
+		"priceLabel": "15.93 &euro; (31.16 лв.) Original price was: 15.93&euro; (31.16 лв.). 14.34 &euro; (28.05 лв.) Текущата цена е: 14.34&euro; (28.05 лв.)."
 	},
 	{
 		"id": "27337",
