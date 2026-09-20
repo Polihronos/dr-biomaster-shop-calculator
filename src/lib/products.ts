@@ -13,7 +13,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-15T07:31:41.730Z";
+export const catalogUpdatedAt = "2026-09-20T05:00:27.519Z";
 
 export const products: Product[] = [
 	{
@@ -220,8 +220,8 @@ export const products: Product[] = [
 		"regularPrice": 13.1,
 		"onSale": false,
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk-burel-organics.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk-burel-organics.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-husk-fibri/",
 		"shortDescription": "200 g",
 		"priceLabel": "6.70 &euro; (13.10 лв.)"
