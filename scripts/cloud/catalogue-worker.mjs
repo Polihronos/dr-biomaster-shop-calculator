@@ -6,8 +6,14 @@ export async function collectCatalogue() {
 	const ids = new Set();
 	let expectedTotal;
 	for (let page = 1; page <= 50; page++) {
-		const response = await fetch(`https://drbiomaster.com/wp-json/wc/store/v1/products?per_page=100&page=${page}`, { signal: AbortSignal.timeout(30000) });
-		if (!response.ok) throw new Error(`Catalogue page ${page}: HTTP ${response.status}`);
+		const response = await fetch(`https://drbiomaster.com/wp-json/wc/store/v1/products?per_page=100&page=${page}`, {
+			headers: { accept: 'application/json', 'user-agent': 'DrBiomasterCatalogueSync/1.0', referer: 'https://drbiomaster.com/' },
+			signal: AbortSignal.timeout(30000)
+		});
+		if (!response.ok) {
+			const detail = (await response.text()).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').slice(0, 300);
+			throw new Error(`Catalogue page ${page}: HTTP ${response.status}; challenge=${response.headers.get('cf-mitigated') ?? 'none'}; ${detail}`);
+		}
 		const batch = await response.json();
 		const total = Number(response.headers.get('x-wp-total'));
 		if (!Array.isArray(batch) || !batch.length || batch.length > 100 || !Number.isInteger(total) || total < 1 || (expectedTotal !== undefined && total !== expectedTotal)) {
