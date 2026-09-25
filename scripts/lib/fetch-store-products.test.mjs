@@ -38,8 +38,9 @@ describe('complete public catalogue transport', () => {
 
 describe('Cloudflare public catalogue relay', () => {
 	const relayUrl = 'https://biomaster-catalogue.example.workers.dev/catalogue';
+	const fetchedAt = new Date().toISOString();
 	const envelope = (products, page = 1, total = products.length, overrides = {}) => new Response(JSON.stringify({
-		source: 'https://drbiomaster.com', page, fetchedAt: new Date().toISOString(), total, products, ...overrides
+		source: 'https://drbiomaster.com', page, fetchedAt, snapshotId: overrides.fetchedAt ?? fetchedAt, total, products, ...overrides
 	}));
 	it('fetches and validates all pages through the configured relay', async () => {
 		const first = Array.from({ length: 100 }, (_, i) => product(i + 1));
@@ -49,11 +50,12 @@ describe('Cloudflare public catalogue relay', () => {
 		expect(String(fetch.mock.calls[1][0])).toBe(`${relayUrl}?page=2`);
 	});
 	it.each([
-		{ fetchedAt: new Date(Date.now() - 16 * 60 * 1000).toISOString() },
+		{ fetchedAt: new Date(Date.now() - 31 * 60 * 1000).toISOString() },
 		{ fetchedAt: 'unknown' },
 		{ fetchedAt: new Date(Date.now() + 5 * 60 * 1000).toISOString() },
 		{ source: 'https://other.example' },
-		{ page: 2 }
+		{ page: 2 },
+		{ snapshotId: 'different' }
 	])('rejects stale or mismatched evidence: %j', async overrides => {
 		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(envelope([product(1)], 1, 1, overrides)));
 		await expect(fetchStoreProducts({ relayUrl })).rejects.toThrow('Invalid or stale');
@@ -65,6 +67,12 @@ describe('Cloudflare public catalogue relay', () => {
 		await expect(fetchStoreProducts({ relayUrl })).rejects.toThrow();
 		vi.stubGlobal('fetch', vi.fn().mockResolvedValue(envelope([product(1)], 1, null)));
 		await expect(fetchStoreProducts({ relayUrl })).rejects.toThrow('Invalid catalogue relay count');
+	});
+	it('rejects a snapshot replacement between pages even when totals match', async () => {
+		const first = Array.from({ length: 100 }, (_, i) => product(i + 1));
+		const nextTime = new Date(Date.now() + 1000).toISOString();
+		vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(envelope(first, 1, 101)).mockResolvedValueOnce(envelope([product(101)], 2, 101, {fetchedAt:nextTime,snapshotId:nextTime})));
+		await expect(fetchStoreProducts({relayUrl})).rejects.toThrow('snapshot changed');
 	});
 	it('rejects an unrelated relay host before making a request', async () => {
 		const fetch = vi.fn();

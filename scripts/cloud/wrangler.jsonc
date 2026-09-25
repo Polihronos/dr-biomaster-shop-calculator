@@ -1,0 +1,11 @@
+{
+  "name": "biomaster-catalogue",
+  "main": "catalogue-worker.mjs",
+  "compatibility_date": "2026-09-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "kv_namespaces": [{ "binding": "CATALOGUE_SNAPSHOTS", "id": "58cbe005788049f0b9caab17e95d10fa" }],
+  "triggers": { "crons": ["*/15 * * * *"] },
+  "observability": { "enabled": true }
+}

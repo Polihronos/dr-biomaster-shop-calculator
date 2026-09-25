@@ -17,16 +17,17 @@ async function fetchRelayPage(relayUrl, page) {
 	const result = await response.json();
 	if (result?.error) throw new Error(`Catalogue relay rejected page ${page}: ${result.error}`);
 	const age = Date.now() - Date.parse(result?.fetchedAt);
-	if (result?.source !== 'https://drbiomaster.com' || result.page !== page || !Number.isFinite(age) || age < -60000 || age > 15 * 60 * 1000) {
+	if (result?.source !== 'https://drbiomaster.com' || result.page !== page || result.snapshotId !== result.fetchedAt || !Number.isFinite(age) || age < -60000 || age > 30 * 60 * 1000) {
 		throw new Error('Invalid or stale catalogue relay response');
 	}
 	if (!Number.isInteger(result.total) || result.total < 1) throw new Error('Invalid catalogue relay count');
-	return new Response(JSON.stringify(result.products), { headers: { 'x-wp-total': String(result.total) } });
+	return new Response(JSON.stringify(result.products), { headers: { 'x-wp-total': String(result.total), 'x-catalogue-snapshot': result.snapshotId } });
 }
 
 export async function fetchStoreProducts({ relayUrl = process.env.CATALOGUE_RELAY_URL } = {}) {
 	const products = [];
 	let expectedTotal;
+	let snapshotId;
 	for (let page = 1; page <= 100; page++) {
 		let url = `${API}?per_page=100&page=${page}`;
 		let response = relayUrl
@@ -53,6 +54,9 @@ export async function fetchStoreProducts({ relayUrl = process.env.CATALOGUE_RELA
 			if (!response.ok) throw new Error(`Catalogue page ${page}: HTTP ${response.status}`);
 			batch = await response.json();
 		}
+		const currentSnapshot = response.headers.get('x-catalogue-snapshot');
+		if (snapshotId && currentSnapshot !== snapshotId) throw new Error('Catalogue snapshot changed during pagination');
+		if (currentSnapshot) snapshotId = currentSnapshot;
 		const totalHeader = response.headers.get('x-wp-total');
 		if (totalHeader !== null) {
 			const total = Number(totalHeader);
