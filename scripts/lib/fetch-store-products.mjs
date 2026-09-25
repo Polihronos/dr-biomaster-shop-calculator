@@ -10,7 +10,10 @@ async function fetchRelayPage(relayUrl, page) {
 	}
 	url.searchParams.set('page', String(page));
 	const response = await fetch(url, { signal: AbortSignal.timeout(60000) });
-	if (!response.ok) throw new Error(`Catalogue relay HTTP ${response.status}`);
+	if (!response.ok) {
+		const detail = (await response.text()).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').slice(0, 400);
+		throw new Error(`Catalogue relay HTTP ${response.status}: ${detail}`);
+	}
 	const result = await response.json();
 	if (result?.error) throw new Error(`Catalogue relay rejected page ${page}: ${result.error}`);
 	const age = Date.now() - Date.parse(result?.fetchedAt);
