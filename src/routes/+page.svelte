@@ -96,6 +96,8 @@
 	let stickyPanelHeight = $state(255);
 	let priceCheckStatus: PriceCheckStatus = $state('idle');
 	let priceCheckMessage = $state('');
+	let priceCheckDismissed = $state(false);
+	let priceCheckDetailsOpen = $state(false);
 	let priceCheckRows: PriceCheckRow[] = $state([]);
 	let salesDirectory: DirectoryHandleLike | null = $state(null);
 	let dailySalesOpen = $state(false);
@@ -110,7 +112,6 @@
 	const subtotal = $derived(selectedRows.reduce((total, row) => total + row.lineTotal, 0));
 	const total = $derived(subtotal * (1 - globalDiscount / 100));
 	const selectedCount = $derived(Object.values(selection).reduce((sum, quantity) => sum + quantity, 0));
-	const visiblePriceCheckRows = $derived(priceCheckRows.slice(0, 4));
 	const liveOverrideCount = $derived(Object.keys(livePriceOverrides).length);
 	const pendingLiveOverrideCount = $derived(Object.keys(pendingLivePriceOverrides).length);
 	const hasLivePriceOverrides = $derived(liveOverrideCount > 0);
@@ -762,6 +763,12 @@
 		priceCheckHideTimer = undefined;
 	}
 
+	function dismissPriceCheck() {
+		clearPriceCheckHideTimer();
+		priceCheckDismissed = true;
+		priceCheckDetailsOpen = false;
+	}
+
 	function hidePriceCheckSoon() {
 		clearPriceCheckHideTimer();
 		priceCheckHideTimer = window.setTimeout(() => {
@@ -795,6 +802,8 @@
 	}
 
 	function clearLivePriceOverrides() {
+		priceCheckDismissed = false;
+		priceCheckDetailsOpen = false;
 		livePriceOverrides = {};
 		pendingLivePriceOverrides = {};
 		priceCheckRows = [];
@@ -805,6 +814,8 @@
 
 	async function checkLivePrices() {
 		clearPriceCheckHideTimer();
+		priceCheckDismissed = false;
+		priceCheckDetailsOpen = false;
 		priceCheckStatus = 'checking';
 		priceCheckMessage = 'Сверявам цените с drbiomaster.com...';
 		priceCheckRows = [];
@@ -815,11 +826,11 @@
 			const local = products.map(product => ({ id: product.id, name: product.name, ...catalogSnapshot(product) }));
 			const { rows, overrides } = compareCatalog(local, liveProducts);
 			priceCheckRows = rows;
-			pendingLivePriceOverrides = rows.length ? overrides : {};
+			pendingLivePriceOverrides = rows.some(row => !['Нужна проверка', 'Нов продукт', 'Липсва в сайта'].includes(row.field)) ? overrides : {};
 			priceCheckStatus = rows.length ? 'mismatch' : 'ok';
 			const reviewCount = rows.filter(row => row.field === 'Нужна проверка').length;
 			priceCheckMessage = rows.length
-				? `${rows.length} разлики или условия за проверка спрямо live сайта${reviewCount ? ` (${reviewCount} непотвърдени промоции)` : ''}`
+				? [rows.length > reviewCount ? `Разлики: ${rows.length - reviewCount}` : '', reviewCount ? `За проверка: ${reviewCount}` : ''].filter(Boolean).join(' · ')
 				: `${liveProducts.length}/${products.length} продукта: цените и публичните промоции съвпадат`;
 			if (!rows.length) hidePriceCheckSoon();
 		} catch (error) {
@@ -963,27 +974,43 @@
 			</button>
 		</section>
 
-		{#if priceCheckStatus !== 'idle'}
-			<section class={['price-check-strip', priceCheckStatus]}>
+		{#if priceCheckStatus !== 'idle' && !priceCheckDismissed}
+			<section class={['price-check-strip', priceCheckStatus]} aria-label="Резултат от сверка">
 				<div class="price-check-summary">
-					<strong>{priceCheckMessage}</strong>
-					{#if priceCheckStatus === 'mismatch' && pendingLiveOverrideCount > 0}
-						<button class="text-button" onclick={applyLivePriceOverrides}>
-							<Check size={16} />
-							Използвай live цените
-						</button>
-					{/if}
-					{#if hasLivePriceOverrides}
-						<button class="text-button" onclick={clearLivePriceOverrides}>
-							<RotateCcw size={16} />
-							Върни локалния каталог
-						</button>
-					{/if}
+					<span class="price-check-icon" aria-hidden="true">
+						{#if priceCheckStatus === 'ok'}<Check size={18} />{:else if priceCheckStatus === 'checking'}<RefreshCcw size={18} />{:else}<BadgePercent size={18} />{/if}
+					</span>
+					<strong role="status">{priceCheckMessage}</strong>
+					<button class="price-check-close" onclick={dismissPriceCheck} aria-label="Скрий съобщението" title="Скрий съобщението"><X size={18} /></button>
 				</div>
-				{#if visiblePriceCheckRows.length > 0}
-					<div class="price-check-diff-list">
-						{#each visiblePriceCheckRows as row (`${row.id}-${row.field}-${row.live}`)}
-							<span>{row.name}: {row.field} {row.local} → {row.live}</span>
+				{#if priceCheckRows.length || pendingLiveOverrideCount || hasLivePriceOverrides}
+					<div class="price-check-actions">
+						{#if priceCheckRows.length}
+							<button class="text-button" aria-expanded={priceCheckDetailsOpen} aria-controls="price-check-details" onclick={() => (priceCheckDetailsOpen = !priceCheckDetailsOpen)}>
+								{priceCheckDetailsOpen ? 'Скрий подробностите' : 'Виж подробностите'}
+								<ChevronDown size={15} style={priceCheckDetailsOpen ? 'transform: rotate(180deg)' : undefined} />
+							</button>
+						{/if}
+						{#if priceCheckStatus === 'mismatch' && pendingLiveOverrideCount > 0}
+							<button class="text-button" onclick={applyLivePriceOverrides}><Check size={16} />Използвай live цените</button>
+						{/if}
+						{#if hasLivePriceOverrides}
+							<button class="text-button" onclick={clearLivePriceOverrides}><RotateCcw size={16} />Върни локалния каталог</button>
+						{/if}
+					</div>
+				{/if}
+				{#if priceCheckRows.length}
+					<div id="price-check-details" hidden={!priceCheckDetailsOpen} class="price-check-diff-list">
+						{#each priceCheckRows as row (`${row.id}-${row.field}-${row.live}`)}
+							<article class="price-check-diff">
+								<h3>{row.name}</h3>
+								<span class="price-check-field">{row.field}</span>
+								{#if row.field === 'Нужна проверка'}
+									<p>{row.live}</p>
+								{:else}
+									<dl><div><dt>В калкулатора</dt><dd>{row.local}</dd></div><div><dt>В сайта</dt><dd>{row.live}</dd></div></dl>
+								{/if}
+							</article>
 						{/each}
 					</div>
 				{/if}
@@ -1633,48 +1660,34 @@
 	}
 
 	.price-check-strip {
-		display: grid;
-		gap: 6px;
-		padding: 0 clamp(14px, 3vw, 32px) 12px;
-		color: #626058;
+		margin: 0 clamp(14px, 3vw, 32px) 12px;
+		padding: 12px 14px;
+		border: 1px solid #d8e5dc;
+		border-radius: 12px;
+		background: #f3f8f4;
+		color: #285d42;
 		font-size: 0.84rem;
 	}
 
-	.price-check-strip strong {
-		width: fit-content;
-		padding: 5px 9px;
-		border-radius: 999px;
-		background: #edf8f1;
-		color: #1f5d40;
-	}
-
-	.price-check-strip.mismatch strong,
-	.price-check-strip.error strong {
-		background: #ffe6e2;
-		color: #92251c;
-	}
-
-	.price-check-summary,
-	.price-check-diff-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-
-	.price-check-summary {
-		align-items: center;
-	}
-
-	.price-check-strip .text-button {
-		min-height: 32px;
-	}
-
-	.price-check-diff-list span {
-		padding: 4px 7px;
-		border: 1px solid #d8d5ca;
-		border-radius: 999px;
-		background: #fffdf7;
-	}
+	.price-check-strip.mismatch { border-color: #e8d9b8; background: #fffaf0; color: #79591e; }
+	.price-check-strip.error { border-color: #eccbc6; background: #fff5f3; color: #92251c; }
+	.price-check-strip.checking { border-color: #deddd6; background: #faf9f5; color: #626058; }
+	.price-check-summary { display: flex; align-items: center; gap: 10px; }
+	.price-check-summary strong { flex: 1; min-width: 0; font-weight: 600; line-height: 1.5; }
+	.price-check-icon { display: flex; flex-shrink: 0; }
+	.price-check-close { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent; color: inherit; cursor: pointer; }
+	.price-check-close:hover { background: #00000009; }
+	.price-check-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+	.price-check-strip .text-button { min-height: 34px; font-size: 0.8rem; }
+	.price-check-diff-list { max-height: 260px; overflow-y: auto; overscroll-behavior: contain; margin-top: 12px; border-top: 1px solid #e4dccb; }
+	.price-check-diff { padding: 12px 0; color: #49483f; overflow-wrap: anywhere; }
+	.price-check-diff + .price-check-diff { border-top: 1px solid #e4dccb; }
+	.price-check-diff h3 { margin: 0 0 4px; font-size: 0.84rem; line-height: 1.5; }
+	.price-check-field { font-size: 0.73rem; font-weight: 600; color: #79591e; }
+	.price-check-diff p { margin: 6px 0 0; line-height: 1.6; }
+	.price-check-diff dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 8px 0 0; }
+	.price-check-diff dt { margin-bottom: 4px; font-size: 0.73rem; color: #77746a; }
+	.price-check-diff dd { margin: 0; line-height: 1.5; }
 
 	.content {
 		display: grid;

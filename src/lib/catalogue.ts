@@ -58,10 +58,21 @@ function offerText(html: string) {
 export function parsePromotion(product: StoreProduct, salePercent: number) {
 	const html = `${product.short_description ?? ''}\n${product.description ?? ''}`;
 	const conditional = /купон|промокод|промо код|\bcoupon\b|\bcode\b|лоялн|абонат|членов|нови клиенти|регистриран[а-я ]*(?:клиент|потребител)|поръчк[аи].*(?:над|минимум)|(?:валидн[^ ]*|до)\s*\d{1,2}[./]|до изчерпване|само веднъж|\bmembers?\b|\bsubscri\w+|\bfirst order\b|\bminimum spend\b|\bexpires?\b|\buntil\b/i;
+	const isBook = product.categories?.some(category => /^книги$/i.test(stripHtml(category.name)));
 	const evidence = [...new Set(html.split(/<\/(?:p|div|li|tr|h[1-6])\s*>|<br\s*\/?\s*>/i)
 		.map(offerText)
 		.filter(text => !/^\d+\s*\+\s*\d+\s*=/.test(text))
-		.filter(text => /плати|вземи|подарък|купон|промоци|отстъпк|намалени[ея][^.!?]{0,50}(?:%|цен|лв|евро)|(?:^|\s)спести(?:\s|[!.:])|половин цена|безплат|\d+\s*(?:за|\+)\s*\d+|\bbuy\s+\d|\bdiscount\b|\bcoupon\b|\bfree\b|\boffer\b|\bsale\b|\bsave\s+\d|%\s*off\b/i.test(text) || /^[-−–]\s*\d+(?:[.,]\d+)?\s*%[!.]?$/.test(text) || conditional.test(text))
+		.filter(text => {
+			// An informational service is not a product discount. Keep purchase conditions
+			// and any other offer in the same paragraph available for review.
+			if (conditional.test(text) || (/безплатн[аи]\s+консултаци[яи]/i.test(text) && /при\s+(?:покупка|поръчка)/i.test(text))) return true;
+			let candidate = /консултаци/i.test(product.name ?? '') ? text
+				: text.replace(/безплатн[аи]\s+консултаци[яи]/gi, 'консултация');
+			// Book descriptions can advertise supplement packs. Remove only that
+			// general statement, never an entire paragraph containing another offer.
+			if (isBook && /моноекстракт/i.test(text)) candidate = candidate.replace(/Предлагаме и големи опаковки тип \d+-в-\d+, като в тяхната цена е включена (?:значителна )?отстъпка за потребителя\.?/gi, '');
+			return /плати|вземи|подарък|купон|промоци|отстъпк|намалени[ея][^.!?]{0,50}(?:%|цен|лв|евро)|(?:^|\s)спести(?:\s|[!.:])|половин цена|безплат|\d+\s*(?:за|\+)\s*\d+|\bbuy\s+\d|\bdiscount\b|\bcoupon\b|\bfree\b|\boffer\b|\bsale\b|\bsave\s+\d|%\s*off\b/i.test(candidate) || /^[-−–]\s*\d+(?:[.,]\d+)?\s*%[!.]?$/.test(candidate);
+		})
 		.filter(text => !/без промоция|другите марки|промоционални\./i.test(text)))].sort();
 	const bundles: { kind: 'bundle'; buy: number; pay: number }[] = [];
 	const tiers: { min: number; max: number | null; percent: number }[] = [];

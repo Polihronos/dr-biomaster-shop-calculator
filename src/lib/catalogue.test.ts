@@ -6,8 +6,29 @@ function product(text = '', overrides: Partial<StoreProduct> = {}): StoreProduct
 		prices: { price: '3320', regular_price: '3320', sale_price: '3320', currency_code: 'EUR', currency_minor_unit: 2 }, ...overrides };
 }
 const banner = '<p><img src="https://drbiomaster.com/cannabimax-gold-buy-2-get-3-new.png" alt="Промоция на Cannabimax Gold - плати 2 вземи 3"></p>';
+const consultation = 'Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора';
+const supplementPacks = 'Моноекстрактите от лечебни гъби се предлагат в удобна форма от 60 капсули по 300 mg. Предлагаме и големи опаковки тип 4-в-1, като в тяхната цена е включена значителна отстъпка за потребителя.';
 
 describe('public promotion import and calculations', () => {
+	it('does not flag an unconditional consultation as a product promotion', () => {
+		const snapshot = pricesFromStore(product(`<li><strong>${consultation}</strong></li>`));
+		expect(snapshot.promotionEvidence).toEqual([]);
+		expect(snapshot.promotionWarnings).toEqual([]);
+		expect(pricesFromStore(product(`<p>${consultation}</p>${banner}`)).promotion).toEqual({kind:'bundle',buy:3,pay:2});
+	});
+	it.each([`${consultation} при поръчка над 50 евро`, `${consultation}. 10% отстъпка с купон KIDS`, `${consultation}. Подарък сироп`])('preserves conditions and other offers alongside a consultation: %s', text => {
+		expect(pricesFromStore(product(text)).promotionWarnings?.length).toBeGreaterThan(0);
+	});
+	it('does not mistake supplement-pack advertising for a book discount', () => {
+		const book = product(supplementPacks, {name:'Лечебни гъби против рак и други заболявания',categories:[{name:'Книги'}]});
+		const snapshot = pricesFromStore(book);
+		expect(snapshot.promotionWarnings).toEqual([]);
+		expect(snapshot.promotionEvidence).toEqual([]);
+		expect(compareCatalog([{id:'8077',name:book.name!,...snapshot}],[book]).rows).toEqual([]);
+		expect(pricesFromStore({...book,short_description:`${supplementPacks} 20% отстъпка за книгата.`}).promotionWarnings?.length).toBeGreaterThan(0);
+		expect(pricesFromStore({...book,short_description:`${supplementPacks} Купон BOOK.`}).promotionWarnings?.length).toBeGreaterThan(0);
+		expect(pricesFromStore(product(supplementPacks)).promotionWarnings?.length).toBeGreaterThan(0);
+	});
 	it('imports the live banner without a product-specific rule', () => {
 		const snapshot = pricesFromStore(product(banner, { id: 999 }));
 		expect(snapshot.promotion).toEqual({ kind: 'bundle', buy: 3, pay: 2 });

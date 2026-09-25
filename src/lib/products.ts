@@ -18,7 +18,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-25T12:00:52.027Z";
+export const catalogUpdatedAt = "2026-09-25T12:16:22.052Z";
 export const catalogCheckedAt = "2026-09-25";
 
 export const products: Product[] = [
@@ -472,12 +472,8 @@ export const products: Product[] = [
 		"regularPrice": 31.16,
 		"onSale": false,
 		"promotion": null,
-		"promotionEvidence": [
-			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора"
-		],
-		"promotionWarnings": [
-			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора"
-		],
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
@@ -527,12 +523,8 @@ export const products: Product[] = [
 		"regularPrice": 7.04,
 		"onSale": false,
 		"promotion": null,
-		"promotionEvidence": [
-			"Всички моноекстракти на Доктор Биомастер са стандартизирани на 30% полизахариди и верифицирани от независимата германска лаборатория AGROLAB — гаранция за чистота, активност и качество без аналог на българския пазар. Моноекстрактите от лечебни гъби се предлагат в удобна форма от 60 капсули по 300 mg, произведени от плодното тяло на гъбата, а не от мицел. Предлагаме и големи опаковки тип 4-в-1, като в тяхната цена е включена значителна отстъпка за потребителя."
-		],
-		"promotionWarnings": [
-			"Всички моноекстракти на Доктор Биомастер са стандартизирани на 30% полизахариди и верифицирани от независимата германска лаборатория AGROLAB — гаранция за чистота, активност и качество без аналог на българския пазар. Моноекстрактите от лечебни гъби се предлагат в удобна форма от 60 капсули по 300 mg, произведени от плодното тяло на гъбата, а не от мицел. Предлагаме и големи опаковки тип 4-в-1, като в тяхната цена е включена значителна отстъпка за потребителя."
-		],
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebni-gubi-rak-drugi-zabolqbaniq-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebni-gubi-rak-drugi-zabolqbaniq.jpg",
