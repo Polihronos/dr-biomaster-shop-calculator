@@ -43,7 +43,7 @@ You can preview the production build with `npm run preview`.
 
 ## Automatic catalogue sync in the cloud
 
-Status (25 September 2026): implemented but disabled pending website access. Both GitHub Ubuntu and macOS runners receive HTTP 403 from the public Store API, while local access works. The Mac updater remains enabled. The site maintainer must permit the cloud updater to read `/wp-json/wc/store/v1/products`; then enable this workflow and verify a manual fetch and deployment before disabling the Mac task.
+Status (25 September 2026): the GitHub workflow is implemented but disabled because Cloudflare blocks both tested GitHub runners, including the standard WordPress query route. Local access works and the Mac updater remains enabled. This does not establish that every cloud provider is blocked. A free Google Apps Script relay is prepared in `scripts/cloud/google-catalogue.gs`; Google authorization, an actual source fetch, and workflow integration are still pending. Verify a complete cloud fetch and deployment before disabling the Mac task.
 
 `.github/workflows/sync-products.yml` runs on standard GitHub-hosted macOS runners, which are free for this public repository. Its first daily slot is 05:23 UTC (08:23 in Bulgarian summer time, 07:23 in winter). Later hourly slots through 23:23 UTC retry a failed day; they skip fetching after a successful run. GitHub schedules can be delayed. The workflow can also be started manually from Actions → Daily product sync.
 
