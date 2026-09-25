@@ -7,13 +7,22 @@ export async function fetchStoreProducts() {
 	const products = [];
 	let expectedTotal;
 	for (let page = 1; page <= 100; page++) {
-		const url = `${API}?per_page=100&page=${page}`;
+		let url = `${API}?per_page=100&page=${page}`;
 		let response = await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
+		// WordPress exposes the same public REST route with and without pretty permalinks.
+		if (response.status === 403 || response.status === 404) {
+			console.warn(`Catalogue pretty URL: HTTP ${response.status}; server=${response.headers.get('server')}; challenge=${response.headers.get('cf-mitigated') ?? 'none'}`);
+			url = `https://drbiomaster.com/?rest_route=/wc/store/v1/products&per_page=100&page=${page}`;
+			response = await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
+		}
 		let batch;
 		if (response.status === 403) {
 			const callback = `drBiomasterSync_${page}`;
 			response = await fetch(`${url}&_jsonp=${callback}`, { headers, signal: AbortSignal.timeout(30000) });
-			if (!response.ok) throw new Error(`Website rejected catalogue page ${page}: HTTP ${response.status}. No catalogue was published.`);
+			if (!response.ok) {
+				const detail = (await response.text()).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').slice(0, 350);
+				throw new Error(`Website rejected catalogue page ${page}: HTTP ${response.status}; server=${response.headers.get('server')}; challenge=${response.headers.get('cf-mitigated') ?? 'none'}; ${detail}. No catalogue was published.`);
+			}
 			const body = await response.text();
 			if (!body.startsWith(`${callback}(`) || !body.trimEnd().endsWith(');')) throw new Error('Invalid catalogue JSONP response');
 			batch = JSON.parse(body.slice(callback.length+1,body.lastIndexOf(');')));
