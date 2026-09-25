@@ -62,7 +62,7 @@ jobs:
         env:
           BASE_PATH: /${{ github.event.repository.name }}
         run: |
-          npm run test -- src/lib/catalogue.test.ts
+          npm run test -- src/lib/catalogue.test.ts scripts/lib/fetch-store-products.test.mjs
           npm run check
           npm run check:prices -- --allow-review
           npm run build
