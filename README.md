@@ -41,22 +41,23 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-## Automatic product sync on macOS
+## Automatic catalogue sync in the cloud
 
-The macOS task performs one successful catalogue check per calendar day. It normally starts at 08:00. If the Mac is asleep or powered off then, it catches up after wake or the next login. Failed checks retry quietly once per hour; after a successful check, later triggers exit immediately without network access or a new log.
+`.github/workflows/sync-products.yml` runs on standard GitHub-hosted Ubuntu runners, which are free for this public repository. Its first daily slot is 05:23 UTC (08:23 in Bulgarian summer time, 07:23 in winter). Later hourly slots through 23:23 UTC retry a failed day; they skip fetching after a successful run. GitHub schedules can be delayed. The workflow can also be started manually from Actions → Daily product sync.
 
-The maintained scripts stay in this repository. Because macOS blocks background jobs from reading the Documents folder, the installer places a private runtime copy and managed Git checkout in `~/Library/Application Support/DrBiomasterProductSync` and logs in `~/Library/Logs/DrBiomasterProductSync`. This avoids granting broad Full Disk Access and keeps unfinished project files isolated. The job has no UI or notifications and runs with low CPU and I/O priority.
+The job fetches every catalogue page, checks prices and public promotion terms, runs the focused catalogue tests and type/build checks, commits only `src/lib/products.ts`, and deploys the validated build to GitHub Pages in the same workflow. This explicit deployment is necessary because pushes using `GITHUB_TOKEN` do not trigger the normal push workflow. A daily `catalogCheckedAt` date records completed source checks and keeps the repository active even when prices do not change. Failed or incomplete source requests never replace the published catalogue.
 
-Install or refresh the task:
+The importer, `npm run check:prices`, and the calculator's “Свери цени” share `src/lib/catalogue.ts`. They compare current and regular prices, sale flags, promotion rules, public offer text, and product additions/removals. Explicit “take X, pay Y” offers and stated quantity percentage thresholds are calculated from public descriptions, including banner alternative text. Ordinary and package sale prices come from the Store API and are not discounted twice.
+
+Unclear offers, image-only terms, coupons, customer/cart conditions, conflicting rules, and unverified combinations are flagged for review rather than guessed. The cloud run publishes those flags and lists them in its Actions summary; the calculator keeps them visible after a live check. Hidden rules not exposed in the public catalogue cannot be detected. `npm run check:prices` fails on unresolved offers; `npm run check:prices -- --allow-review` permits explicit review flags but still fails on catalogue mismatches.
+
+## Legacy macOS updater
+
+The Mac updater remains available as a fallback. Disable its launch agent only after a successful cloud fetch and deployment have been verified. Keep its private checkout in `~/Library/Application Support/DrBiomasterProductSync` and logs in `~/Library/Logs/DrBiomasterProductSync` for recovery. The calculator and cloud updater do not need this Mac or Codex running.
+
+The legacy task normally runs at 08:00, catches up after wake/login, and retries failures hourly. Its installer and removal commands remain:
 
 ```sh
 bash scripts/macos/install-product-sync-task.sh
-```
-
-Remove the scheduled task without deleting its recovery checkout or logs:
-
-```sh
 bash scripts/macos/uninstall-product-sync-task.sh
 ```
-
-When catalogue data changes, the task verifies types, builds the site, rechecks live prices, commits only `src/lib/products.ts`, and pushes it to `main`. The normal GitHub Pages workflow then deploys the update.

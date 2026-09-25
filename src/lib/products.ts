@@ -1,3 +1,5 @@
+import type { QuantityPromotion } from './catalogue';
+
 export type Product = {
 	id: string;
 	name: string;
@@ -5,6 +7,9 @@ export type Product = {
 	price: number;
 	regularPrice: number;
 	onSale: boolean;
+	promotion?: QuantityPromotion | null;
+	promotionEvidence?: string[];
+	promotionWarnings?: string[];
 	hasOptions: boolean;
 	image: string;
 	imageLarge: string;
@@ -13,7 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-23T07:41:23.675Z";
+export const catalogUpdatedAt = "2026-09-25T07:40:14.459Z";
+export const catalogCheckedAt = "2026-09-25";
 
 export const products: Product[] = [
 	{
@@ -23,12 +29,15 @@ export const products: Product[] = [
 		"price": 62,
 		"regularPrice": 62,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/aloe-arborescens-il-pucino-500-ml.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/aloe-arborescens-il-pucino/",
 		"shortDescription": "500 ml",
-		"priceLabel": "31.70 &euro; (62.00 лв.)"
+		"priceLabel": "31.70 € (62.00 лв.)"
 	},
 	{
 		"id": "1849",
@@ -37,12 +46,15 @@ export const products: Product[] = [
 		"price": 62,
 		"regularPrice": 62,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/amigdalin-vitamin-b17-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/amigdalin-vitamin-b17/",
 		"shortDescription": "100 капсули по 200 mg Екстракт от кайсиеви ядки",
-		"priceLabel": "31.70 &euro; (62.00 лв.)"
+		"priceLabel": "31.70 € (62.00 лв.)"
 	},
 	{
 		"id": "1857",
@@ -51,12 +63,15 @@ export const products: Product[] = [
 		"price": 20.93,
 		"regularPrice": 20.93,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-antistress.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-antistress/",
 		"shortDescription": "100 ml Хранителна добавка. 35% vol.",
-		"priceLabel": "10.70 &euro; (20.93 лв.)"
+		"priceLabel": "10.70 € (20.93 лв.)"
 	},
 	{
 		"id": "1853",
@@ -65,12 +80,15 @@ export const products: Product[] = [
 		"price": 43.81,
 		"regularPrice": 43.81,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-detox-formula.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/dr-biomaster-detox-formula/",
 		"shortDescription": "135 капсули по 406 mg Смес от набор екстракти и гъби на прах",
-		"priceLabel": "22.40 &euro; (43.81 лв.)"
+		"priceLabel": "22.40 € (43.81 лв.)"
 	},
 	{
 		"id": "1845",
@@ -79,12 +97,15 @@ export const products: Product[] = [
 		"price": 74.91,
 		"regularPrice": 74.91,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-kapsuli-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-kapsuli/",
 		"shortDescription": "60 капсули по 500 mg",
-		"priceLabel": "38.30 &euro; (74.91 лв.)"
+		"priceLabel": "38.30 € (74.91 лв.)"
 	},
 	{
 		"id": "1843",
@@ -93,12 +114,15 @@ export const products: Product[] = [
 		"price": 64.93,
 		"regularPrice": 64.93,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/essiac-tea.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/essiac-prah/",
 		"shortDescription": "42.5 g",
-		"priceLabel": "33.20 &euro; (64.93 лв.)"
+		"priceLabel": "33.20 € (64.93 лв.)"
 	},
 	{
 		"id": "1865",
@@ -107,12 +131,15 @@ export const products: Product[] = [
 		"price": 25.03,
 		"regularPrice": 25.03,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/karamfil-kapsuli.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/karamfil-kapsuli/",
 		"shortDescription": "100 капсули по 400 mg 100% Карамфил ( Caryophyllus aromaticus ) на прах с желатинови капсули",
-		"priceLabel": "12.80 &euro; (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.)"
 	},
 	{
 		"id": "1847",
@@ -121,12 +148,15 @@ export const products: Product[] = [
 		"price": 55.15,
 		"regularPrice": 55.15,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/dr-biomaster-kurkumin-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/kurkumin/",
 		"shortDescription": "60 капсули пo 500 mg",
-		"priceLabel": "28.20 &euro; (55.15 лв.)"
+		"priceLabel": "28.20 € (55.15 лв.)"
 	},
 	{
 		"id": "1851",
@@ -135,12 +165,15 @@ export const products: Product[] = [
 		"price": 49.87,
 		"regularPrice": 49.87,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/pau-darko.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/pau-darko/",
 		"shortDescription": "230 капсули по 370 mg Екстракт от кора от Мравчено дърво 8:1 Подпомага имунната система и защитата на организма срещу вредни агенти",
-		"priceLabel": "25.50 &euro; (49.87 лв.)"
+		"priceLabel": "25.50 € (49.87 лв.)"
 	},
 	{
 		"id": "1841",
@@ -149,12 +182,15 @@ export const products: Product[] = [
 		"price": 37.94,
 		"regularPrice": 37.94,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/super-formula-za-surce-kruvonosni-sudove/",
 		"shortDescription": "Превъзходен натурален продукт, подпомагащ сърцето и кръвоносните съдове! Съдържа 22 билки в отлична комбинация!",
-		"priceLabel": "19.40 &euro; (37.94 лв.)"
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "1863",
@@ -163,12 +199,15 @@ export const products: Product[] = [
 		"price": 27.97,
 		"regularPrice": 27.97,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/tinktura-oreh.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/tinktura-oreh/",
 		"shortDescription": "100 ml 100% тинктура от обвивките (мезокарп) на орех ( Juglans regia ), супер силна",
-		"priceLabel": "14.30 &euro; (27.97 лв.)"
+		"priceLabel": "14.30 € (27.97 лв.)"
 	},
 	{
 		"id": "6756",
@@ -177,12 +216,15 @@ export const products: Product[] = [
 		"price": 33.05,
 		"regularPrice": 33.05,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/aloe-vera-gel.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/aloe-vera-gel.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/aloe-vera-gel/",
 		"shortDescription": "946 ml organic сертификат. Aloe Vera Gel 32 fl oz. Хранителна добавка.",
-		"priceLabel": "16.90 &euro; (33.05 лв.)"
+		"priceLabel": "16.90 € (33.05 лв.)"
 	},
 	{
 		"id": "6615",
@@ -191,12 +233,15 @@ export const products: Product[] = [
 		"price": 150.01,
 		"regularPrice": 150.01,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan-transfer-point-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/beta-glucan-transfer-point-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/beta-glucan/",
 		"shortDescription": "60 капсули по 500 mg. Хранителна добавка.",
-		"priceLabel": "76.70 &euro; (150.01 лв.)"
+		"priceLabel": "76.70 € (150.01 лв.)"
 	},
 	{
 		"id": "6762",
@@ -205,12 +250,15 @@ export const products: Product[] = [
 		"price": 3.13,
 		"regularPrice": 3.13,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/soda.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/soda.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-soda-bikarbonat/",
 		"shortDescription": "300 g",
-		"priceLabel": "1.60 &euro; (3.13 лв.)"
+		"priceLabel": "1.60 € (3.13 лв.)"
 	},
 	{
 		"id": "6760",
@@ -219,12 +267,15 @@ export const products: Product[] = [
 		"price": 13.1,
 		"regularPrice": 13.1,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk-burel-organics.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/bio-husk-burel-organics.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-husk-fibri/",
 		"shortDescription": "200 g",
-		"priceLabel": "6.70 &euro; (13.10 лв.)"
+		"priceLabel": "6.70 € (13.10 лв.)"
 	},
 	{
 		"id": "6753",
@@ -233,12 +284,15 @@ export const products: Product[] = [
 		"price": 21.12,
 		"regularPrice": 21.12,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/warburgia.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/warburgia.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/warburgia/",
 		"shortDescription": "60 капсули по 350 mg. Хранителна добавка.",
-		"priceLabel": "10.80 &euro; (21.12 лв.)"
+		"priceLabel": "10.80 € (21.12 лв.)"
 	},
 	{
 		"id": "6751",
@@ -247,12 +301,15 @@ export const products: Product[] = [
 		"price": 9.78,
 		"regularPrice": 9.78,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/vitamin-c-prah.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/vitamin-c-prah.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/vitamin-c-prah/",
 		"shortDescription": "100 g. Хранителна добавка. 100% чист Витамин С на прах за по-бързо абсорбиране. Лесно разтворима формула!",
-		"priceLabel": "5.00 &euro; (9.78 лв.)"
+		"priceLabel": "5.00 € (9.78 лв.)"
 	},
 	{
 		"id": "6609",
@@ -261,12 +318,15 @@ export const products: Product[] = [
 		"price": 7.82,
 		"regularPrice": 7.82,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/kleeva-tinktura.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/kleeva-tinktura.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/kleeva-tinktura/",
 		"shortDescription": "50 ml. Хранителна добавка.",
-		"priceLabel": "4.00 &euro; (7.82 лв.)"
+		"priceLabel": "4.00 € (7.82 лв.)"
 	},
 	{
 		"id": "6666",
@@ -275,12 +335,15 @@ export const products: Product[] = [
 		"price": 26.99,
 		"regularPrice": 26.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/lactoflor-probiotic.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/lactoflor-probiotic.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lactoflor-probiotic/",
 		"shortDescription": "90 капсули. Хранителна добавка.",
-		"priceLabel": "13.80 &euro; (26.99 лв.)"
+		"priceLabel": "13.80 € (26.99 лв.)"
 	},
 	{
 		"id": "6668",
@@ -289,12 +352,15 @@ export const products: Product[] = [
 		"price": 24.06,
 		"regularPrice": 24.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/lactoflor-bio-plus.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/lactoflor-bio-plus.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lactoflor-bio-plus/",
 		"shortDescription": "60 капсули. Хранителна добавка.",
-		"priceLabel": "12.30 &euro; (24.06 лв.)"
+		"priceLabel": "12.30 € (24.06 лв.)"
 	},
 	{
 		"id": "6648",
@@ -303,12 +369,15 @@ export const products: Product[] = [
 		"price": 25.23,
 		"regularPrice": 25.23,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/maslo-cheren-kimion.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/maslo-cheren-kimion.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/maslo-cheren-kimion/",
 		"shortDescription": "100 ml",
-		"priceLabel": "12.90 &euro; (25.23 лв.)"
+		"priceLabel": "12.90 € (25.23 лв.)"
 	},
 	{
 		"id": "6606",
@@ -317,12 +386,15 @@ export const products: Product[] = [
 		"price": 37.75,
 		"regularPrice": 37.75,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/omega-3-6-9.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/omega-3-6-9.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/omega-3-6-9/",
 		"shortDescription": "80 капсули 1200 mg. Хранителна добавка.",
-		"priceLabel": "19.30 &euro; (37.75 лв.)"
+		"priceLabel": "19.30 € (37.75 лв.)"
 	},
 	{
 		"id": "6637",
@@ -331,12 +403,15 @@ export const products: Product[] = [
 		"price": 110.9,
 		"regularPrice": 110.9,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/paraprotex-calivita.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/paraprotex-calivita.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paraprotex/",
 		"shortDescription": "100 таблетки. Хранителна добавка.",
-		"priceLabel": "56.70 &euro; (110.90 лв.)"
+		"priceLabel": "56.70 € (110.90 лв.)"
 	},
 	{
 		"id": "6662",
@@ -345,12 +420,15 @@ export const products: Product[] = [
 		"price": 18.58,
 		"regularPrice": 18.58,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/ribeno-maslo-1000-mg-abo-pharma.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/ribeno-maslo-1000-mg-abo-pharma.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/ribeno-maslo-1000-mg-abo-pharma/",
 		"shortDescription": "60 капсули по 1000 mg",
-		"priceLabel": "9.50 &euro; (18.58 лв.)"
+		"priceLabel": "9.50 € (18.58 лв.)"
 	},
 	{
 		"id": "6743",
@@ -359,12 +437,15 @@ export const products: Product[] = [
 		"price": 41.07,
 		"regularPrice": 41.07,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/sibirska-chaga-kapsuli.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/sibirska-chaga-kapsuli.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/sibirska-chaga-kapsuli/",
 		"shortDescription": "90 растителни капсули 560 mg",
-		"priceLabel": "21.00 &euro; (41.07 лв.)"
+		"priceLabel": "21.00 € (41.07 лв.)"
 	},
 	{
 		"id": "6741",
@@ -373,12 +454,15 @@ export const products: Product[] = [
 		"price": 14.67,
 		"regularPrice": 14.67,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/03/sibirska-chaga-tinktura.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/03/sibirska-chaga-tinktura.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/sibirska-chaga-tinktura/",
 		"shortDescription": "50 ml",
-		"priceLabel": "7.50 &euro; (14.67 лв.)"
+		"priceLabel": "7.50 € (14.67 лв.)"
 	},
 	{
 		"id": "30359",
@@ -387,12 +471,21 @@ export const products: Product[] = [
 		"price": 31.16,
 		"regularPrice": 31.16,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [
+			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора",
+			"Промоционално изображение: Промоция за ранна продажба на ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан (https://drbiomaster.com/wp-content/uploads/2026/08/imunomaster-kids-ranna-promociya.jpg)"
+		],
+		"promotionWarnings": [
+			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора",
+			"Промоционално изображение: Промоция за ранна продажба на ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан (https://drbiomaster.com/wp-content/uploads/2026/08/imunomaster-kids-ranna-promociya.jpg)"
+		],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunomaster-kids-sirop-za-imunitet-za-deca/",
 		"shortDescription": "Първият сироп в България, който комбинира клинично проучен бета глюкан Wellmune ® и постбиотик 37Labtico ® HP с черен бъз, витамин C от ацерола, витамин D3 и цинк. За деца от 2 години. Без захар, изкуствени подсладители и оцветители. Естествен вкус на портокал. 150 ml = 15–30 дни.",
-		"priceLabel": "15.93 &euro; (31.16 лв.)"
+		"priceLabel": "15.93 € (31.16 лв.)"
 	},
 	{
 		"id": "27337",
@@ -401,12 +494,15 @@ export const products: Product[] = [
 		"price": 15.06,
 		"regularPrice": 15.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/04/konopat-zabranenoto-lekarstvo.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/04/konopat-zabranenoto-lekarstvo.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/konopat-zabranenoto-lekarstvo/",
 		"shortDescription": "Автори: Росица Тодорова, Християна Драгостинова Издателство: Распер, 2016 ISBN: 978-954-345-104-3",
-		"priceLabel": "7.70 &euro; (15.06 лв.)"
+		"priceLabel": "7.70 € (15.06 лв.)"
 	},
 	{
 		"id": "1898",
@@ -415,12 +511,15 @@ export const products: Product[] = [
 		"price": 19.95,
 		"regularPrice": 19.95,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebnata-sila-na-gubite-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebnata-sila-na-gubite.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechebnata-sila-na-gubite/",
 		"shortDescription": "Автор: проф. Ян Лелей Издател: Доктор Биомастер",
-		"priceLabel": "10.20 &euro; (19.95 лв.)"
+		"priceLabel": "10.20 € (19.95 лв.)"
 	},
 	{
 		"id": "1900",
@@ -429,12 +528,19 @@ export const products: Product[] = [
 		"price": 7.04,
 		"regularPrice": 7.04,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [
+			"Всички моноекстракти на Доктор Биомастер са стандартизирани на 30% полизахариди и верифицирани от независимата германска лаборатория AGROLAB — гаранция за чистота, активност и качество без аналог на българския пазар. Моноекстрактите от лечебни гъби се предлагат в удобна форма от 60 капсули по 300 mg, произведени от плодното тяло на гъбата, а не от мицел. Предлагаме и големи опаковки тип 4-в-1, като в тяхната цена е включена значителна отстъпка за потребителя."
+		],
+		"promotionWarnings": [
+			"Всички моноекстракти на Доктор Биомастер са стандартизирани на 30% полизахариди и верифицирани от независимата германска лаборатория AGROLAB — гаранция за чистота, активност и качество без аналог на българския пазар. Моноекстрактите от лечебни гъби се предлагат в удобна форма от 60 капсули по 300 mg, произведени от плодното тяло на гъбата, а не от мицел. Предлагаме и големи опаковки тип 4-в-1, като в тяхната цена е включена значителна отстъпка за потребителя."
+		],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebni-gubi-rak-drugi-zabolqbaniq-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebni-gubi-rak-drugi-zabolqbaniq.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechebni-gubi-rak-drugi-zabolqbaniq/",
 		"shortDescription": "Автор: д-р Георги Георгиев Издател: Доктор Биомастер",
-		"priceLabel": "3.60 &euro; (7.04 лв.)"
+		"priceLabel": "3.60 € (7.04 лв.)"
 	},
 	{
 		"id": "1908",
@@ -443,12 +549,15 @@ export const products: Product[] = [
 		"price": 25.03,
 		"regularPrice": 25.03,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-vidove-rak-posledni-broiki.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-vidove-rak-posledni-broiki.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechenie-na-vsichki-vidove-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "12.80 &euro; (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.)"
 	},
 	{
 		"id": "1910",
@@ -457,12 +566,15 @@ export const products: Product[] = [
 		"price": 25.03,
 		"regularPrice": 25.03,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-naprednali-formi-na-rak-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-naprednali-formi-na-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechenie-na-vsichki-naprednali-formi-na-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "12.80 &euro; (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.)"
 	},
 	{
 		"id": "1904",
@@ -471,12 +583,15 @@ export const products: Product[] = [
 		"price": 8.02,
 		"regularPrice": 8.02,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/most-na-nadejdata-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/most-na-nadejdata.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/most-na-nadejdata/",
 		"shortDescription": "Автор: Джеймс У. Димърс Издател: „Доктор Натура“",
-		"priceLabel": "4.10 &euro; (8.02 лв.)"
+		"priceLabel": "4.10 € (8.02 лв.)"
 	},
 	{
 		"id": "1914",
@@ -485,12 +600,15 @@ export const products: Product[] = [
 		"price": 25.03,
 		"regularPrice": 25.03,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-ot-vsichki-vidove-rak-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-ot-vsichki-vidove-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/predpazvane-ot-vsichki-vidove-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Биомастер“",
-		"priceLabel": "12.80 &euro; (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.)"
 	},
 	{
 		"id": "2169",
@@ -499,12 +617,15 @@ export const products: Product[] = [
 		"price": 9.78,
 		"regularPrice": 9.78,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/book-cancer-pets-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/book-cancer-pets.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/rak-drugi-zabolqvaniq-domashni-liubimci/",
 		"shortDescription": "Автор: Борислав Пеев Издател: „ДОКТОР БИОМАСТЕР“",
-		"priceLabel": "5.00 &euro; (9.78 лв.)"
+		"priceLabel": "5.00 € (9.78 лв.)"
 	},
 	{
 		"id": "1902",
@@ -513,12 +634,15 @@ export const products: Product[] = [
 		"price": 7.04,
 		"regularPrice": 7.04,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/rak-moje-da-bade-izlekuvan-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/rak-moje-da-bade-izlekuvan.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/rak-moje-da-bade-izlekuvan/",
 		"shortDescription": "Автор: Отец Романо Заго, O.F.M. (от Ордена на францисканските монаси) Издател: Доктор Биомастер",
-		"priceLabel": "3.60 &euro; (7.04 лв.)"
+		"priceLabel": "3.60 € (7.04 лв.)"
 	},
 	{
 		"id": "1906",
@@ -527,12 +651,15 @@ export const products: Product[] = [
 		"price": 8.02,
 		"regularPrice": 8.02,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/senzacionnata-antirakova-dieta-vulf-laskin-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/senzacionnata-antirakova-dieta-vulf-laskin.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/senzacionnata-antirakova-dieta-vulf-laskin/",
 		"shortDescription": "Автор: д-р Николай Колев Издател: „Доктор Натура“",
-		"priceLabel": "4.10 &euro; (8.02 лв.)"
+		"priceLabel": "4.10 € (8.02 лв.)"
 	},
 	{
 		"id": "2214",
@@ -541,12 +668,15 @@ export const products: Product[] = [
 		"price": 56.33,
 		"regularPrice": 75.1,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/komplekt-knigi-1-hulda-clark-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/komplekt-knigi-1-hulda-clark.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/komplekt-knigi-1-hulda-clark/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "38.40 &euro; (75.10 лв.) Original price was: 38.40&euro; (75.10 лв.). 28.80 &euro; (56.33 лв.) Текущата цена е: 28.80&euro; (56.33 лв.)."
+		"priceLabel": "38.40 € (75.10 лв.) Original price was: 38.40€ (75.10 лв.). 28.80 € (56.33 лв.) Текущата цена е: 28.80€ (56.33 лв.)."
 	},
 	{
 		"id": "2216",
@@ -555,12 +685,15 @@ export const products: Product[] = [
 		"price": 18.8,
 		"regularPrice": 22.1,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/komplekt-knigi-2-gubi-aloe-essiac-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/komplekt-knigi-2-gubi-aloe-essiac.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/komplekt-knigi-2-lekarstveni-gubi-aloe-essiac/",
 		"shortDescription": "Издател: „ДОКТОР БИОМАСТЕР“",
-		"priceLabel": "11.30 &euro; (22.10 лв.) Original price was: 11.30&euro; (22.10 лв.). 9.61 &euro; (18.80 лв.) Текущата цена е: 9.61&euro; (18.80 лв.)."
+		"priceLabel": "11.30 € (22.10 лв.) Original price was: 11.30€ (22.10 лв.). 9.61 € (18.80 лв.) Текущата цена е: 9.61€ (18.80 лв.)."
 	},
 	{
 		"id": "2435",
@@ -569,12 +702,15 @@ export const products: Product[] = [
 		"price": 62.43,
 		"regularPrice": 78.04,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-1-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/komplekt-hulda-clark-1/",
 		"shortDescription": "Комплект продукти по схемата на д-р Хулда Кларк и книга от автора.",
-		"priceLabel": "39.90 &euro; (78.04 лв.) Original price was: 39.90&euro; (78.04 лв.). 31.92 &euro; (62.43 лв.) Текущата цена е: 31.92&euro; (62.43 лв.)."
+		"priceLabel": "39.90 € (78.04 лв.) Original price was: 39.90€ (78.04 лв.). 31.92 € (62.43 лв.) Текущата цена е: 31.92€ (62.43 лв.)."
 	},
 	{
 		"id": "2437",
@@ -583,12 +719,15 @@ export const products: Product[] = [
 		"price": 62.43,
 		"regularPrice": 78.04,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-2-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/komplekt-hulda-clark-2/",
 		"shortDescription": "Комплект продукти по схемата на д-р Хулда Кларк и книга от автора.",
-		"priceLabel": "39.90 &euro; (78.04 лв.) Original price was: 39.90&euro; (78.04 лв.). 31.92 &euro; (62.43 лв.) Текущата цена е: 31.92&euro; (62.43 лв.)."
+		"priceLabel": "39.90 € (78.04 лв.) Original price was: 39.90€ (78.04 лв.). 31.92 € (62.43 лв.) Текущата цена е: 31.92€ (62.43 лв.)."
 	},
 	{
 		"id": "2439",
@@ -597,12 +736,15 @@ export const products: Product[] = [
 		"price": 62.43,
 		"regularPrice": 78.04,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-3-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/komplekt-hulda-clark-3.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/komplekt-hulda-clark-3/",
 		"shortDescription": "Комплект продукти по схемата на д-р Хулда Кларк и книга от автора.",
-		"priceLabel": "39.90 &euro; (78.04 лв.) Original price was: 39.90&euro; (78.04 лв.). 31.92 &euro; (62.43 лв.) Текущата цена е: 31.92&euro; (62.43 лв.)."
+		"priceLabel": "39.90 € (78.04 лв.) Original price was: 39.90€ (78.04 лв.). 31.92 € (62.43 лв.) Текущата цена е: 31.92€ (62.43 лв.)."
 	},
 	{
 		"id": "1920",
@@ -611,12 +753,15 @@ export const products: Product[] = [
 		"price": 37.55,
 		"regularPrice": 50.07,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-rak-lechenie-naprednali-formi-na-rak-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-rak-lechenie-naprednali-formi-na-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechenie-rak-lechenie-naprednali-formi-na-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "25.60 &euro; (50.07 лв.) Original price was: 25.60&euro; (50.07 лв.). 19.20 &euro; (37.55 лв.) Текущата цена е: 19.20&euro; (37.55 лв.)."
+		"priceLabel": "25.60 € (50.07 лв.) Original price was: 25.60€ (50.07 лв.). 19.20 € (37.55 лв.) Текущата цена е: 19.20€ (37.55 лв.)."
 	},
 	{
 		"id": "1918",
@@ -625,12 +770,15 @@ export const products: Product[] = [
 		"price": 37.55,
 		"regularPrice": 50.07,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-rak-lechenie-vsichki-vidove-rak-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-rak-lechenie-vsichki-vidove-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/predpazvane-rak-lechenie-vsichki-vidove-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "25.60 &euro; (50.07 лв.) Original price was: 25.60&euro; (50.07 лв.). 19.20 &euro; (37.55 лв.) Текущата цена е: 19.20&euro; (37.55 лв.)."
+		"priceLabel": "25.60 € (50.07 лв.) Original price was: 25.60€ (50.07 лв.). 19.20 € (37.55 лв.) Текущата цена е: 19.20€ (37.55 лв.)."
 	},
 	{
 		"id": "1916",
@@ -639,12 +787,15 @@ export const products: Product[] = [
 		"price": 37.55,
 		"regularPrice": 50.07,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-rak-lechenie-naprednali-formi-rak-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-rak-lechenie-naprednali-formi-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/predpazvane-rak-lechenie-naprednali-formi-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "25.60 &euro; (50.07 лв.) Original price was: 25.60&euro; (50.07 лв.). 19.20 &euro; (37.55 лв.) Текущата цена е: 19.20&euro; (37.55 лв.)."
+		"priceLabel": "25.60 € (50.07 лв.) Original price was: 25.60€ (50.07 лв.). 19.20 € (37.55 лв.) Текущата цена е: 19.20€ (37.55 лв.)."
 	},
 	{
 		"id": "2153",
@@ -653,12 +804,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/agarikus-blazei-extract-240-caps-2.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/agarikus-blazei-extract-240-caps-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agarikus-blazei-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "1779",
@@ -667,12 +821,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-blazei-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agarikus-blazei-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "1781",
@@ -681,12 +838,15 @@ export const products: Product[] = [
 		"price": 37.94,
 		"regularPrice": 37.94,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-prah-dr-biomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agaricus-blazei-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Агарикус Блазеи (Agaricus blazei Murrill)",
-		"priceLabel": "19.40 &euro; (37.94 лв.)"
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "1817",
@@ -695,12 +855,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/agaricus-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/agaricus-blazei-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Агарикус ( Agaricus Subrufescens )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "14974",
@@ -709,12 +872,15 @@ export const products: Product[] = [
 		"price": 203.99,
 		"regularPrice": 203.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-big-pack.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-big-pack.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-auricularia-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Аурикулария ( Auricularia polytricha )",
-		"priceLabel": "104.30 &euro; (203.99 лв.)"
+		"priceLabel": "104.30 € (203.99 лв.)"
 	},
 	{
 		"id": "1801",
@@ -723,12 +889,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/auricularia-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/auricularia-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-auricularia-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Аурикулария ( Auricularia polytricha )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "14987",
@@ -737,12 +906,15 @@ export const products: Product[] = [
 		"price": 203.99,
 		"regularPrice": 203.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-big-pack.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-big-pack.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Шийтаке (Lentinula Edodes)",
-		"priceLabel": "104.30 &euro; (203.99 лв.)"
+		"priceLabel": "104.30 € (203.99 лв.)"
 	},
 	{
 		"id": "1825",
@@ -751,12 +923,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-shiitake-extract-hawlik.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-shiitake-extract-hawlik.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодното тяло на гъби Шийтаке ( Lentinula Edodes )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1811",
@@ -765,12 +940,15 @@ export const products: Product[] = [
 		"price": 64.93,
 		"regularPrice": 64.93,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/jenska-sila-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/jenska-sila-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/jenska-sila/",
 		"shortDescription": "90 капсули по 390 mg Екстракт от плодното тяло на гъбите Агарикус и Майтаке, както и прах от плодното тяло на гъбите Майтаке и Рейши",
-		"priceLabel": "33.20 &euro; (64.93 лв.)"
+		"priceLabel": "33.20 € (64.93 лв.)"
 	},
 	{
 		"id": "14983",
@@ -779,12 +957,15 @@ export const products: Product[] = [
 		"price": 203.99,
 		"regularPrice": 203.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-big-pack.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-big-pack.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-coprinus-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Копринус ( Coprinus comatus )",
-		"priceLabel": "104.30 &euro; (203.99 лв.)"
+		"priceLabel": "104.30 € (203.99 лв.)"
 	},
 	{
 		"id": "1793",
@@ -793,12 +974,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/coprinus-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/coprinus-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-coprinus-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Копринус ( Coprinus comatus )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1791",
@@ -807,12 +991,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-coriolus-extract-60-caps-hawlik.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-coriolus-extract-60-caps-hawlik.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-coriolus-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Кориолус ( Coriolus versicolor ) Оставете ни запитване и ще бъдете автоматично уведомени при наличност.",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1821",
@@ -821,12 +1008,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-maitake-extract-hawlik.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-maitake-extract-hawlik.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-meitake-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Майтаке ( Grifola Frondosa )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "14978",
@@ -835,12 +1025,15 @@ export const products: Product[] = [
 		"price": 203.99,
 		"regularPrice": 203.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporys-hawlik-big-pack.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporys-hawlik-big-pack.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/polyporus-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Полипорус ( Polyporus umbellatus )",
-		"priceLabel": "104.30 &euro; (203.99 лв.)"
+		"priceLabel": "104.30 € (203.99 лв.)"
 	},
 	{
 		"id": "1805",
@@ -849,12 +1042,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/polyporus-hawlik-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/polyporus-hawlik-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/polyporus-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Полипорус ( Polyporus umbellatus )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1823",
@@ -863,12 +1059,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-reishi-extract-hawlik.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-reishi-extract-hawlik.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-reishi-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Рейши ( Ganoderma lucidum )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1809",
@@ -877,12 +1076,15 @@ export const products: Product[] = [
 		"price": 64.93,
 		"regularPrice": 64.93,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-relax-hawlik-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/bio-relax-hawlik-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/relax/",
 		"shortDescription": "90 капсули по 375 mg. Хранителна добавка. Прах от Био Рейши от плодно тяло, прах от Био Херициум от плодно тяло и екстракт от Био Кордицепс",
-		"priceLabel": "33.20 &euro; (64.93 лв.)"
+		"priceLabel": "33.20 € (64.93 лв.)"
 	},
 	{
 		"id": "1789",
@@ -891,12 +1093,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/hericium-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/hericium-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-hericium-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Херициум ( Hericium erinaceus )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "1783",
@@ -905,12 +1110,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster/",
 		"shortDescription": "ГЪБА РЕЙШИ екстракт 30% е хранителна добавка от сух екстракт на плодното тяло на гъбата Рейши ( Ganoderma lucidum ), стандартизиран на 30% гъбени полизахариди — приблизително 88 mg полизахариди във всяка капсула . Пазарният стандарт при повечето рейши екстракти е 10% и обикновено те не са произведени от плодно тяло, какъвто е този продукт, а от гъбен мицел – значително по-евтина суровина за производство. Всяка партида суровина за този продукт се анализира от германската лаборатория AGROLAB . 60 капсули по 300 mg • за 10–30 дни прием Екстракт от плодно тяло , не от мицел и не гъбен прах Съотношение на екстракция ≈ 30:1 Без глутен, без ГМО, веган капсула от растителна целулоза Регистриран в Националния регистър на храните: № Т221115906",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "2362",
@@ -919,12 +1127,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/11/reishi-extract-240-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster-big/",
 		"shortDescription": "Голямата опаковка ГЪБА РЕЙШИ капсули съдържа 240 капсули по 300 mg — същият стандартизиран екстракт от плодно тяло с 30% полизахариди, в четворно количество. Предназначена е за продължителен прием и при по-високи дневни дози. Голямата опаковка спестява пари 240 капсули стигат за 27 до 80 дни прием – в зависимост от дозата Контрол от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № Т221115906",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "1739",
@@ -933,12 +1144,15 @@ export const products: Product[] = [
 		"price": 27.97,
 		"regularPrice": 27.97,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/diafungi/",
 		"shortDescription": "90 капсули по 330 mg Смес от прахове от плодно тяло на 3 лекарствени гъби: Майтаке ( Grifola frondosa ), Шийтаке ( Lentinula edodes ) и Копринус ( Coprinus comatus ).",
-		"priceLabel": "14.30 &euro; (27.97 лв.)"
+		"priceLabel": "14.30 € (27.97 лв.)"
 	},
 	{
 		"id": "259",
@@ -947,12 +1161,15 @@ export const products: Product[] = [
 		"price": 109.92,
 		"regularPrice": 109.92,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imun-modulator-90-caps/",
 		"shortDescription": "ИМЮН МОДУЛАТОР представлява смес от 6 лекарствени гъби и е отлично средство за подобряване функциите на имунната система.",
-		"priceLabel": "56.20 &euro; (109.92 лв.)"
+		"priceLabel": "56.20 € (109.92 лв.)"
 	},
 	{
 		"id": "1732",
@@ -961,12 +1178,15 @@ export const products: Product[] = [
 		"price": 389.99,
 		"regularPrice": 389.99,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/imun-modulator-big-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/imun-modulator-big.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imun-modulator-360-caps/",
 		"shortDescription": "ИМЮН МОДУЛАТОР представлява смес от 6 лекарствени гъби. Продуктът е съвместим с провеждането на химиотерапия и лъчетерапия.",
-		"priceLabel": "199.40 &euro; (389.99 лв.)"
+		"priceLabel": "199.40 € (389.99 лв.)"
 	},
 	{
 		"id": "1737",
@@ -975,26 +1195,32 @@ export const products: Product[] = [
 		"price": 41.07,
 		"regularPrice": 41.07,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/imunitet-365-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/imunitet-365.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imunitet-365/",
 		"shortDescription": "120 капсули по 520 mg Смес от 5 лекарствени гъби: Агарикус прах, Рейши прах, Майтаке прах, Шийтаке прах и Кордицепс екстракт.",
-		"priceLabel": "21.00 &euro; (41.07 лв.)"
+		"priceLabel": "21.00 € (41.07 лв.)"
 	},
 	{
 		"id": "1787",
 		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
 		"category": "Лекарствени гъби",
-		"price": 63.96,
+		"price": 51.16,
 		"regularPrice": 63.96,
-		"onSale": false,
+		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster/",
 		"shortDescription": "Екстракт от Cordyceps sinensis | 30% Полизахариди | Анализен сертификат от AGROLAB – Германия | Опаковка: 60 капсули по 300 мг | Оценка: ⭐⭐⭐⭐⭐ 4.97 / 5",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.) Original price was: 32.70€ (63.96 лв.). 26.16 € (51.16 лв.) Текущата цена е: 26.16€ (51.16 лв.)."
 	},
 	{
 		"id": "2156",
@@ -1003,12 +1229,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от мицел на гъба Кордицепс ( Cordyceps sinensis )",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "1819",
@@ -1017,12 +1246,15 @@ export const products: Product[] = [
 		"price": 68.06,
 		"regularPrice": 68.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от мицел на гъба Кордицепс ( Cordyceps Sinensis )",
-		"priceLabel": "34.80 &euro; (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.)"
 	},
 	{
 		"id": "2159",
@@ -1031,12 +1263,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meitake-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "1775",
@@ -1045,12 +1280,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/maitake-extract-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "1777",
@@ -1059,12 +1297,15 @@ export const products: Product[] = [
 		"price": 37.94,
 		"regularPrice": 37.94,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/meitake-prah-dr-biomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/meitake-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/maitake-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "19.40 &euro; (37.94 лв.)"
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "4155",
@@ -1073,12 +1314,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": true,
 		"image": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meshima-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 270 mg Екстракт от плодното тяло на гъба Мешима (Phellinus linteus)",
-		"priceLabel": "32.70 &euro; &ndash; 98.20 &euro; Price range: 32.70&euro; through 98.20&euro; (63.96 – 192.06 лв.)"
+		"priceLabel": "32.70 € &ndash; 98.20 € Price range: 32.70€ through 98.20€ (63.96 – 192.06 лв.)"
 	},
 	{
 		"id": "1735",
@@ -1087,12 +1331,15 @@ export const products: Product[] = [
 		"price": 41.07,
 		"regularPrice": 41.07,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/nai-dobrata-smes-gubeni-prahove-600x600.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/nai-dobrata-smes-gubeni-prahove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/nai-dobrata-smes-gubeni-prahove/",
 		"shortDescription": "100 g Смес от гъбените прахове от плодното тяло на 9 лекарствени гъби",
-		"priceLabel": "21.00 &euro; (41.07 лв.)"
+		"priceLabel": "21.00 € (41.07 лв.)"
 	},
 	{
 		"id": "1785",
@@ -1101,12 +1348,15 @@ export const products: Product[] = [
 		"price": 37.94,
 		"regularPrice": 37.94,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-prah-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-prah-dr-biomaster/",
 		"shortDescription": "РЕЙШИ прах е смляно изсушено плодно тяло на гъбата Рейши ( Ganoderma lucidum ), позната още като ганодерма . Това е гъбата в целия ѝ вид – изсушена и смляна на прах. Прахът е шел-броукън : твърдата хитинова обвивка на гъбните клетки е механично разчупена, за да бъде съдържанието им усвоимо. Шел-броукън — разбита клетъчна стена за по-добра усвояемост 100% прах от плодно тяло, без пълнители и без добавки Без глутен, без ГМО, подходящ за вегани Контрол на всяка партида от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № T221100497 / 09.02.2012 г.",
-		"priceLabel": "19.40 &euro; (37.94 лв.)"
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "2167",
@@ -1115,12 +1365,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "2165",
@@ -1129,12 +1382,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "2442",
@@ -1143,12 +1399,15 @@ export const products: Product[] = [
 		"price": 192.06,
 		"regularPrice": 192.06,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Шиитаке (Lentinula edodes)",
-		"priceLabel": "98.20 &euro; (192.06 лв.)"
+		"priceLabel": "98.20 € (192.06 лв.)"
 	},
 	{
 		"id": "1771",
@@ -1157,12 +1416,15 @@ export const products: Product[] = [
 		"price": 63.96,
 		"regularPrice": 63.96,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-extract-1-2.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 300 mg Екстракт от плодно тяло на гъба Шиитаке (Lentinula edodes)",
-		"priceLabel": "32.70 &euro; (63.96 лв.)"
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "1773",
@@ -1171,12 +1433,15 @@ export const products: Product[] = [
 		"price": 37.94,
 		"regularPrice": 37.94,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-prah-drbiomaster.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/shiitake-prah-drbiomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-prah-dr-biomaster/",
 		"shortDescription": "100 g Прах от плодно тяло на гъба Шийтаке (Lentinula edodes)",
-		"priceLabel": "19.40 &euro; (37.94 лв.)"
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "1769",
@@ -1185,12 +1450,15 @@ export const products: Product[] = [
 		"price": 62,
 		"regularPrice": 62,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/jamakiro-plus.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/jamakiro-plus.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/jamakiro/",
 		"shortDescription": "180 капсули по 300 mg Смес от прахове от плодно тяло на 4 лекарствени гъби",
-		"priceLabel": "31.70 &euro; (62.00 лв.)"
+		"priceLabel": "31.70 € (62.00 лв.)"
 	},
 	{
 		"id": "24892",
@@ -1199,12 +1467,18 @@ export const products: Product[] = [
 		"price": 68.47,
 		"regularPrice": 76.08,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „АНТИСТРЕС“ – Антистрес билкова формула + CBD 5% Cannabimax Soft – ОТСТЪПКА от общата цена на продуктите – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-antistres.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-antistres.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-antistres/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 3.89€ (7.61 лв.)",
-		"priceLabel": "38.90 &euro; (76.08 лв.) Original price was: 38.90&euro; (76.08 лв.). 35.01 &euro; (68.47 лв.) Текущата цена е: 35.01&euro; (68.47 лв.)."
+		"priceLabel": "38.90 € (76.08 лв.) Original price was: 38.90€ (76.08 лв.). 35.01 € (68.47 лв.) Текущата цена е: 35.01€ (68.47 лв.)."
 	},
 	{
 		"id": "24886",
@@ -1213,12 +1487,18 @@ export const products: Product[] = [
 		"price": 204.36,
 		"regularPrice": 227.07,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „ЗДРАВИ КЛЕТКИ“ – Имюн Модулатор + Куркумин X40 + Амигдалин – ОТСТЪПКА от общата цена на продуктите – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-zdravi-kletki.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-zdravi-kletki.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-zdravi-kletki/",
 		"shortDescription": "Специална формула за подкрепа при по-тежки хронични и онкологични състояния ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 11.61€ (22.71 лв.)",
-		"priceLabel": "116.10 &euro; (227.07 лв.) Original price was: 116.10&euro; (227.07 лв.). 104.49 &euro; (204.36 лв.) Текущата цена е: 104.49&euro; (204.36 лв.)."
+		"priceLabel": "116.10 € (227.07 лв.) Original price was: 116.10€ (227.07 лв.). 104.49 € (204.36 лв.) Текущата цена е: 104.49€ (204.36 лв.)."
 	},
 	{
 		"id": "24747",
@@ -1227,12 +1507,18 @@ export const products: Product[] = [
 		"price": 86.6,
 		"regularPrice": 96.23,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „ИМУНИТЕТ“ — Имюнити 365 + Куркумин x 40; ОТСТЪПКА от общата цена на продуктите: – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-imunitet.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-imunitet.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-imunitet/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 4.92 € (9.63 лв.)",
-		"priceLabel": "49.20 &euro; (96.23 лв.) Original price was: 49.20&euro; (96.23 лв.). 44.28 &euro; (86.60 лв.) Текущата цена е: 44.28&euro; (86.60 лв.)."
+		"priceLabel": "49.20 € (96.23 лв.) Original price was: 49.20€ (96.23 лв.). 44.28 € (86.60 лв.) Текущата цена е: 44.28€ (86.60 лв.)."
 	},
 	{
 		"id": "24723",
@@ -1241,12 +1527,18 @@ export const products: Product[] = [
 		"price": 95.23,
 		"regularPrice": 105.81,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „МЕТАБОЛИЗЪМ И ИР“ – ОТСТЪПКА от общата цена на продуктите – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-metabolism-i-ir.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-metabolism-i-ir.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-metabolism-i-ir/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.41€ (10.58 лв.)",
-		"priceLabel": "54.10 &euro; (105.81 лв.) Original price was: 54.10&euro; (105.81 лв.). 48.69 &euro; (95.23 лв.) Текущата цена е: 48.69&euro; (95.23 лв.)."
+		"priceLabel": "54.10 € (105.81 лв.) Original price was: 54.10€ (105.81 лв.). 48.69 € (95.23 лв.) Текущата цена е: 48.69€ (95.23 лв.)."
 	},
 	{
 		"id": "24728",
@@ -1255,12 +1547,18 @@ export const products: Product[] = [
 		"price": 103.33,
 		"regularPrice": 114.81,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „СТАВИ“ – Cannabimax Gold + Пау Д’Арко; ОТСТЪПКА от общата цена на продуктите: – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-stavi.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-stavi.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-stavi/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.87€ (11.48 лв.)",
-		"priceLabel": "58.70 &euro; (114.81 лв.) Original price was: 58.70&euro; (114.81 лв.). 52.83 &euro; (103.33 лв.) Текущата цена е: 52.83&euro; (103.33 лв.)."
+		"priceLabel": "58.70 € (114.81 лв.) Original price was: 58.70€ (114.81 лв.). 52.83 € (103.33 лв.) Текущата цена е: 52.83€ (103.33 лв.)."
 	},
 	{
 		"id": "24897",
@@ -1269,12 +1567,18 @@ export const products: Product[] = [
 		"price": 91.71,
 		"regularPrice": 101.9,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“ – Суперформула за сърце и кръвоносни съдове + Рейши 30% екстракт от плодно тяло; ОТСТЪПКА от общата цена на продуктите – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-surdechno-sudova-sistema.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-surdechno-sudova-sistema.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-surdechno-sudova-sistema/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.21€ (10.19 лв.)",
-		"priceLabel": "52.10 &euro; (101.90 лв.) Original price was: 52.10&euro; (101.90 лв.). 46.89 &euro; (91.71 лв.) Текущата цена е: 46.89&euro; (91.71 лв.)."
+		"priceLabel": "52.10 € (101.90 лв.) Original price was: 52.10€ (101.90 лв.). 46.89 € (91.71 лв.) Текущата цена е: 46.89€ (91.71 лв.)."
 	},
 	{
 		"id": "24743",
@@ -1283,12 +1587,18 @@ export const products: Product[] = [
 		"price": 115.12,
 		"regularPrice": 127.91,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „ХОРМОНАЛЕН БАЛАНС“ — Мешима + Майтаке; ОТСТЪПКА от общата цена на продуктите: – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-hormonalen-balans.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-hormonalen-balans.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-hormonalen-balans/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 6.54€ (12.79 лв.)",
-		"priceLabel": "65.40 &euro; (127.91 лв.) Original price was: 65.40&euro; (127.91 лв.). 58.86 &euro; (115.12 лв.) Текущата цена е: 58.86&euro; (115.12 лв.)."
+		"priceLabel": "65.40 € (127.91 лв.) Original price was: 65.40€ (127.91 лв.). 58.86 € (115.12 лв.) Текущата цена е: 58.86€ (115.12 лв.)."
 	},
 	{
 		"id": "24882",
@@ -1297,12 +1607,18 @@ export const products: Product[] = [
 		"price": 113.36,
 		"regularPrice": 125.96,
 		"onSale": true,
+		"promotion": null,
+		"promotionEvidence": [
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „ХРАНОСМИЛАТЕЛНА СИСТЕМА“ – Херициум 30 % екстракт + Алое Арборесценс; ОТСТЪПКА от общата цена на продуктите – 10%"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-hranismilatelna-sistema.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-hranismilatelna-sistema.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-hranismilatelna-sistema/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 6.44€ (12.60 лв.)",
-		"priceLabel": "64.40 &euro; (125.96 лв.) Original price was: 64.40&euro; (125.96 лв.). 57.96 &euro; (113.36 лв.) Текущата цена е: 57.96&euro; (113.36 лв.)."
+		"priceLabel": "64.40 € (125.96 лв.) Original price was: 64.40€ (125.96 лв.). 57.96 € (113.36 лв.) Текущата цена е: 57.96€ (113.36 лв.)."
 	},
 	{
 		"id": "8077",
@@ -1311,12 +1627,21 @@ export const products: Product[] = [
 		"price": 64.93,
 		"regularPrice": 64.93,
 		"onSale": false,
+		"promotion": {
+			"kind": "bundle",
+			"buy": 3,
+			"pay": 2
+		},
+		"promotionEvidence": [
+			"Промоционално изображение: Промоция на Cannabimax Gold - плати 2 вземи 3 (https://drbiomaster.com/wp-content/uploads/2023/08/cannabimax-gold-buy-2-get-3-new.png)"
+		],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2023/08/cannabimax-gold-drbiomaster-product.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2023/08/cannabimax-gold-drbiomaster-product.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-gold/",
 		"shortDescription": "Куркумин и конопено масло в двойна капсула",
-		"priceLabel": "33.20 &euro; (64.93 лв.)"
+		"priceLabel": "33.20 € (64.93 лв.)"
 	},
 	{
 		"id": "3252",
@@ -1325,12 +1650,15 @@ export const products: Product[] = [
 		"price": 85.08,
 		"regularPrice": 85.08,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/12/alhimichen-krem-s-konop-800-cbd.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/12/alhimichen-krem-s-konop-800-cbd.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-krem-alchemic-extracts-800-mg/",
 		"shortDescription": "",
-		"priceLabel": "43.50 &euro; (85.08 лв.)"
+		"priceLabel": "43.50 € (85.08 лв.)"
 	},
 	{
 		"id": "3276",
@@ -1339,12 +1667,15 @@ export const products: Product[] = [
 		"price": 39.9,
 		"regularPrice": 39.9,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/12/pbg-global-cannabin-omega-5-cbd.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/12/pbg-global-cannabin-omega-5-cbd.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-kapsuli-cannabin-omega-5-cbd-2/",
 		"shortDescription": "",
-		"priceLabel": "20.40 &euro; (39.90 лв.)"
+		"priceLabel": "20.40 € (39.90 лв.)"
 	},
 	{
 		"id": "3058",
@@ -1353,12 +1684,15 @@ export const products: Product[] = [
 		"price": 265.01,
 		"regularPrice": 265.01,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Strong1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Strong1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-extra-strong-30-cbd/",
 		"shortDescription": "",
-		"priceLabel": "135.50 &euro; (265.01 лв.)"
+		"priceLabel": "135.50 € (265.01 лв.)"
 	},
 	{
 		"id": "3055",
@@ -1367,12 +1701,15 @@ export const products: Product[] = [
 		"price": 95.05,
 		"regularPrice": 95.05,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Medium1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Medium1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-medium-10-cbd/",
 		"shortDescription": "",
-		"priceLabel": "48.60 &euro; (95.05 лв.)"
+		"priceLabel": "48.60 € (95.05 лв.)"
 	},
 	{
 		"id": "3053",
@@ -1381,12 +1718,15 @@ export const products: Product[] = [
 		"price": 55.15,
 		"regularPrice": 55.15,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/Soft-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/Soft-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cannabimax-soft-5-cbd/",
 		"shortDescription": "",
-		"priceLabel": "28.20 &euro; (55.15 лв.)"
+		"priceLabel": "28.20 € (55.15 лв.)"
 	},
 	{
 		"id": "3174",
@@ -1395,12 +1735,15 @@ export const products: Product[] = [
 		"price": 113.05,
 		"regularPrice": 113.05,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-10-cbd-1.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-10-cbd-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cibdol-10-cbd/",
 		"shortDescription": "",
-		"priceLabel": "57.80 &euro; (113.05 лв.)"
+		"priceLabel": "57.80 € (113.05 лв.)"
 	},
 	{
 		"id": "3176",
@@ -1409,12 +1752,15 @@ export const products: Product[] = [
 		"price": 165.07,
 		"regularPrice": 165.07,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-15-cbd.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-15-cbd.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cibdol-15-cbd/",
 		"shortDescription": "",
-		"priceLabel": "84.40 &euro; (165.07 лв.)"
+		"priceLabel": "84.40 € (165.07 лв.)"
 	},
 	{
 		"id": "3178",
@@ -1423,12 +1769,15 @@ export const products: Product[] = [
 		"price": 215.14,
 		"regularPrice": 215.14,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-konop-cibdol-20.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-konop-cibdol-20.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cibdol-20-cbd/",
 		"shortDescription": "",
-		"priceLabel": "110.00 &euro; (215.14 лв.)"
+		"priceLabel": "110.00 € (215.14 лв.)"
 	},
 	{
 		"id": "3170",
@@ -1437,12 +1786,15 @@ export const products: Product[] = [
 		"price": 59.07,
 		"regularPrice": 59.07,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-5-cbd-new.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/maslo-ot-konop-cibdol-5-cbd-new.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-cibdol-5-cbd/",
 		"shortDescription": "CIBDOL Масло от семената на индустриален коноп (Cannabis sativa L) 5%, 10 ml, 460 mg",
-		"priceLabel": "30.20 &euro; (59.07 лв.)"
+		"priceLabel": "30.20 € (59.07 лв.)"
 	},
 	{
 		"id": "3100",
@@ -1451,12 +1803,15 @@ export const products: Product[] = [
 		"price": 62.98,
 		"regularPrice": 62.98,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/hemp-extract-balanced-enecta-1000-mg-10-ml.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/hemp-extract-balanced-enecta-1000-mg-10-ml.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-enecta-10-cbd/",
 		"shortDescription": "",
-		"priceLabel": "32.20 &euro; (62.98 лв.)"
+		"priceLabel": "32.20 € (62.98 лв.)"
 	},
 	{
 		"id": "3103",
@@ -1465,12 +1820,15 @@ export const products: Product[] = [
 		"price": 157.05,
 		"regularPrice": 157.05,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2021/11/hemp-extract-strong-enecta-24-cbd-2400-mg-10-ml.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/11/hemp-extract-strong-enecta-24-cbd-2400-mg-10-ml.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-maslo-enecta-24-cbd/",
 		"shortDescription": "",
-		"priceLabel": "80.30 &euro; (157.05 лв.)"
+		"priceLabel": "80.30 € (157.05 лв.)"
 	},
 	{
 		"id": "26170",
@@ -1479,11 +1837,14 @@ export const products: Product[] = [
 		"price": 14.39,
 		"regularPrice": 14.39,
 		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
 		"hasOptions": true,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/01/cbd-tamponi-daye-sredhno-absorbirashti.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/01/cbd-tamponi-daye-sredhno-absorbirashti.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cbd-tamponi/",
 		"shortDescription": "Органичните тампони Daye, покрити с клинично тестван канабидиол (CBD), който съдържа 0.00% THC за ефективно, локализирано облекчаване на менструални спазми. Предлагат се два вида: обикновен размер и супер размер. 9 тампона в опаковка.",
-		"priceLabel": "7.36 &euro; (14.39 лв.)"
+		"priceLabel": "7.36 € (14.39 лв.)"
 	}
 ];

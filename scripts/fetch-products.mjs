@@ -1,69 +1,10 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
-const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
+import { fetchStoreProducts } from './lib/fetch-store-products.mjs';
+import { pricesFromStore, stripHtml } from '../src/lib/catalogue.ts';
+
 const TARGET = resolve('src/lib/products.ts');
-const REQUEST_HEADERS = {
-	accept: 'application/json, text/plain, */*',
-	'accept-language': 'bg-BG,bg;q=0.9,en-US;q=0.8,en;q=0.7',
-	referer: 'https://drbiomaster.com/',
-	'user-agent':
-		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
-};
-
-function decodeEntities(value = '') {
-	return value
-		.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-		.replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCharCode(Number.parseInt(code, 16)))
-		.replace(/&nbsp;/g, ' ')
-		.replace(/&amp;/g, '&')
-		.replace(/&quot;/g, '"')
-		.replace(/&#8211;/g, '-')
-		.replace(/&#8217;/g, "'")
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>');
-}
-
-function stripHtml(value = '') {
-	return decodeEntities(value.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
-}
-
-function priceToLeva(product) {
-	return amountToLeva(product.prices.sale_price || product.prices.price || product.prices.regular_price, product.prices);
-}
-
-function amountToLeva(amount, prices) {
-	const minorUnit = Number(prices.currency_minor_unit ?? 2);
-	const divisor = 10 ** minorUnit;
-	const price = Number(amount || 0) / divisor;
-
-	if (prices.currency_code === 'BGN') {
-		return price;
-	}
-
-	if (prices.currency_code === 'EUR') {
-		return Number((price * 1.95583).toFixed(2));
-	}
-
-	return Number(price.toFixed(2));
-}
-
-function formatCategory(categories = []) {
-	const leaf = categories.at(-1);
-	return leaf?.name ? decodeEntities(leaf.name) : 'Без категория';
-}
-
-async function fetchPage(page) {
-	const url = `${API}?per_page=100&page=${page}`;
-	const response = await fetch(url, { headers: REQUEST_HEADERS });
-	if (!response.ok) {
-		if (response.status === 403) return fetchJsonpPage(url, page);
-		if (response.status === 400 || response.status === 404) return [];
-		throw new Error(`Failed to fetch products page ${page}: ${response.status}`);
-	}
-
-	return response.json();
-}
 
 async function readExistingCatalog() {
 	try {
@@ -84,52 +25,23 @@ async function readExistingCatalog() {
 	}
 }
 
-async function fetchJsonpPage(url, page) {
-	const callbackName = `drBiomasterSync_${page}`;
-	const response = await fetch(`${url}&_jsonp=${callbackName}`, { headers: REQUEST_HEADERS });
-	if (!response.ok) {
-		if (response.status === 400 || response.status === 404) return [];
-		throw new Error(`Failed to fetch products page ${page} via JSONP: ${response.status}`);
-	}
-
-	const text = await response.text();
-	const prefix = `${callbackName}(`;
-	if (!text.startsWith(prefix) || !text.trimEnd().endsWith(');')) {
-		throw new Error(`Unexpected JSONP response for products page ${page}`);
-	}
-
-	return JSON.parse(text.slice(prefix.length, text.lastIndexOf(');')));
-}
-
-const products = [];
-
-for (let page = 1; page <= 20; page += 1) {
-	const batch = await fetchPage(page);
-	products.push(...batch);
-	if (batch.length < 100) break;
-}
+const products = await fetchStoreProducts();
 
 const normalized = products
 	.filter((product) => !product.is_password_protected)
 	.map((product) => {
-		const price = priceToLeva(product);
-		const regularPrice = product.prices.regular_price
-			? amountToLeva(product.prices.regular_price, product.prices)
-			: price;
-
+		const prices = pricesFromStore(product);
 		return {
 			id: String(product.id),
 			name: stripHtml(product.name),
-			category: formatCategory(product.categories),
-			price,
-			regularPrice,
-			onSale: Boolean(product.on_sale),
+			category: stripHtml(product.categories?.at(-1)?.name) || 'Без категория',
+			...prices,
 			hasOptions: Boolean(product.has_options),
 			image: product.images?.[0]?.thumbnail || product.images?.[0]?.src || '',
 			imageLarge: product.images?.[0]?.src || product.images?.[0]?.thumbnail || '',
 			sourceUrl: product.permalink,
 			shortDescription: stripHtml(product.short_description),
-			priceLabel: stripHtml(product.price_html) || `${price.toFixed(2)} лв.`
+			priceLabel: stripHtml(product.price_html) || `${prices.price.toFixed(2)} лв.`
 		};
 	})
 	.sort((a, b) => a.category.localeCompare(b.category, 'bg') || a.name.localeCompare(b.name, 'bg'));
@@ -138,13 +50,18 @@ const existingCatalog = await readExistingCatalog();
 const catalogChanged = JSON.stringify(existingCatalog.products) !== JSON.stringify(normalized);
 const catalogUpdatedAt = catalogChanged || !existingCatalog.updatedAt ? new Date().toISOString() : existingCatalog.updatedAt;
 
-const output = `export type Product = {
+const output = `import type { QuantityPromotion } from './catalogue';
+
+export type Product = {
 	id: string;
 	name: string;
 	category: string;
 	price: number;
 	regularPrice: number;
 	onSale: boolean;
+	promotion?: QuantityPromotion | null;
+	promotionEvidence?: string[];
+	promotionWarnings?: string[];
 	hasOptions: boolean;
 	image: string;
 	imageLarge: string;
@@ -154,6 +71,7 @@ const output = `export type Product = {
 };
 
 export const catalogUpdatedAt = ${JSON.stringify(catalogUpdatedAt)};
+export const catalogCheckedAt = ${JSON.stringify(new Date().toISOString().slice(0, 10))};
 
 export const products: Product[] = ${JSON.stringify(normalized, null, '\t')};
 `;
@@ -162,3 +80,6 @@ await mkdir(dirname(TARGET), { recursive: true });
 await writeFile(TARGET, output, 'utf8');
 
 console.log(`${catalogChanged ? 'Updated' : 'Checked'} ${normalized.length} products in ${TARGET}`);
+
+const warnings = normalized.flatMap(product => product.promotionWarnings.map(warning => `${product.id} ${product.name}: ${warning}`));
+for (const warning of warnings) console.warn(`Promotion needs review: ${warning}`);

@@ -1,135 +1,24 @@
 import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { fetchStoreProducts } from './lib/fetch-store-products.mjs';
+import { compareCatalog } from '../src/lib/catalogue.ts';
 
-const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
-const PRODUCTS_FILE = resolve('src/lib/products.ts');
-const REQUEST_HEADERS = {
-	accept: 'application/json, text/plain, */*',
-	'accept-language': 'bg-BG,bg;q=0.9,en-US;q=0.8,en;q=0.7',
-	referer: 'https://drbiomaster.com/',
-	'user-agent':
-		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36'
-};
-
-function decodeEntities(value = '') {
-	return value
-		.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-		.replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCharCode(Number.parseInt(code, 16)))
-		.replace(/&nbsp;/g, ' ')
-		.replace(/&amp;/g, '&')
-		.replace(/&quot;/g, '"')
-		.replace(/&#8211;/g, '-')
-		.replace(/&#8217;/g, "'")
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>');
-}
-
-function stripHtml(value = '') {
-	return decodeEntities(value.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
-}
-
-function amountToLeva(amount, prices) {
-	const minorUnit = Number(prices.currency_minor_unit ?? 2);
-	const divisor = 10 ** minorUnit;
-	const price = Number(amount || 0) / divisor;
-
-	if (prices.currency_code === 'BGN') return Number(price.toFixed(2));
-	if (prices.currency_code === 'EUR') return Number((price * 1.95583).toFixed(2));
-	return Number(price.toFixed(2));
-}
-
-async function fetchLiveProducts() {
-	const products = [];
-
-	for (let page = 1; page <= 20; page += 1) {
-		const url = `${API}?per_page=100&page=${page}`;
-		const response = await fetch(url, { headers: REQUEST_HEADERS });
-		if (!response.ok) {
-			if (response.status === 403) {
-				const batch = await fetchJsonpPage(url, page);
-				products.push(...batch);
-				if (batch.length < 100) break;
-				continue;
-			}
-			if (response.status === 400 || response.status === 404) break;
-			throw new Error(`Failed to fetch products page ${page}: ${response.status}`);
-		}
-
-		const batch = await response.json();
-		products.push(...batch);
-		if (batch.length < 100) break;
-	}
-
-	return products;
-}
-
-async function fetchJsonpPage(url, page) {
-	const callbackName = `drBiomasterPriceCheck_${page}`;
-	const response = await fetch(`${url}&_jsonp=${callbackName}`, { headers: REQUEST_HEADERS });
-	if (!response.ok) {
-		if (response.status === 400 || response.status === 404) return [];
-		throw new Error(`Failed to fetch products page ${page} via JSONP: ${response.status}`);
-	}
-
-	const text = await response.text();
-	const prefix = `${callbackName}(`;
-	if (!text.startsWith(prefix) || !text.trimEnd().endsWith(');')) {
-		throw new Error(`Unexpected JSONP response for products page ${page}`);
-	}
-
-	return JSON.parse(text.slice(prefix.length, text.lastIndexOf(');')));
-}
-
-async function readLocalProducts() {
-	const source = await readFile(PRODUCTS_FILE, 'utf8');
-	const match = source.match(/export const products: Product\[\] = ([\s\S]*);\s*$/);
-	if (!match) throw new Error(`Could not find products export in ${PRODUCTS_FILE}`);
-	return JSON.parse(match[1]);
-}
-
-function normalizeLiveProduct(product) {
-	const price = amountToLeva(product.prices.sale_price || product.prices.price || product.prices.regular_price, product.prices);
-	const regularPrice = product.prices.regular_price ? amountToLeva(product.prices.regular_price, product.prices) : price;
-
-	return {
-		id: String(product.id),
-		name: stripHtml(product.name),
-		price,
-		regularPrice,
-		onSale: Boolean(product.on_sale)
-	};
-}
-
-const localProducts = await readLocalProducts();
-const liveProducts = (await fetchLiveProducts()).map(normalizeLiveProduct);
-const localById = new Map(localProducts.map((product) => [product.id, product]));
-const mismatches = [];
-
-for (const live of liveProducts) {
-	const local = localById.get(live.id);
-	if (!local) {
-		mismatches.push({ id: live.id, name: live.name, issue: 'missing-local' });
-		continue;
-	}
-
-	const priceDiff = Math.abs(Number(local.price) - live.price);
-	const regularDiff = Math.abs(Number(local.regularPrice) - live.regularPrice);
-	const saleDiff = Boolean(local.onSale) !== live.onSale;
-
-	if (priceDiff > 0.01 || regularDiff > 0.01 || saleDiff) {
-		mismatches.push({
-			id: live.id,
-			name: live.name,
-			local: { price: local.price, regularPrice: local.regularPrice, onSale: local.onSale },
-			live: { price: live.price, regularPrice: live.regularPrice, onSale: live.onSale }
-		});
-	}
-}
-
-if (mismatches.length === 0) {
-	console.log(`OK: ${liveProducts.length} live products match ${PRODUCTS_FILE}`);
-} else {
-	console.log(`Found ${mismatches.length} price/sale mismatches:`);
-	console.table(mismatches.slice(0, 50));
+const source = await readFile('src/lib/products.ts', 'utf8');
+const match = source.match(/export const products: Product\[\] = ([\s\S]*);\s*$/);
+if (!match) throw new Error('Cannot read local catalogue');
+const local = JSON.parse(match[1]);
+const live = await fetchStoreProducts();
+const { rows } = compareCatalog(local, live);
+const warnings = rows.filter(row => row.field === 'Нужна проверка');
+const mismatches = rows.filter(row => row.field !== 'Нужна проверка');
+if (mismatches.length) {
+	console.table(mismatches);
 	process.exitCode = 1;
 }
+if (warnings.length) {
+	console.warn('Public offers requiring manual verification:');
+	console.table(warnings);
+	// Cloud may publish the explicit warnings, but never silently call them verified.
+	if (!process.argv.includes('--allow-review')) process.exitCode = 1;
+}
+if (!rows.length) console.log(`OK: ${live.length} products match, including public promotion terms.`);
+else console.log(`${mismatches.length} mismatches; ${warnings.length} offers require review.`);

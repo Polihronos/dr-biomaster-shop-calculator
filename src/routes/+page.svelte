@@ -35,25 +35,15 @@
 		type PaymentMethod
 	} from '$lib/daily-sales';
 	import { catalogUpdatedAt, products, type Product } from '$lib/products';
+	import { compareCatalog, promotionLabel, quantityPrice, validateStoreProducts, type CatalogPrices, type StoreProduct, type QuantityPromotion } from '$lib/catalogue';
 
 	type Selection = Record<string, number>;
 	type Overrides = Record<string, number>;
 	type DiscountMap = Record<string, number>;
 	type SaleMap = Record<string, boolean>;
 	type PromoMap = Record<string, { buy: number; pay: number }>;
-	type LiveProductPrices = {
-		currency_code?: string;
-		currency_minor_unit?: number;
-		price?: string | number;
-		regular_price?: string | number;
-		sale_price?: string | number;
-	};
-	type LiveStoreProduct = {
-		id: string | number;
-		on_sale?: boolean;
-		prices?: LiveProductPrices;
-	};
-	type LivePriceOverride = { price: number; regularPrice: number; onSale: boolean };
+	type LiveStoreProduct = StoreProduct;
+	type LivePriceOverride = CatalogPrices;
 	type LivePriceOverrideMap = Record<string, LivePriceOverride>;
 	type PackageComboRule = { packageId: string; itemIds: string[] };
 	type PendingPackageChoice = { rule: PackageComboRule; quantity: number; key: string };
@@ -70,7 +60,6 @@
 
 	const BGN_PER_EUR = 1.95583;
 	const STORAGE_KEY = 'dr-biomaster-shop-calculator-v2';
-	const CANNABIMAX_GOLD_ID = '8077';
 	const ALL_CATEGORIES = 'Всички';
 	const categories = [ALL_CATEGORIES, ...new Set(products.map((product) => product.category))];
 	const quickDiscounts = [3, 5, 10, 15, 20, 25, 30, 33, 35, 40];
@@ -133,7 +122,7 @@
 				const normalizedQuery = normalizeText(query.trim());
 				const searchable = normalizeText(`${product.name} ${product.category}`);
 				const matchesQuery = !normalizedQuery || searchable.includes(normalizedQuery);
-				const matchesSale = !onlySale || row.isOnSale;
+				const matchesSale = !onlySale || row.isOnSale || Boolean(row.quantityPromotion) || row.promotionWarnings.length > 0;
 
 				return matchesCategory && matchesQuery && matchesSale;
 			})
@@ -214,14 +203,6 @@
 
 	function formatBgn(value: number) {
 		return `${value.toFixed(2)} лв.`;
-	}
-
-	function storeAmountToBgn(amount: string | number | undefined, prices: LiveProductPrices) {
-		const minorUnit = Number(prices.currency_minor_unit ?? 2);
-		const value = Number(amount || 0) / 10 ** minorUnit;
-
-		if (prices.currency_code === 'EUR') return eurToBgn(value);
-		return Number(value.toFixed(2));
 	}
 
 	function normalizeText(value: string) {
@@ -327,7 +308,10 @@
 		return {
 			price: live?.price ?? product.price,
 			regularPrice: live?.regularPrice ?? product.regularPrice,
-			onSale: live?.onSale ?? product.onSale
+			onSale: live?.onSale ?? product.onSale,
+			promotion: live ? live.promotion : product.promotion,
+			promotionEvidence: live ? live.promotionEvidence : product.promotionEvidence,
+			promotionWarnings: live ? live.promotionWarnings : product.promotionWarnings
 		};
 	}
 
@@ -385,23 +369,16 @@
 		return Number((((regular - current) / regular) * 100).toFixed(1));
 	}
 
-	function cannabimaxGoldDiscount(quantity: number) {
-		if (quantity >= 3) return 20;
-		if (quantity >= 2) return 10;
-		return 0;
-	}
-
 	function rowForProduct(product: Product) {
 		const quantity = selection[product.id] ?? 0;
 		const unitPrice = effectiveUnitPriceEur(product);
-		const lineDiscountPercent = product.id === CANNABIMAX_GOLD_ID ? cannabimaxGoldDiscount(quantity) : 0;
+		const catalog = catalogSnapshot(product);
+		const manualPromo = promotions[product.id];
+		const quantityPromotion: QuantityPromotion | null = manualPromo
+			? { kind: 'bundle', ...manualPromo } : catalog.promotion ?? null;
+		const promo = quantityPromotion?.kind === 'bundle' ? quantityPromotion : undefined;
+		const { chargedQuantity, percent: lineDiscountPercent, lineTotal } = quantityPrice(unitPrice, quantity, quantityPromotion);
 		const salePercent = lineDiscountPercent || effectiveSalePercent(product);
-		const promo = promotions[product.id];
-		const chargedQuantity =
-			promo && promo.buy > 0 && promo.pay > 0 && promo.pay < promo.buy
-				? Math.floor(quantity / promo.buy) * promo.pay + (quantity % promo.buy)
-				: quantity;
-		const lineTotal = Number((unitPrice * chargedQuantity * (1 - lineDiscountPercent / 100)).toFixed(2));
 
 		return {
 			product,
@@ -410,7 +387,8 @@
 			regularPrice: regularPriceEur(product),
 			isOnSale: isSaleEnabled(product) || lineDiscountPercent > 0,
 			salePercent,
-			lineDiscountPercent,
+			quantityPromotion,
+			promotionWarnings: catalog.promotionWarnings ?? [],
 			promo,
 			chargedQuantity,
 			lineTotal
@@ -594,7 +572,7 @@
 								<td>${escapeHtml(row.product.name)}</td>
 								<td>${row.quantity}</td>
 								<td>${escapeHtml(money(row.unitPrice))}</td>
-								<td>${row.lineDiscountPercent > 0 ? `-${row.lineDiscountPercent}%` : row.promo ? `${row.promo.buy} за ${row.promo.pay}` : ''}</td>
+								<td>${row.quantityPromotion ? escapeHtml(promotionLabel(row.quantityPromotion)) : ''}</td>
 								<td>${escapeHtml(money(row.lineTotal))}</td>
 							</tr>`
 						)
@@ -744,7 +722,7 @@
 				delete globalWindow[callbackName];
 
 				if (Array.isArray(data)) {
-					resolve(data);
+					try { validateStoreProducts(data); resolve(data); } catch (error) { reject(error); }
 				} else {
 					reject(new Error('Unexpected Store API response'));
 				}
@@ -765,31 +743,16 @@
 	async function fetchLiveProducts() {
 		const liveProducts: LiveStoreProduct[] = [];
 
-		for (let page = 1; page <= 20; page += 1) {
+		for (let page = 1; page <= 100; page += 1) {
 			const batch = await fetchLiveProductsPage(page);
 			liveProducts.push(...batch);
-			if (batch.length < 100) break;
+			if (batch.length < 100) {
+				validateStoreProducts(liveProducts);
+				if (!liveProducts.length) throw new Error('Празен каталог от сайта.');
+				return liveProducts;
+			}
 		}
-
-		return liveProducts;
-	}
-
-	function liveOverrideFromStoreProduct(liveProduct: LiveStoreProduct) {
-		if (!liveProduct.prices) return null;
-
-		const livePrice = storeAmountToBgn(
-			liveProduct.prices.sale_price || liveProduct.prices.price || liveProduct.prices.regular_price,
-			liveProduct.prices
-		);
-		const liveRegularPrice = liveProduct.prices.regular_price
-			? storeAmountToBgn(liveProduct.prices.regular_price, liveProduct.prices)
-			: livePrice;
-
-		return {
-			price: livePrice,
-			regularPrice: liveRegularPrice,
-			onSale: Boolean(liveProduct.on_sale)
-		};
+		throw new Error('Непълен каталог от сайта.');
 	}
 
 	function clearPriceCheckHideTimer() {
@@ -820,12 +783,15 @@
 			delete priceOverrides[productId];
 			delete productDiscounts[productId];
 			delete saleOverrides[productId];
+			delete promotions[productId];
 		}
 
-		priceCheckRows = [];
-		priceCheckStatus = 'ok';
-		priceCheckMessage = `Live цените са приложени за ${productIds.length} продукта`;
-		hidePriceCheckSoon();
+		priceCheckRows = priceCheckRows.filter(row => ['Нужна проверка', 'Нов продукт', 'Липсва в сайта'].includes(row.field));
+		priceCheckStatus = priceCheckRows.length ? 'mismatch' : 'ok';
+		priceCheckMessage = priceCheckRows.length
+			? `Live цените са приложени; ${priceCheckRows.length} условия изискват проверка`
+			: `Live цените и промоциите са приложени за ${productIds.length} продукта`;
+		if (!priceCheckRows.length) hidePriceCheckSoon();
 	}
 
 	function clearLivePriceOverrides() {
@@ -846,60 +812,16 @@
 
 		try {
 			const liveProducts = await fetchLiveProducts();
-			const localById = new Map(products.map((product) => [product.id, product]));
-			const rows: PriceCheckRow[] = [];
-			const nextLiveOverrides: LivePriceOverrideMap = {};
-			let checkedProductCount = 0;
-
-			for (const liveProduct of liveProducts) {
-				const localProduct = localById.get(String(liveProduct.id));
-				if (!localProduct) continue;
-				const liveOverride = liveOverrideFromStoreProduct(liveProduct);
-				if (!liveOverride) continue;
-
-				const currentCatalog = catalogSnapshot(localProduct);
-				nextLiveOverrides[localProduct.id] = liveOverride;
-				checkedProductCount += 1;
-
-				if (Math.abs(currentCatalog.price - liveOverride.price) > 0.01) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Цена',
-						local: formatBgn(currentCatalog.price),
-						live: formatBgn(liveOverride.price)
-					});
-				}
-
-				if (Math.abs(currentCatalog.regularPrice - liveOverride.regularPrice) > 0.01) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Редовна цена',
-						local: formatBgn(currentCatalog.regularPrice),
-						live: formatBgn(liveOverride.regularPrice)
-					});
-				}
-
-				if (Boolean(currentCatalog.onSale) !== liveOverride.onSale) {
-					rows.push({
-						id: localProduct.id,
-						name: localProduct.name,
-						field: 'Промо',
-						local: currentCatalog.onSale ? 'Да' : 'Не',
-						live: liveOverride.onSale ? 'Да' : 'Не'
-					});
-				}
-			}
-
+			const local = products.map(product => ({ id: product.id, name: product.name, ...catalogSnapshot(product) }));
+			const { rows, overrides } = compareCatalog(local, liveProducts);
 			priceCheckRows = rows;
-			pendingLivePriceOverrides = rows.length > 0 ? nextLiveOverrides : {};
-			priceCheckStatus = rows.length > 0 ? 'mismatch' : 'ok';
-			priceCheckMessage =
-				rows.length > 0
-					? `${rows.length} разлики спрямо live сайта`
-					: `${checkedProductCount}/${products.length} продукта съвпадат с live сайта`;
-			if (rows.length === 0) hidePriceCheckSoon();
+			pendingLivePriceOverrides = rows.length ? overrides : {};
+			priceCheckStatus = rows.length ? 'mismatch' : 'ok';
+			const reviewCount = rows.filter(row => row.field === 'Нужна проверка').length;
+			priceCheckMessage = rows.length
+				? `${rows.length} разлики или условия за проверка спрямо live сайта${reviewCount ? ` (${reviewCount} непотвърдени промоции)` : ''}`
+				: `${liveProducts.length}/${products.length} продукта: цените и публичните промоции съвпадат`;
+			if (!rows.length) hidePriceCheckSoon();
 		} catch (error) {
 			priceCheckStatus = 'error';
 			priceCheckMessage = error instanceof Error ? error.message : 'Неуспешна сверка';
@@ -1097,6 +1019,8 @@
 							{/if}
 							{#if row.isOnSale}
 								<span class="sale"><BadgePercent size={14} /> -{row.salePercent}%</span>
+							{:else if row.quantityPromotion}
+								<span class="sale"><BadgePercent size={14} /> {promotionLabel(row.quantityPromotion)}</span>
 							{/if}
 							{#if row.quantity > 0}
 								<span class="picked"><Check size={16} /> {row.quantity}</span>
@@ -1117,8 +1041,11 @@
 							{#if row.isOnSale && row.regularPrice > row.unitPrice}
 								<small>{money(row.regularPrice)}</small>
 							{/if}
-							{#if row.lineDiscountPercent > 0}
-								<em>Cannabimax {row.quantity >= 3 ? '3+' : '2'} бр. -{row.lineDiscountPercent}%</em>
+							{#if row.quantityPromotion}
+								<em>{promotionLabel(row.quantityPromotion)}</em>
+							{/if}
+							{#if row.promotionWarnings.length}
+								<em title={row.promotionWarnings.join('; ')}>Промоция: нужна проверка</em>
 							{/if}
 						</span>
 					</button>
@@ -1204,7 +1131,6 @@
 									<small>
 										{#if row.isOnSale}-{row.salePercent}%{/if}
 										{#if row.promo} {row.promo.buy} за {row.promo.pay}{/if}
-										{#if row.lineDiscountPercent > 0} Cannabimax промо{/if}
 									</small>
 								{/if}
 							</div>

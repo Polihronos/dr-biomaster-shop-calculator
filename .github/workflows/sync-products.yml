@@ -1,0 +1,118 @@
+name: Daily product sync
+
+on:
+  schedule:
+    # First run after 05:23 UTC; hourly retry slots if that day's check failed.
+    - cron: '23 5-23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      publish: ${{ steps.changes.outputs.publish }}
+    steps:
+      - name: Skip after today's successful run
+        id: daily
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+        shell: bash
+        run: |
+          last_success=$(gh api "repos/$GH_REPO/actions/workflows/sync-products.yml/runs?status=success&per_page=1" --jq '.workflow_runs[0].created_at // ""')
+          if [[ "$EVENT_NAME" == "schedule" && "${last_success:0:10}" == "$(date -u +%F)" ]]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.daily.outputs.run == 'true'
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        if: steps.daily.outputs.run == 'true'
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        if: steps.daily.outputs.run == 'true'
+        run: npm ci --no-audit --no-fund
+
+      - name: Fetch the complete public catalogue and promotion terms
+        if: steps.daily.outputs.run == 'true'
+        run: npm run fetch:products
+
+      - name: Validate prices, promotions, and application
+        if: steps.daily.outputs.run == 'true'
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}
+        run: |
+          npm run test -- src/lib/catalogue.test.ts
+          npm run check
+          npm run check:prices -- --allow-review
+          npm run build
+
+      - name: Record offers needing review
+        if: steps.daily.outputs.run == 'true'
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFile } from 'node:fs/promises';
+          import { products } from './src/lib/products.ts';
+          const warnings = products.flatMap(p => (p.promotionWarnings ?? []).map(w => `${p.id}: ${p.name} — ${w}`));
+          await appendFile(process.env.GITHUB_STEP_SUMMARY, `Checked ${products.length} products and their public promotion terms.\n\n` + (warnings.length ? `Offers requiring review (not automatically applied):\n\n${warnings.map(w => `- ${w}`).join('\n')}\n` : 'No unresolved public offers.\n'));
+          NODE
+
+      - name: Commit validated catalogue
+        id: changes
+        if: steps.daily.outputs.run == 'true'
+        shell: bash
+        run: |
+          unexpected=$(git diff --name-only -- . ':!src/lib/products.ts')
+          if [[ -n "$unexpected" ]]; then
+            printf 'Unexpected generated changes: %s\n' "$unexpected" >&2
+            exit 1
+          fi
+          if ! git diff --quiet -- src/lib/products.ts; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add -- src/lib/products.ts
+            git commit -m 'chore: verify and sync catalogue [cloud-auto]'
+            # A concurrent update fails safely; a later scheduled run starts afresh.
+            git push origin HEAD:main
+          fi
+          echo 'publish=true' >> "$GITHUB_OUTPUT"
+
+      - name: Upload validated site
+        if: steps.changes.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+          retention-days: 1
+
+  deploy:
+    needs: sync
+    if: needs.sync.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish verified catalogue
+        id: deployment
+        uses: actions/deploy-pages@v4

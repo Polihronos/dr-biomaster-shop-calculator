@@ -68,6 +68,7 @@ function liveProductFor(product) {
 		id: Number(product.id),
 		name: product.name,
 		on_sale: onSale,
+		short_description: (product.promotionEvidence ?? []).map(text => `<p>${text}</p>`).join(''),
 		prices: {
 			currency_code: 'BGN',
 			currency_minor_unit: 2,
@@ -146,14 +147,14 @@ async function expectVisibleCardsArePromotional(page) {
 	const cards = page.locator('.product-card');
 	const count = await cards.count();
 	expect(count).toBeGreaterThan(0);
-	expect(count).toBeLessThan(99);
+	expect(count).toBeLessThan(PRODUCTS.length);
 
 	const nonPromotionalCards = await cards.evaluateAll((elements) =>
 		elements
 			.map((element) => ({
 				id: element.getAttribute('data-product-id'),
 				hasSaleBadge: Boolean(element.querySelector('.sale')),
-				hasLineDiscount: Boolean(element.querySelector('.price em')?.textContent?.match(/-\d/))
+				hasLineDiscount: Boolean(element.querySelector('.price em'))
 			}))
 			.filter((card) => !card.hasSaleBadge && !card.hasLineDiscount)
 	);
@@ -249,7 +250,7 @@ try {
 	await page.goto(BASE_URL, { waitUntil: 'networkidle' });
 
 	await expect(page.locator('.brand strong')).toHaveText('Dr. Biomaster');
-	await expect(page.locator('.product-card')).toHaveCount(99);
+	await expect(page.locator('.product-card')).toHaveCount(PRODUCTS.length);
 	await expect(page.locator('.total')).toContainText('0.00 / 0.00');
 	await expect(page.locator('.price-check-button')).toBeVisible();
 	await expect(page.locator('.price-check-button')).toBeEnabled();
@@ -279,16 +280,16 @@ try {
 
 	const cannabimaxFilterCard = await clickProduct(page, '8077');
 	await cannabimaxFilterCard.locator('.product-main').click();
-	await expect(cannabimaxFilterCard.locator('.sale')).toContainText('-10%');
-	await expect(cannabimaxFilterCard.locator('em')).toContainText('-10%');
+	await expect(cannabimaxFilterCard.locator('.sale')).toContainText('3 за 2');
+	await expect(cannabimaxFilterCard.locator('em')).toContainText('3 за 2');
 	await setOnlySale(page, true);
 	await expect(productCard(page, '8077')).toBeVisible();
 	await expect(productCard(page, '2433')).toHaveCount(0);
 	await expectVisibleCardsArePromotional(page);
 	await clearCart(page);
-	await expect(productCard(page, '8077')).toHaveCount(0);
+	await expect(productCard(page, '8077')).toBeVisible();
 	await setOnlySale(page, false);
-	await expect(page.locator('.product-card')).toHaveCount(99);
+	await expect(page.locator('.product-card')).toHaveCount(PRODUCTS.length);
 
 	await clickProduct(page, '2433');
 	await expect(productCard(page, '2433')).toHaveClass(/selected/);
@@ -395,8 +396,9 @@ try {
 	const cannabimaxCard = await clickProduct(page, '8077');
 	await cannabimaxCard.locator('.product-main').click();
 	await cannabimaxCard.locator('.product-main').click();
-	await expect(cannabimaxCard.locator('em')).toContainText('-20%');
-	await expect(page.locator('.cart')).toContainText('-20%');
+	await expect(cannabimaxCard.locator('em')).toContainText('3 за 2');
+	await expect(page.locator('.cart')).toContainText('3 за 2');
+	await expect(page.locator('.cart-total')).toContainText('66.40 / 129.87');
 
 	await clearCart(page);
 	await page.locator('input[type="search"]').fill('');
@@ -409,10 +411,12 @@ try {
 	await expect(productCard(page, '1853')).not.toHaveClass(/selected/);
 
 	await page.locator('.price-check-button').click();
-	await expect(page.locator('.price-check-strip')).toContainText(/99 .* live/, {
-		timeout: 30000
-	});
-	await expect(page.locator('.price-check-strip')).toBeHidden({ timeout: 7000 });
+	if (PRODUCTS.some(product => product.promotionWarnings?.length)) {
+		await expect(page.locator('.price-check-strip')).toContainText('непотвърдени промоции', { timeout: 30000 });
+	} else {
+		await expect(page.locator('.price-check-strip')).toContainText('публичните промоции съвпадат', { timeout: 30000 });
+		await expect(page.locator('.price-check-strip')).toBeHidden({ timeout: 7000 });
+	}
 
 	liveProductOverrides.set('2433', { price: 55.8, regularPrice: 62, onSale: true });
 	await clearCart(page);
