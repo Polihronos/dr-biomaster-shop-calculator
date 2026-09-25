@@ -46,6 +46,16 @@ describe('public promotion import and calculations', () => {
 		expect(quantityPrice(10, 2, snapshot.promotion).lineTotal).toBe(18);
 		expect(quantityPrice(10, 3, snapshot.promotion).lineTotal).toBe(30);
 	});
+	it.each(['Плати 2 вземи 3 само за абонати', 'Buy 2 get 1 free for members', 'Намаление -20%', 'Спести 5 евро', 'Втори продукт на половин цена', '20% off', 'Buy 2 get 1 free until October'])('flags other public offers without inventing terms: %s', text => {
+		const snapshot = pricesFromStore(product(text));
+		expect(snapshot.promotion).toBeNull();
+		expect(snapshot.promotionWarnings?.length).toBeGreaterThan(0);
+	});
+	it('does not treat ingredient percentages or ordinary words as offers', () => {
+		const snapshot = pricesFromStore(product('<p>75-80% от имунната система</p><p>Екстракт – 6% алкалоиди</p><p>Люспести петна</p>'));
+		expect(snapshot.promotionWarnings).toEqual([]);
+		expect(snapshot.promotionEvidence).toEqual([]);
+	});
 	it('recognizes explicit X for Y offers and flags ambiguous plus offers', () => {
 		expect(pricesFromStore(product('Промоция: 3 за 2')).promotion).toEqual({kind:'bundle',buy:3,pay:2});
 		expect(pricesFromStore(product('2+1')).promotionWarnings?.length).toBeGreaterThan(0);

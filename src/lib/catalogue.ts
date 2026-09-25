@@ -57,11 +57,11 @@ function offerText(html: string) {
 
 export function parsePromotion(product: StoreProduct, salePercent: number) {
 	const html = `${product.short_description ?? ''}\n${product.description ?? ''}`;
-	const conditional = /купон|промокод|промо код|\bcoupon\b|\bcode\b|лоялн|нови клиенти|регистриран[а-я ]*(?:клиент|потребител)|поръчк[аи].*(?:над|минимум)|(?:валидн[^ ]*|до)\s*\d{1,2}[./]|до изчерпване|само веднъж/i;
+	const conditional = /купон|промокод|промо код|\bcoupon\b|\bcode\b|лоялн|абонат|членов|нови клиенти|регистриран[а-я ]*(?:клиент|потребител)|поръчк[аи].*(?:над|минимум)|(?:валидн[^ ]*|до)\s*\d{1,2}[./]|до изчерпване|само веднъж|\bmembers?\b|\bsubscri\w+|\bfirst order\b|\bminimum spend\b|\bexpires?\b|\buntil\b/i;
 	const evidence = [...new Set(html.split(/<\/(?:p|div|li|tr|h[1-6])\s*>|<br\s*\/?\s*>/i)
 		.map(offerText)
 		.filter(text => !/^\d+\s*\+\s*\d+\s*=/.test(text))
-		.filter(text => /плати|вземи|подарък|купон|промоци|отстъпк|безплат|\d+\s*(?:за|\+)\s*\d+|\bbuy\s+\d|\bdiscount\b|\bcoupon\b|\bfree\b/i.test(text) || conditional.test(text))
+		.filter(text => /плати|вземи|подарък|купон|промоци|отстъпк|намалени[ея][^.!?]{0,50}(?:%|цен|лв|евро)|(?:^|\s)спести(?:\s|[!.:])|половин цена|безплат|\d+\s*(?:за|\+)\s*\d+|\bbuy\s+\d|\bdiscount\b|\bcoupon\b|\bfree\b|\boffer\b|\bsale\b|\bsave\s+\d|%\s*off\b/i.test(text) || /^[-−–]\s*\d+(?:[.,]\d+)?\s*%[!.]?$/.test(text) || conditional.test(text))
 		.filter(text => !/без промоция|другите марки|промоционални\./i.test(text)))].sort();
 	const bundles: { kind: 'bundle'; buy: number; pay: number }[] = [];
 	const tiers: { min: number; max: number | null; percent: number }[] = [];
