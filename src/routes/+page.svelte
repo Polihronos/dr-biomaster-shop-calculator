@@ -982,7 +982,7 @@
 				</div>
 				{#if visiblePriceCheckRows.length > 0}
 					<div class="price-check-diff-list">
-						{#each visiblePriceCheckRows as row (`${row.id}-${row.field}`)}
+						{#each visiblePriceCheckRows as row (`${row.id}-${row.field}-${row.live}`)}
 							<span>{row.name}: {row.field} {row.local} → {row.live}</span>
 						{/each}
 					</div>
