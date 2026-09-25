@@ -43,6 +43,8 @@ You can preview the production build with `npm run preview`.
 
 ## Automatic catalogue sync in the cloud
 
+Status (25 September 2026): implemented but disabled pending website access. Both GitHub Ubuntu and macOS runners receive HTTP 403 from the public Store API, while local access works. The Mac updater remains enabled. The site maintainer must permit the cloud updater to read `/wp-json/wc/store/v1/products`; then enable this workflow and verify a manual fetch and deployment before disabling the Mac task.
+
 `.github/workflows/sync-products.yml` runs on standard GitHub-hosted macOS runners, which are free for this public repository. Its first daily slot is 05:23 UTC (08:23 in Bulgarian summer time, 07:23 in winter). Later hourly slots through 23:23 UTC retry a failed day; they skip fetching after a successful run. GitHub schedules can be delayed. The workflow can also be started manually from Actions → Daily product sync.
 
 The job fetches every catalogue page, checks prices and public promotion terms, runs the focused catalogue tests and type/build checks, commits only `src/lib/products.ts`, and deploys the validated build to GitHub Pages in the same workflow. This explicit deployment is necessary because pushes using `GITHUB_TOKEN` do not trigger the normal push workflow. A daily `catalogCheckedAt` date records completed source checks and keeps the repository active even when prices do not change. Failed or incomplete source requests never replace the published catalogue.
@@ -53,7 +55,7 @@ Unclear offers, image-only terms, coupons, customer/cart conditions, conflicting
 
 ## Legacy macOS updater
 
-The Mac updater remains available as a fallback. Disable its launch agent only after a successful cloud fetch and deployment have been verified. Keep its private checkout in `~/Library/Application Support/DrBiomasterProductSync` and logs in `~/Library/Logs/DrBiomasterProductSync` for recovery. The calculator and cloud updater do not need this Mac or Codex running.
+The Mac updater currently remains active. Disable its launch agent only after a successful cloud fetch and deployment have been verified. Keep its private checkout in `~/Library/Application Support/DrBiomasterProductSync` and logs in `~/Library/Logs/DrBiomasterProductSync` for recovery. Once website access is resolved, the cloud updater will not need this Mac or Codex running. The Mac validation permits explicit review flags while still rejecting price or catalogue mismatches.
 
 The legacy task normally runs at 08:00, catches up after wake/login, and retries failures hourly. Its installer and removal commands remain:
 

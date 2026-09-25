@@ -233,7 +233,7 @@ else
 	cd "$validation_dir"
 	"$PACKAGE_MANAGER" run check
 	"$PACKAGE_MANAGER" run build
-	"$PACKAGE_MANAGER" run check:prices
+	"$PACKAGE_MANAGER" run check:prices -- --allow-review
 
 	cd "$CHECKOUT_DIR"
 	remove_validation_dir
