@@ -18,7 +18,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-25T07:40:14.459Z";
+export const catalogUpdatedAt = "2026-09-25T12:00:52.027Z";
 export const catalogCheckedAt = "2026-09-25";
 
 export const products: Product[] = [
@@ -473,12 +473,10 @@ export const products: Product[] = [
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [
-			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора",
-			"Промоционално изображение: Промоция за ранна продажба на ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан (https://drbiomaster.com/wp-content/uploads/2026/08/imunomaster-kids-ranna-promociya.jpg)"
+			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора"
 		],
 		"promotionWarnings": [
-			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора",
-			"Промоционално изображение: Промоция за ранна продажба на ИмуноМастър Кидс – сироп за имунитет за деца с бета глюкан (https://drbiomaster.com/wp-content/uploads/2026/08/imunomaster-kids-ranna-promociya.jpg)"
+			"Безплатна консултация за родители с лекар или фармацевт в центровете на Dr. Biomaster в София, Пловдив, Бургас и Стара Загора"
 		],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2026/08/immunomaster-kids-sirop-drbiomaster.jpg",
