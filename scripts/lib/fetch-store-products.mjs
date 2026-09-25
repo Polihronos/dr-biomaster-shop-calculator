@@ -3,12 +3,32 @@ import { validateStoreProducts } from '../../src/lib/catalogue.ts';
 const API = 'https://drbiomaster.com/wp-json/wc/store/v1/products';
 const headers = { accept: 'application/json', 'user-agent': 'DrBiomasterCatalogueSync/1.0', referer: 'https://drbiomaster.com/' };
 
-export async function fetchStoreProducts() {
+async function fetchRelayPage(relayUrl, page) {
+	const url = new URL(relayUrl);
+	if (url.protocol !== 'https:' || !url.hostname.endsWith('.workers.dev') || url.port || url.username || url.password || url.pathname !== '/catalogue') {
+		throw new Error('Invalid Cloudflare catalogue relay URL');
+	}
+	url.searchParams.set('page', String(page));
+	const response = await fetch(url, { signal: AbortSignal.timeout(60000) });
+	if (!response.ok) throw new Error(`Catalogue relay HTTP ${response.status}`);
+	const result = await response.json();
+	if (result?.error) throw new Error(`Catalogue relay rejected page ${page}: ${result.error}`);
+	const age = Date.now() - Date.parse(result?.fetchedAt);
+	if (result?.source !== 'https://drbiomaster.com' || result.page !== page || !Number.isFinite(age) || age < -60000 || age > 15 * 60 * 1000) {
+		throw new Error('Invalid or stale catalogue relay response');
+	}
+	if (!Number.isInteger(result.total) || result.total < 1) throw new Error('Invalid catalogue relay count');
+	return new Response(JSON.stringify(result.products), { headers: { 'x-wp-total': String(result.total) } });
+}
+
+export async function fetchStoreProducts({ relayUrl = process.env.CATALOGUE_RELAY_URL } = {}) {
 	const products = [];
 	let expectedTotal;
 	for (let page = 1; page <= 100; page++) {
 		let url = `${API}?per_page=100&page=${page}`;
-		let response = await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
+		let response = relayUrl
+			? await fetchRelayPage(relayUrl, page)
+			: await fetch(url, { headers, signal: AbortSignal.timeout(30000) });
 		// WordPress exposes the same public REST route with and without pretty permalinks.
 		if (response.status === 403 || response.status === 404) {
 			console.warn(`Catalogue pretty URL: HTTP ${response.status}; server=${response.headers.get('server')}; challenge=${response.headers.get('cf-mitigated') ?? 'none'}`);

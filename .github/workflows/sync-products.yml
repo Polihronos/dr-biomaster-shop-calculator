@@ -18,8 +18,10 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 12
+    env:
+      CATALOGUE_RELAY_URL: ${{ vars.CATALOGUE_RELAY_URL }}
     outputs:
       publish: ${{ steps.changes.outputs.publish }}
     steps:
@@ -55,14 +57,16 @@ jobs:
 
       - name: Fetch the complete public catalogue and promotion terms
         if: steps.daily.outputs.run == 'true'
-        run: npm run fetch:products
+        run: |
+          test -n "$CATALOGUE_RELAY_URL" || { echo 'Configure the verified Cloudflare relay first.' >&2; exit 1; }
+          npm run fetch:products
 
       - name: Validate prices, promotions, and application
         if: steps.daily.outputs.run == 'true'
         env:
           BASE_PATH: /${{ github.event.repository.name }}
         run: |
-          npm run test -- src/lib/catalogue.test.ts scripts/lib/fetch-store-products.test.mjs
+          npm run test -- src/lib/catalogue.test.ts scripts/lib/fetch-store-products.test.mjs scripts/cloud/catalogue-worker.test.mjs
           npm run check
           npm run check:prices -- --allow-review
           npm run build
