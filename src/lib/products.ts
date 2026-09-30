@@ -18,10 +18,27 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-25T12:16:22.052Z";
-export const catalogCheckedAt = "2026-09-28";
+export const catalogUpdatedAt = "2026-09-30T07:51:01.846Z";
+export const catalogCheckedAt = "2026-09-30";
 
 export const products: Product[] = [
+	{
+		"id": "26096",
+		"name": "Билет за семинар – „Жената в баланс: медицинските гъби в подкрепа на тялото и ума“",
+		"category": "Билети",
+		"price": 58.67,
+		"regularPrice": 58.67,
+		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
+		"hasOptions": false,
+		"image": "https://drbiomaster.com/wp-content/uploads/2026/01/bilet-zhenata-v-balans.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/01/bilet-zhenata-v-balans.jpg",
+		"sourceUrl": "https://drbiomaster.com/produkti/bilet-seminar-medicinski-gubi-zhenata-v-balans/",
+		"shortDescription": "Очаквайте скоро семинар „Жената в баланс: медицинските гъби в подкрепа на тялото и ума“. Моля, заплатете своя билет с банкова карта или по банков път. Ще получите билета по електронен път – на e-мейла, който сте посочили в заявката.",
+		"priceLabel": "30.00 € (58.67 лв.)"
+	},
 	{
 		"id": "2433",
 		"name": "АЛОЕ АРБОРЕСЦЕНС подпомага стомашно-чревния баланс, 500 ml",
