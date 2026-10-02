@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-09-30T07:51:01.846Z";
-export const catalogCheckedAt = "2026-09-30";
+export const catalogUpdatedAt = "2026-10-02T09:58:30.718Z";
+export const catalogCheckedAt = "2026-10-02";
 
 export const products: Product[] = [
 	{
@@ -1216,9 +1216,9 @@ export const products: Product[] = [
 		"id": "1787",
 		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
 		"category": "Лекарствени гъби",
-		"price": 51.16,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -1227,7 +1227,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/cordyceps-extract-60-caps-1.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster/",
 		"shortDescription": "Екстракт от Cordyceps sinensis | 30% Полизахариди | Анализен сертификат от AGROLAB – Германия | Опаковка: 60 капсули по 300 мг | Оценка: ⭐⭐⭐⭐⭐ 4.97 / 5",
-		"priceLabel": "32.70 € (63.96 лв.) Original price was: 32.70€ (63.96 лв.). 26.16 € (51.16 лв.) Текущата цена е: 26.16€ (51.16 лв.)."
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "2156",
