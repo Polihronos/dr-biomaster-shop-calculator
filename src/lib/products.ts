@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-10-02T09:58:30.718Z";
-export const catalogCheckedAt = "2026-10-10";
+export const catalogUpdatedAt = "2026-10-12T12:17:27.717Z";
+export const catalogCheckedAt = "2026-10-12";
 
 export const products: Product[] = [
 	{
@@ -1214,7 +1214,7 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1787",
-		"name": "КОРДИЦЕПС екстракт 60 капсули по 300 mg — Dr. Biomaster",
+		"name": "Кордицепс екстракт 30% полизахариди, 60 капсули × 300 mg",
 		"category": "Лекарствени гъби",
 		"price": 63.96,
 		"regularPrice": 63.96,
@@ -1248,7 +1248,7 @@ export const products: Product[] = [
 	},
 	{
 		"id": "1819",
-		"name": "КОРДИЦЕПС лекарствена гъба, Hawlik, 60 капс. / 380 mg",
+		"name": "Кордицепс Hawlik екстракт 30%, 60 капс. × 380 mg",
 		"category": "Лекарствени гъби",
 		"price": 68.06,
 		"regularPrice": 68.06,
@@ -1376,8 +1376,8 @@ export const products: Product[] = [
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-1.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-1.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-new.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-new.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
 		"priceLabel": "98.20 € (192.06 лв.)"
