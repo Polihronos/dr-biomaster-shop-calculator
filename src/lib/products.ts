@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-10-14T08:08:12.505Z";
-export const catalogCheckedAt = "2026-10-16";
+export const catalogUpdatedAt = "2026-10-19T14:17:23.008Z";
+export const catalogCheckedAt = "2026-10-19";
 
 export const products: Product[] = [
 	{
@@ -1240,8 +1240,8 @@ export const products: Product[] = [
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-1.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-1.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-new.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-new.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от мицел на гъба Кордицепс ( Cordyceps sinensis )",
 		"priceLabel": "98.20 € (192.06 лв.)"
@@ -1364,6 +1364,23 @@ export const products: Product[] = [
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-prah-dr-biomaster/",
 		"shortDescription": "РЕЙШИ прах е смляно изсушено плодно тяло на гъбата Рейши ( Ganoderma lucidum ), позната още като ганодерма . Това е гъбата в целия ѝ вид – изсушена и смляна на прах. Прахът е шел-броукън : твърдата хитинова обвивка на гъбните клетки е механично разчупена, за да бъде съдържанието им усвоимо. Шел-броукън — разбита клетъчна стена за по-добра усвояемост 100% прах от плодно тяло, без пълнители и без добавки Без глутен, без ГМО, подходящ за вегани Контрол на всяка партида от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № T221100497 / 09.02.2012 г.",
 		"priceLabel": "19.40 € (37.94 лв.)"
+	},
+	{
+		"id": "24753",
+		"name": "Тест продукт 2",
+		"category": "Лекарствени гъби",
+		"price": 31.16,
+		"regularPrice": 31.16,
+		"onSale": false,
+		"promotion": null,
+		"promotionEvidence": [],
+		"promotionWarnings": [],
+		"hasOptions": false,
+		"image": "",
+		"imageLarge": "",
+		"sourceUrl": "https://drbiomaster.com/produkti/test-product-2/",
+		"shortDescription": "",
+		"priceLabel": "15.93 € (31.16 лв.)"
 	},
 	{
 		"id": "2167",
