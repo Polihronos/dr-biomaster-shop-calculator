@@ -18,7 +18,7 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-10-19T14:17:23.008Z";
+export const catalogUpdatedAt = "2026-10-21T22:10:59.547Z";
 export const catalogCheckedAt = "2026-10-21";
 
 export const products: Product[] = [
@@ -196,9 +196,9 @@ export const products: Product[] = [
 		"id": "1841",
 		"name": "СУПЕР ФОРМУЛА за сърце и кръвоносни съдове, 500 ml",
 		"category": "Билкови продукти",
-		"price": 34.15,
+		"price": 37.94,
 		"regularPrice": 37.94,
-		"onSale": true,
+		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -207,7 +207,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/super-formula-za-surce-i-kravonosni-sadove.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/super-formula-za-surce-kruvonosni-sudove/",
 		"shortDescription": "Превъзходен натурален продукт, подпомагащ сърцето и кръвоносните съдове! Съдържа 22 билки в отлична комбинация!",
-		"priceLabel": "19.40 € (37.94 лв.) Original price was: 19.40€ (37.94 лв.). 17.46 € (34.15 лв.) Текущата цена е: 17.46€ (34.15 лв.)."
+		"priceLabel": "19.40 € (37.94 лв.)"
 	},
 	{
 		"id": "1863",
@@ -1114,9 +1114,9 @@ export const products: Product[] = [
 		"id": "1783",
 		"name": "ГЪБА РЕЙШИ екстракт 30% полизахариди, 60 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 57.56,
+		"price": 63.96,
 		"regularPrice": 63.96,
-		"onSale": true,
+		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -1125,7 +1125,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/reishi-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-extract-dr-biomaster/",
 		"shortDescription": "ГЪБА РЕЙШИ екстракт 30% е хранителна добавка от сух екстракт на плодното тяло на гъбата Рейши ( Ganoderma lucidum ), стандартизиран на 30% гъбени полизахариди — приблизително 88 mg полизахариди във всяка капсула . Пазарният стандарт при повечето рейши екстракти е 10% и обикновено те не са произведени от плодно тяло, какъвто е този продукт, а от гъбен мицел – значително по-евтина суровина за производство. Всяка партида суровина за този продукт се анализира от германската лаборатория AGROLAB . 60 капсули по 300 mg • за 10–30 дни прием Екстракт от плодно тяло , не от мицел и не гъбен прах Съотношение на екстракция ≈ 30:1 Без глутен, без ГМО, веган капсула от растителна целулоза Регистриран в Националния регистър на храните: № Т221115906",
-		"priceLabel": "32.70 € (63.96 лв.) Original price was: 32.70€ (63.96 лв.). 29.43 € (57.56 лв.) Текущата цена е: 29.43€ (57.56 лв.)."
+		"priceLabel": "32.70 € (63.96 лв.)"
 	},
 	{
 		"id": "2362",
@@ -1588,21 +1588,21 @@ export const products: Product[] = [
 		"id": "24897",
 		"name": "ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“",
 		"category": "Специални пакети",
-		"price": 86.62,
+		"price": 91.71,
 		"regularPrice": 101.9,
 		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [
-			"ВЗЕМЕТЕ СЕГА С 15% ОТСТЪПКА",
-			"ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“ – Суперформула за сърце и кръвоносни съдове + Рейши 30% екстракт от плодно тяло; ОТСТЪПКА от общата цена на продуктите – 15%"
+			"ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА",
+			"ПАКЕТ „СЪРДЕЧНО-СЪДОВА СИСТЕМА“ – Суперформула за сърце и кръвоносни съдове + Рейши 30% екстракт от плодно тяло; ОТСТЪПКА от общата цена на продуктите – 10%"
 		],
 		"promotionWarnings": [],
 		"hasOptions": false,
 		"image": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-surdechno-sudova-sistema.jpg",
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2025/12/specialen-paket-surdechno-sudova-sistema.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-surdechno-sudova-sistema/",
-		"shortDescription": "ВЗЕМЕТЕ СЕГА С 15% ОТСТЪПКА СПЕСТЯВАТЕ 7.81€ (15.28 лв.)",
-		"priceLabel": "52.10 € (101.90 лв.) Original price was: 52.10€ (101.90 лв.). 44.29 € (86.62 лв.) Текущата цена е: 44.29€ (86.62 лв.)."
+		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 5.21€ (10.19 лв.)",
+		"priceLabel": "52.10 € (101.90 лв.) Original price was: 52.10€ (101.90 лв.). 46.89 € (91.71 лв.) Текущата цена е: 46.89€ (91.71 лв.)."
 	},
 	{
 		"id": "24743",
