@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-10-21T22:10:59.547Z";
-export const catalogCheckedAt = "2026-10-30";
+export const catalogUpdatedAt = "2026-11-01T12:22:42.053Z";
+export const catalogCheckedAt = "2026-11-01";
 
 export const products: Product[] = [
 	{
@@ -502,9 +502,9 @@ export const products: Product[] = [
 		"id": "27337",
 		"name": "Конопът – забраненото лекарство",
 		"category": "Книги",
-		"price": 15.06,
+		"price": 12.05,
 		"regularPrice": 15.06,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -513,15 +513,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/04/konopat-zabranenoto-lekarstvo.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/konopat-zabranenoto-lekarstvo/",
 		"shortDescription": "Автори: Росица Тодорова, Християна Драгостинова Издателство: Распер, 2016 ISBN: 978-954-345-104-3",
-		"priceLabel": "7.70 € (15.06 лв.)"
+		"priceLabel": "7.70 € (15.06 лв.) Original price was: 7.70€ (15.06 лв.). 6.16 € (12.05 лв.) Текущата цена е: 6.16€ (12.05 лв.)."
 	},
 	{
 		"id": "1898",
 		"name": "Лечебната сила на гъбите – проф. Ян И. Лелей",
 		"category": "Книги",
-		"price": 19.95,
+		"price": 15.96,
 		"regularPrice": 19.95,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -530,15 +530,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebnata-sila-na-gubite.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechebnata-sila-na-gubite/",
 		"shortDescription": "Автор: проф. Ян Лелей Издател: Доктор Биомастер",
-		"priceLabel": "10.20 € (19.95 лв.)"
+		"priceLabel": "10.20 € (19.95 лв.) Original price was: 10.20€ (19.95 лв.). 8.16 € (15.96 лв.) Текущата цена е: 8.16€ (15.96 лв.)."
 	},
 	{
 		"id": "1900",
 		"name": "Лечебни гъби против рак и други заболявания",
 		"category": "Книги",
-		"price": 7.04,
+		"price": 5.63,
 		"regularPrice": 7.04,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -547,15 +547,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechebni-gubi-rak-drugi-zabolqbaniq.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechebni-gubi-rak-drugi-zabolqbaniq/",
 		"shortDescription": "Автор: д-р Георги Георгиев Издател: Доктор Биомастер",
-		"priceLabel": "3.60 € (7.04 лв.)"
+		"priceLabel": "3.60 € (7.04 лв.) Original price was: 3.60€ (7.04 лв.). 2.88 € (5.63 лв.) Текущата цена е: 2.88€ (5.63 лв.)."
 	},
 	{
 		"id": "1908",
 		"name": "Лечението на всички видове рак – д-р Хулда Кларк",
 		"category": "Книги",
-		"price": 25.03,
+		"price": 20.03,
 		"regularPrice": 25.03,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -564,15 +564,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-vidove-rak-posledni-broiki.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechenie-na-vsichki-vidove-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "12.80 € (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.) Original price was: 12.80€ (25.03 лв.). 10.24 € (20.03 лв.) Текущата цена е: 10.24€ (20.03 лв.)."
 	},
 	{
 		"id": "1910",
 		"name": "Лечението на всички напреднали форми на рак – д-р Хулда Кларк",
 		"category": "Книги",
-		"price": 25.03,
+		"price": 20.03,
 		"regularPrice": 25.03,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -581,15 +581,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/lechenie-na-vsichki-naprednali-formi-na-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/lechenie-na-vsichki-naprednali-formi-na-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Натура“",
-		"priceLabel": "12.80 € (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.) Original price was: 12.80€ (25.03 лв.). 10.24 € (20.03 лв.) Текущата цена е: 10.24€ (20.03 лв.)."
 	},
 	{
 		"id": "1904",
 		"name": "Мост на надеждата – Джеймс У. Димърс",
 		"category": "Книги",
-		"price": 8.02,
+		"price": 6.42,
 		"regularPrice": 8.02,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -598,15 +598,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/most-na-nadejdata.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/most-na-nadejdata/",
 		"shortDescription": "Автор: Джеймс У. Димърс Издател: „Доктор Натура“",
-		"priceLabel": "4.10 € (8.02 лв.)"
+		"priceLabel": "4.10 € (8.02 лв.) Original price was: 4.10€ (8.02 лв.). 3.28 € (6.42 лв.) Текущата цена е: 3.28€ (6.42 лв.)."
 	},
 	{
 		"id": "1914",
 		"name": "Предпазване от всички видове рак – д-р Хулда Кларк",
 		"category": "Книги",
-		"price": 25.03,
+		"price": 20.03,
 		"regularPrice": 25.03,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -615,15 +615,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/predpazvane-ot-vsichki-vidove-rak.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/predpazvane-ot-vsichki-vidove-rak/",
 		"shortDescription": "Автор: д-р Хулда Кларк Издател: „Доктор Биомастер“",
-		"priceLabel": "12.80 € (25.03 лв.)"
+		"priceLabel": "12.80 € (25.03 лв.) Original price was: 12.80€ (25.03 лв.). 10.24 € (20.03 лв.) Текущата цена е: 10.24€ (20.03 лв.)."
 	},
 	{
 		"id": "2169",
 		"name": "Рак и други тежки заболявания при домашните любимци",
 		"category": "Книги",
-		"price": 9.78,
+		"price": 7.82,
 		"regularPrice": 9.78,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -632,15 +632,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/book-cancer-pets.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/rak-drugi-zabolqvaniq-domashni-liubimci/",
 		"shortDescription": "Автор: Борислав Пеев Издател: „ДОКТОР БИОМАСТЕР“",
-		"priceLabel": "5.00 € (9.78 лв.)"
+		"priceLabel": "5.00 € (9.78 лв.) Original price was: 5.00€ (9.78 лв.). 4.00 € (7.82 лв.) Текущата цена е: 4.00€ (7.82 лв.)."
 	},
 	{
 		"id": "1902",
 		"name": "Ракът може да бъде излекуван – Отец Романо Заго",
 		"category": "Книги",
-		"price": 7.04,
+		"price": 5.63,
 		"regularPrice": 7.04,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -649,15 +649,15 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/rak-moje-da-bade-izlekuvan.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/rak-moje-da-bade-izlekuvan/",
 		"shortDescription": "Автор: Отец Романо Заго, O.F.M. (от Ордена на францисканските монаси) Издател: Доктор Биомастер",
-		"priceLabel": "3.60 € (7.04 лв.)"
+		"priceLabel": "3.60 € (7.04 лв.) Original price was: 3.60€ (7.04 лв.). 2.88 € (5.63 лв.) Текущата цена е: 2.88€ (5.63 лв.)."
 	},
 	{
 		"id": "1906",
 		"name": "Сензационната антиракова диета на д-р Вулф Ласкин",
 		"category": "Книги",
-		"price": 8.02,
+		"price": 6.42,
 		"regularPrice": 8.02,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -666,7 +666,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/10/senzacionnata-antirakova-dieta-vulf-laskin.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/senzacionnata-antirakova-dieta-vulf-laskin/",
 		"shortDescription": "Автор: д-р Николай Колев Издател: „Доктор Натура“",
-		"priceLabel": "4.10 € (8.02 лв.)"
+		"priceLabel": "4.10 € (8.02 лв.) Original price was: 4.10€ (8.02 лв.). 3.28 € (6.42 лв.) Текущата цена е: 3.28€ (6.42 лв.)."
 	},
 	{
 		"id": "2214",
