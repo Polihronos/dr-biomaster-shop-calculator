@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-06T22:01:31.084Z";
-export const catalogCheckedAt = "2026-11-09";
+export const catalogUpdatedAt = "2026-11-11T11:58:00.407Z";
+export const catalogCheckedAt = "2026-11-11";
 
 export const products: Product[] = [
 	{
@@ -1138,8 +1138,8 @@ export const products: Product[] = [
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-600x600.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-new.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-new.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/diafungi/",
 		"shortDescription": "90 капсули по 330 mg Смес от прахове от плодно тяло на 3 лекарствени гъби: Майтаке ( Grifola frondosa ), Шийтаке ( Lentinula edodes ) и Копринус ( Coprinus comatus ).",
 		"priceLabel": "14.30 € (27.97 лв.)"
