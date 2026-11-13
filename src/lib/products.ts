@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-11T11:58:00.407Z";
-export const catalogCheckedAt = "2026-11-11";
+export const catalogUpdatedAt = "2026-11-13T16:33:47.048Z";
+export const catalogCheckedAt = "2026-11-13";
 
 export const products: Product[] = [
 	{
@@ -859,18 +859,18 @@ export const products: Product[] = [
 		"id": "14974",
 		"name": "БИО АУРИКУЛАРИЯ лекарствена гъба, Hawlik, 240 капс. / 380 mg",
 		"category": "Лекарствени гъби",
-		"price": 203.99,
-		"regularPrice": 203.99,
+		"price": 217.8,
+		"regularPrice": 217.8,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-big-pack.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-big-pack.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/aurikularia-hawlik-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-auricularia-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Аурикулария ( Auricularia polytricha )",
-		"priceLabel": "104.30 € (203.99 лв.)"
+		"priceLabel": "111.36 € (217.80 лв.)"
 	},
 	{
 		"id": "1801",
@@ -893,18 +893,18 @@ export const products: Product[] = [
 		"id": "14987",
 		"name": "БИО ГЪБА ШИЙТАКЕ, Hawlik, 240 капс. / 380 mg",
 		"category": "Лекарствени гъби",
-		"price": 203.99,
-		"regularPrice": 203.99,
+		"price": 217.8,
+		"regularPrice": 217.8,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-big-pack.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-big-pack.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/shiitake-hawlik-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Шийтаке (Lentinula Edodes)",
-		"priceLabel": "104.30 € (203.99 лв.)"
+		"priceLabel": "111.36 € (217.80 лв.)"
 	},
 	{
 		"id": "1825",
@@ -944,18 +944,18 @@ export const products: Product[] = [
 		"id": "14983",
 		"name": "БИО КОПРИНУС лекарствена гъба, Hawlik, 240 капс. / 380 mg",
 		"category": "Лекарствени гъби",
-		"price": 203.99,
-		"regularPrice": 203.99,
+		"price": 217.8,
+		"regularPrice": 217.8,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-big-pack.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-big-pack.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/coprinus-hawlik-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-coprinus-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Копринус ( Coprinus comatus )",
-		"priceLabel": "104.30 € (203.99 лв.)"
+		"priceLabel": "111.36 € (217.80 лв.)"
 	},
 	{
 		"id": "1793",
@@ -1012,18 +1012,18 @@ export const products: Product[] = [
 		"id": "14978",
 		"name": "БИО ПОЛИПОРУС лекарствена гъба, Hawlik, 240 капс. / 380 mg",
 		"category": "Лекарствени гъби",
-		"price": 203.99,
-		"regularPrice": 203.99,
+		"price": 217.8,
+		"regularPrice": 217.8,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporys-hawlik-big-pack.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporys-hawlik-big-pack.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporus-hawlik-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2024/10/polyporus-hawlik-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/polyporus-extract-hawlik-big/",
 		"shortDescription": "240 капсули по 380 mg Екстракт от плодно тяло на гъба Полипорус ( Polyporus umbellatus )",
-		"priceLabel": "104.30 € (203.99 лв.)"
+		"priceLabel": "111.36 € (217.80 лв.)"
 	},
 	{
 		"id": "1805",
@@ -1216,18 +1216,18 @@ export const products: Product[] = [
 		"id": "2156",
 		"name": "КОРДИЦЕПС лекарствена гъба, Dr. Biomaster, 240 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 192.06,
-		"regularPrice": 192.06,
+		"price": 204.66,
+		"regularPrice": 204.66,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-new.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-new.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/cordyceps-extract-240-caps-drbiomaster-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/cordyceps-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от мицел на гъба Кордицепс ( Cordyceps sinensis )",
-		"priceLabel": "98.20 € (192.06 лв.)"
+		"priceLabel": "104.64 € (204.66 лв.)"
 	},
 	{
 		"id": "1819",
@@ -1250,18 +1250,18 @@ export const products: Product[] = [
 		"id": "2159",
 		"name": "МАЙТАКЕ лекарствена гъба, Dr. Biomaster, 240 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 192.06,
-		"regularPrice": 192.06,
+		"price": 204.66,
+		"regularPrice": 204.66,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/maitake-extract-240-caps-drbiomaster-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meitake-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Майтаке (Grifola frondosa)",
-		"priceLabel": "98.20 € (192.06 лв.)"
+		"priceLabel": "104.64 € (204.66 лв.)"
 	},
 	{
 		"id": "1775",
@@ -1369,18 +1369,18 @@ export const products: Product[] = [
 		"id": "2167",
 		"name": "ХЕРИЦИУМ лекарствена гъба, Dr. Biomaster, 240 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 192.06,
-		"regularPrice": 192.06,
+		"price": 204.66,
+		"regularPrice": 204.66,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-new.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-new.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2020/07/hericium-extract-240-caps-drbiomaster-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/hericium-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Херициум ( Hericium Erinaceus )",
-		"priceLabel": "98.20 € (192.06 лв.)"
+		"priceLabel": "104.64 € (204.66 лв.)"
 	},
 	{
 		"id": "2165",
@@ -1403,18 +1403,18 @@ export const products: Product[] = [
 		"id": "2442",
 		"name": "ШИЙТАКЕ лекарствена гъба, Dr. Biomaster, 240 капс. / 300 mg",
 		"category": "Лекарствени гъби",
-		"price": 192.06,
-		"regularPrice": 192.06,
+		"price": 204.66,
+		"regularPrice": 204.66,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-1.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-1.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-4-packs.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2021/04/shiitake-extract-240-caps-drbiomaster-4-packs.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/shiitake-extract-dr-biomaster-big/",
 		"shortDescription": "240 капсули по 300 mg Екстракт от плодно тяло на гъба Шиитаке (Lentinula edodes)",
-		"priceLabel": "98.20 € (192.06 лв.)"
+		"priceLabel": "104.64 € (204.66 лв.)"
 	},
 	{
 		"id": "1771",
