@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-13T16:33:47.048Z";
-export const catalogCheckedAt = "2026-11-13";
+export const catalogUpdatedAt = "2026-11-14T09:38:45.151Z";
+export const catalogCheckedAt = "2026-11-14";
 
 export const products: Product[] = [
 	{
@@ -961,9 +961,9 @@ export const products: Product[] = [
 		"id": "1793",
 		"name": "БИО КОПРИНУС лекарствена гъба, Hawlik, 60 капс. / 380 mg",
 		"category": "Лекарствени гъби",
-		"price": 68.06,
+		"price": 61.26,
 		"regularPrice": 68.06,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -972,7 +972,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/coprinus-extract-60-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/bio-coprinus-extract-hawlik/",
 		"shortDescription": "60 капсули по 380 mg Екстракт от плодно тяло на гъба Копринус ( Coprinus comatus )",
-		"priceLabel": "34.80 € (68.06 лв.)"
+		"priceLabel": "34.80 € (68.06 лв.) Original price was: 34.80€ (68.06 лв.). 31.32 € (61.26 лв.) Текущата цена е: 31.32€ (61.26 лв.)."
 	},
 	{
 		"id": "1791",
@@ -1131,9 +1131,9 @@ export const products: Product[] = [
 		"id": "1739",
 		"name": "ДИАФУНГИ при висока кръвна захар и диабет, 90 капс. / 330 mg",
 		"category": "Лекарствени гъби",
-		"price": 27.97,
+		"price": 25.17,
 		"regularPrice": 27.97,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -1142,7 +1142,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2019/09/diafungi-new.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/diafungi/",
 		"shortDescription": "90 капсули по 330 mg Смес от прахове от плодно тяло на 3 лекарствени гъби: Майтаке ( Grifola frondosa ), Шийтаке ( Lentinula edodes ) и Копринус ( Coprinus comatus ).",
-		"priceLabel": "14.30 € (27.97 лв.)"
+		"priceLabel": "14.30 € (27.97 лв.) Original price was: 14.30€ (27.97 лв.). 12.87 € (25.17 лв.) Текущата цена е: 12.87€ (25.17 лв.)."
 	},
 	{
 		"id": "259",
