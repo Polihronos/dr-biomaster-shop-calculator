@@ -19,7 +19,7 @@ export type Product = {
 };
 
 export const catalogUpdatedAt = "2026-11-14T09:38:45.151Z";
-export const catalogCheckedAt = "2026-11-14";
+export const catalogCheckedAt = "2026-11-15";
 
 export const products: Product[] = [
 	{
