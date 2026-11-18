@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-14T09:38:45.151Z";
-export const catalogCheckedAt = "2026-11-17";
+export const catalogUpdatedAt = "2026-11-18T09:56:55.076Z";
+export const catalogCheckedAt = "2026-11-18";
 
 export const products: Product[] = [
 	{
@@ -1301,9 +1301,9 @@ export const products: Product[] = [
 		"id": "4155",
 		"name": "МЕШИМА лекарствена гъба, Dr. Biomaster, 60 капс. / 270 mg",
 		"category": "Лекарствени гъби",
-		"price": 63.96,
+		"price": 44.77,
 		"regularPrice": 63.96,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -1312,7 +1312,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meshima-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 270 mg Екстракт от плодното тяло на гъба Мешима (Phellinus linteus)",
-		"priceLabel": "32.70 € &ndash; 98.20 € Price range: 32.70€ through 98.20€ (63.96 – 192.06 лв.)"
+		"priceLabel": "22.89 € &ndash; 98.20 € Price range: 22.89€ through 98.20€ (44.77 – 192.06 лв.)"
 	},
 	{
 		"id": "1735",
@@ -1347,23 +1347,6 @@ export const products: Product[] = [
 		"sourceUrl": "https://drbiomaster.com/produkti/reishi-prah-dr-biomaster/",
 		"shortDescription": "РЕЙШИ прах е смляно изсушено плодно тяло на гъбата Рейши ( Ganoderma lucidum ), позната още като ганодерма . Това е гъбата в целия ѝ вид – изсушена и смляна на прах. Прахът е шел-броукън : твърдата хитинова обвивка на гъбните клетки е механично разчупена, за да бъде съдържанието им усвоимо. Шел-броукън — разбита клетъчна стена за по-добра усвояемост 100% прах от плодно тяло, без пълнители и без добавки Без глутен, без ГМО, подходящ за вегани Контрол на всяка партида от AGROLAB, Германия Продукт, регистриран в Националния регистър на храните: № T221100497 / 09.02.2012 г.",
 		"priceLabel": "19.40 € (37.94 лв.)"
-	},
-	{
-		"id": "24753",
-		"name": "Тест продукт 2",
-		"category": "Лекарствени гъби",
-		"price": 31.16,
-		"regularPrice": 31.16,
-		"onSale": false,
-		"promotion": null,
-		"promotionEvidence": [],
-		"promotionWarnings": [],
-		"hasOptions": false,
-		"image": "",
-		"imageLarge": "",
-		"sourceUrl": "https://drbiomaster.com/produkti/test-product-2/",
-		"shortDescription": "",
-		"priceLabel": "15.93 € (31.16 лв.)"
 	},
 	{
 		"id": "2167",
