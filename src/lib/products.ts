@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-19T22:05:54.443Z";
-export const catalogCheckedAt = "2026-11-19";
+export const catalogUpdatedAt = "2026-11-20T22:41:11.524Z";
+export const catalogCheckedAt = "2026-11-20";
 
 export const products: Product[] = [
 	{
@@ -1301,9 +1301,9 @@ export const products: Product[] = [
 		"id": "4155",
 		"name": "МЕШИМА лекарствена гъба, Dr. Biomaster, 60 капс. / 270 mg",
 		"category": "Лекарствени гъби",
-		"price": 63.96,
+		"price": 44.77,
 		"regularPrice": 63.96,
-		"onSale": false,
+		"onSale": true,
 		"promotion": null,
 		"promotionEvidence": [],
 		"promotionWarnings": [],
@@ -1312,7 +1312,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2022/03/meshima-dr-biomaster.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/meshima-extract-dr-biomaster/",
 		"shortDescription": "60 капсули по 270 mg Екстракт от плодното тяло на гъба Мешима (Phellinus linteus)",
-		"priceLabel": "32.70 € &ndash; 98.20 € Price range: 32.70€ through 98.20€ (63.96 – 192.06 лв.)"
+		"priceLabel": "22.89 € &ndash; 104.64 € Price range: 22.89€ through 104.64€ (44.77 – 204.66 лв.)"
 	},
 	{
 		"id": "1735",
