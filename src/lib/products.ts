@@ -18,8 +18,8 @@ export type Product = {
 	priceLabel: string;
 };
 
-export const catalogUpdatedAt = "2026-11-20T22:41:11.524Z";
-export const catalogCheckedAt = "2026-11-23";
+export const catalogUpdatedAt = "2026-11-24T22:04:22.298Z";
+export const catalogCheckedAt = "2026-11-24";
 
 export const products: Product[] = [
 	{
@@ -485,8 +485,8 @@ export const products: Product[] = [
 		"id": "27337",
 		"name": "Конопът – забраненото лекарство",
 		"category": "Книги",
-		"price": 15.06,
-		"regularPrice": 15.06,
+		"price": 19.56,
+		"regularPrice": 19.56,
 		"onSale": false,
 		"promotion": null,
 		"promotionEvidence": [],
@@ -496,7 +496,7 @@ export const products: Product[] = [
 		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/04/konopat-zabranenoto-lekarstvo.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/konopat-zabranenoto-lekarstvo/",
 		"shortDescription": "Автори: Росица Тодорова, Християна Драгостинова Издателство: Распер, 2016 ISBN: 978-954-345-104-3",
-		"priceLabel": "7.70 € (15.06 лв.)"
+		"priceLabel": "10.00 € (19.56 лв.)"
 	},
 	{
 		"id": "1898",
@@ -1155,8 +1155,8 @@ export const products: Product[] = [
 		"promotionEvidence": [],
 		"promotionWarnings": [],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small-600x600.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2016/08/imun-modulator-small.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2016/08/immune-modulator-drbiomaster-90-caps.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2016/08/immune-modulator-drbiomaster-90-caps.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/imun-modulator-90-caps/",
 		"shortDescription": "ИМЮН МОДУЛАТОР представлява смес от 6 лекарствени гъби и е отлично средство за подобряване функциите на имунната система.",
 		"priceLabel": "56.20 € (109.92 лв.) 44.96 €"
@@ -1509,8 +1509,8 @@ export const products: Product[] = [
 			"за подарък на Ваши близки с малко дете – подарък, който показва истинска грижа."
 		],
 		"hasOptions": false,
-		"image": "https://drbiomaster.com/wp-content/uploads/2026/11/specialen-paket-imunitet-roditel-i-dete.jpg",
-		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/11/specialen-paket-imunitet-roditel-i-dete.jpg",
+		"image": "https://drbiomaster.com/wp-content/uploads/2026/11/specialen-paket-za-imunitet-roditel-i-dete.jpg",
+		"imageLarge": "https://drbiomaster.com/wp-content/uploads/2026/11/specialen-paket-za-imunitet-roditel-i-dete.jpg",
 		"sourceUrl": "https://drbiomaster.com/produkti/paket-imunitet-roditel-i-dete/",
 		"shortDescription": "ВЗЕМЕТЕ СЕГА С 10% ОТСТЪПКА СПЕСТЯВАТЕ 3.69€ (7.22 лв.) Една поръчка – грижа за имунитета на детето и родителя: За детето (от 2 г.): сироп „ИмуноМастър Кидс“ с бета глюкан Wellmune® и постбиотик – за детския имунитет. За родителя: „Имюнити 365“ – пет лечебни гъби в капсула, с качество, проверено от AGROLAB, Германия.",
 		"priceLabel": "36.93 € (72.23 лв.) Original price was: 36.93€ (72.23 лв.). 33.24 € (65.01 лв.) Текущата цена е: 33.24€ (65.01 лв.)."
